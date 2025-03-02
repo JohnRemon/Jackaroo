@@ -1,7 +1,7 @@
 package model;
 
 
-enum Colour {
+public enum Colour {
     RED,
     GREEN,
     BLUE,
