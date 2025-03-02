@@ -2,7 +2,7 @@ package model.card;
 
 import engine.GameManager;
 import engine.board.BoardManager;
-import model.Colour;
+
 
 public abstract class Card {
     private final String name;
