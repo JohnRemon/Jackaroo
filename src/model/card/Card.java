@@ -1,4 +1,19 @@
 package model.card;
 
-public class Card {
+import engine.GameManager;
+import engine.board.BoardManager;
+import model.Colour;
+
+public abstract class Card {
+    private final String name;
+    private final String description;
+    protected BoardManager boardManager;
+    protected GameManager gameManager;
+
+    public Card(String name, String description, BoardManager boardManager, GameManager gameManager) {
+        this.name = name;
+        this.description = description;
+        this.boardManager = boardManager;
+        this.gameManager = gameManager;
+    }
 }
