@@ -17,6 +17,9 @@ public class Board implements BoardManager{
         this.safeZones = new ArrayList<>();
         this.splitDistance = 3;
         //create track
+        for(int i = 0; i < 100; i++){
+            track.add(new Cell(CellType.NORMAL));
+        }
         //change 8 random Normal track cells to be flagged as a trap
         for(int i = 0; i < 8; i++){
             assignTrapCell();

@@ -24,4 +24,13 @@ public abstract class Card {
     public String getDescription() {
         return description;
     }
+
+    //gameManager and boardManager getters
+    public BoardManager getBoardManager() {
+        return boardManager;
+    }
+
+    public GameManager getGameManager() {
+        return gameManager;
+    }
 }
