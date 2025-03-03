@@ -4,9 +4,7 @@ package exception;
 import model.Colour;
 
 public abstract class GameException extends Exception {
-    GameException() {
-
-    }
+    GameException() {}
     GameException(String message) {
         super(message);
     }
