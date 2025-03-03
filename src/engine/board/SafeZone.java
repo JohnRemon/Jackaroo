@@ -16,4 +16,12 @@ public class SafeZone {
             cells.add(new Cell(CellType.SAFE));
         }
     }
+
+    public Colour getColour() {
+        return colour;
+    }
+
+    public ArrayList<Cell> getCells() {
+        return cells;
+    }
 }
