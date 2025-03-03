@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 public class Deck {
-   static final String CARDS_FILE= "\\Jackaroo\\Cards.csv";
+   static final String CARDS_FILE= "G:\\Jackaroo\\Jackaroo\\Cards.csv";
    static ArrayList<Card> cardsPool;
 
 public static void loadCardPool(BoardManager boardManager, GameManager gameManager) throws IOException {
@@ -100,10 +100,11 @@ public static void loadCardPool(BoardManager boardManager, GameManager gameManag
 
     public static ArrayList<Card> drawCards() {
     Collections.shuffle(cardsPool);
+    ArrayList<Card> cards = new ArrayList<>();
     // Assuming that if cardsPool is less than 4, it wants the current cards still
-    if (cardsPool.size() > 4) {
-        cardsPool.subList(0, 4).clear();
+    for(int i = 0; i < 4 && !cardsPool.isEmpty(); i++) {
+        cards.add(cardsPool.removeFirst());
     }
-    return cardsPool;
+    return cards;
     }
 }
