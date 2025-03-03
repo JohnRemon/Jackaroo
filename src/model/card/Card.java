@@ -16,4 +16,12 @@ public abstract class Card {
         this.boardManager = boardManager;
         this.gameManager = gameManager;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
 }

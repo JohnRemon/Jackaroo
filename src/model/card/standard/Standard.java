@@ -15,4 +15,12 @@ public class Standard extends Card {
         this.rank = rank;
         this.suit = suit;
     }
+
+    public int getRank() {
+        return rank;
+    }
+
+    public Suit getSuit() {
+        return suit;
+    }
 }

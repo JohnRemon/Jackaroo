@@ -11,5 +11,7 @@ public class CPU extends Player {
         this.boardManager = boardManager;
     }
 
-
+    public BoardManager getBoardManager() {
+        return boardManager;
+    }
 }
