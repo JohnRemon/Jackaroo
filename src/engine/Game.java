@@ -56,4 +56,16 @@ public class Game implements GameManager {
 
     }
 
+    public Board getBoard() {
+        return board;
+    }
+
+    public ArrayList<Player> getPlayers() {
+        return players;
+    }
+
+    public ArrayList<Card> getFirePit() {
+        return firePit;
+    }
+
 }
