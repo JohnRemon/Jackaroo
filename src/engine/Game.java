@@ -32,7 +32,7 @@ public class Game implements GameManager {
         Deck.loadCardPool(board, this);
 
         //Created the Players
-        Player humanPlayer = new Player(name, colours.get(0));
+        Player humanPlayer = new Player((name == null ? "Player" : name), colours.get(0));
         CPU cpu1 = new CPU("CPU 1", colours.get(1), board);
         CPU cpu2 = new CPU("CPU 2", colours.get(2), board);
         CPU cpu3 = new CPU("CPU 3", colours.get(3), board);
