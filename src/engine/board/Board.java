@@ -130,4 +130,15 @@ public class Board implements BoardManager{
         }
         return -1;
     }
+
+    /*Returns the index of the Entry cell position
+    on track for a given colour, defaulting to -1 if the Entry is not found due to an invalid colour*/
+    private int getEntryPosition(Colour colour){
+        for(int i = 0; i < track.size(); i++){
+            if(track.get(i).getCellType() == CellType.ENTRY && track.get(i).getMarble().getColour() == colour){
+                return i;
+            }
+        }
+        return -1;
+    }
 }
