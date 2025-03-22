@@ -45,8 +45,6 @@ public static void loadCardPool(BoardManager boardManager, GameManager gameManag
             }
 
 
-
-
             // decide on which constructor
             for (int i = 0; i < frequency; i++) {
                 switch (code) {

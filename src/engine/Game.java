@@ -19,7 +19,7 @@ public class Game implements GameManager {
     private int currentPlayerIndex;
     private int turn;
 
-    public Game(String name) throws IOException {
+    public Game(String playerName) throws IOException {
 
 
         //Created a new board with Game as game manager and randomised colours

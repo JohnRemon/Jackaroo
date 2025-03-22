@@ -10,8 +10,4 @@ public class CPU extends Player {
         super(name, colour);
         this.boardManager = boardManager;
     }
-
-    public BoardManager getBoardManager() {
-        return boardManager;
-    }
 }
