@@ -1,7 +1,9 @@
 package engine.board;
 
 import engine.GameManager;
+import exception.*;
 import model.Colour;
+import model.player.Marble;
 
 import java.util.ArrayList;
 
@@ -40,7 +42,6 @@ public class Board implements BoardManager{
     public int getSplitDistance(){
         return splitDistance;
     }
-
     public void setSplitDistance(int splitDistance){
         this.splitDistance = splitDistance;
     }
@@ -59,5 +60,46 @@ public class Board implements BoardManager{
             randomCell = (int) (Math.random() * track.size());
         }while(track.get(randomCell).getCellType() != CellType.NORMAL || track.get(randomCell).isTrap());
         track.get(randomCell).setTrap(true);
+    }
+
+    @Override
+    public void moveBy(Marble marble, int steps, boolean destroy) throws IllegalMovementException, IllegalDestroyException {
+
+    }
+
+    @Override
+    public void swap(Marble marble_1, Marble marble_2) throws IllegalSwapException {
+
+    }
+
+    @Override
+    public void destroyMarble(Marble marble) throws IllegalDestroyException {
+
+    }
+
+    @Override
+    public void sendToBase(Marble marble) throws CannotFieldException, IllegalDestroyException {
+
+    }
+
+    @Override
+    public void sendToSafe(Marble marble) throws InvalidMarbleException {
+
+    }
+
+    @Override
+    public ArrayList<Marble> getActionableMarbles() {
+        return null;
+    }
+
+    private ArrayList<Cell> getSafeZone(Colour colour){
+        ArrayList<Cell> safeCells = new ArrayList<>();
+        for(SafeZone safeZone : safeZones){
+            if(safeZone.getColour() == colour){
+                safeCells.addAll(safeZone.getCells());
+                return safeCells;
+            }
+        }
+        return null;
     }
 }
