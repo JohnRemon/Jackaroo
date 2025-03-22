@@ -119,4 +119,15 @@ public class Board implements BoardManager{
         }
         return -1;
     }
+
+    /*Returns the index of the Base cell position on
+    track for a given colour, defaulting to -1 if the Base is not found due to an invalid colour.*/
+    private int getBasePosition(Colour colour){
+        for(int i = 0; i < track.size(); i++){
+            if(track.get(i).getCellType() == CellType.BASE && track.get(i).getMarble().getColour() == colour){
+                return i;
+            }
+        }
+        return -1;
+    }
 }
