@@ -6,6 +6,7 @@ import model.Colour;
 import model.player.Marble;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Board implements BoardManager{
     private final GameManager gameManager;
@@ -140,5 +141,27 @@ public class Board implements BoardManager{
             }
         }
         return -1;
+    }
+
+    private ArrayList<Cell> validateSteps(Marble marble, int steps) throws IllegalMovementException{
+        ArrayList<Cell> validCells = new ArrayList<>();
+        //First Get the Marble's Current Position
+        if(getPositionInPath(track, marble) != -1){
+            //The Marble is on the track
+
+            //Check if the steps are valid
+            if(steps > track.size() - getPositionInPath(track, marble) - 1){
+                throw new IllegalMovementException("The rank of the card played is too high.");
+            }
+
+
+        }
+        else if(getPositionInPath(Objects.requireNonNull(getSafeZone(marble.getColour())), marble) != -1){
+            //The Marble is on the Safe Zone
+        }
+        else{
+            throw new IllegalMovementException("Marble is not on the track or safe zone");
+        }
+        return validCells;
     }
 }
