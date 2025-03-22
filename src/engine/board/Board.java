@@ -92,6 +92,10 @@ public class Board implements BoardManager{
         return null;
     }
 
+
+    /*Returns an ArrayList of cells of a
+    certain Safe Zone from the list of safeZones given the target colour, defaulting to null if Safe
+    Zone color is not found.*/
     private ArrayList<Cell> getSafeZone(Colour colour){
         ArrayList<Cell> safeCells = new ArrayList<>();
         for(SafeZone safeZone : safeZones){
@@ -101,5 +105,18 @@ public class Board implements BoardManager{
             }
         }
         return null;
+    }
+
+
+    /*Return the
+    index of a marble’s position on a given path of cells, which could be the track or a Safe Zone,
+    defaulting to -1 if the marble is not found on the given path.*/
+    private int getPositionInPath(ArrayList<Cell> path, Marble marble){
+        for(int i = 0; i < path.size(); i++){
+            if(path.get(i).getMarble() == marble){
+                return i;
+            }
+        }
+        return -1;
     }
 }
