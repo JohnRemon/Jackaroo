@@ -13,7 +13,7 @@ public class Board implements BoardManager{
 
     public Board(ArrayList<Colour> colourOrder, GameManager gameManager) {
         this.gameManager = gameManager;
-        this.track = new ArrayList<>();
+        this.track = new ArrayList<>(100);
         this.safeZones = new ArrayList<>();
         this.splitDistance = 3;
         //create track

@@ -29,6 +29,7 @@ public static void loadCardPool(BoardManager boardManager, GameManager gameManag
 
         // parses the current line into an arraylist where each value is seperated by index
         ArrayList<String> currentCard = new ArrayList<>(Arrays.asList(currentLine.split(",")));
+
         try {
             code = Integer.parseInt(currentCard.get(0));
             frequency = Integer.parseInt(currentCard.get(1));
@@ -63,9 +64,11 @@ public static void loadCardPool(BoardManager boardManager, GameManager gameManag
         } catch (Exception e) {
             System.out.println("Could not parse card");
             System.out.println(e);
+            reader.close();
         }
     }
     reader.close();
+
 }
 
     public static ArrayList<Card> drawCards() {
