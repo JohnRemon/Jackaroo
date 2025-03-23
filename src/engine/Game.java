@@ -94,11 +94,13 @@ public class Game implements GameManager {
 
     @Override
     public Colour getActivePlayerColour() {
-        return null;
+        return players.get(currentPlayerIndex).getColour();
     }
 
     @Override
     public Colour getNextPlayerColour() {
-        return null;
+        return players.get(currentPlayerIndex + 1).getColour();
     }
+
+
 }
