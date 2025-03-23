@@ -1,10 +1,14 @@
 package engine;
 
 import engine.board.Board;
+import exception.CannotDiscardException;
+import exception.CannotFieldException;
+import exception.IllegalDestroyException;
 import model.Colour;
 import model.card.Card;
 import model.card.Deck;
 import model.player.CPU;
+import model.player.Marble;
 import model.player.Player;
 
 import java.io.IOException;
@@ -68,4 +72,33 @@ public class Game implements GameManager {
         return firePit;
     }
 
+    @Override
+    public void sendHome(Marble marble) {
+
+    }
+
+    @Override
+    public void fieldMarble() throws CannotFieldException, IllegalDestroyException {
+
+    }
+
+    @Override
+    public void discardCard(Colour colour) throws CannotDiscardException {
+
+    }
+
+    @Override
+    public void discardCard() throws CannotDiscardException {
+
+    }
+
+    @Override
+    public Colour getActivePlayerColour() {
+        return null;
+    }
+
+    @Override
+    public Colour getNextPlayerColour() {
+        return null;
+    }
 }
