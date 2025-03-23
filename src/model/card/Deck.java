@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 public class Deck {
-   private static final String CARDS_FILE= "G:\\Jackaroo\\Jackaroo\\Cards.csv";
+   private static final String CARDS_FILE= "Cards.csv";
    private static ArrayList<Card> cardsPool;
 
 public static void loadCardPool(BoardManager boardManager, GameManager gameManager) throws IOException {
@@ -34,12 +34,15 @@ public static void loadCardPool(BoardManager boardManager, GameManager gameManag
             frequency = Integer.parseInt(currentCard.get(1));
             name = currentCard.get(2);
             description = currentCard.get(3);
-            rank = 0;
-            suit = null;
-            if(currentCard.size() > 4) {
+
+            if(code == 14 || code == 15) {
+                rank = 0;
+                suit = null;
+            }else {
                 rank = Integer.parseInt(currentCard.get(4));
                 suit = Suit.valueOf(currentCard.get(5));
             }
+
 
 
 
@@ -61,6 +64,7 @@ public static void loadCardPool(BoardManager boardManager, GameManager gameManag
             }
         } catch (Exception e) {
             System.out.println("Could not parse card");
+            System.out.println(e);
         }
     }
     reader.close();

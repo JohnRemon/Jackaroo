@@ -18,7 +18,12 @@ public class Board implements BoardManager{
         this.splitDistance = 3;
         //create track
         for(int i = 0; i < 100; i++){
-            track.add(new Cell(CellType.NORMAL));
+            if(i % 25 == 0)
+                track.add(new Cell(CellType.BASE));
+            else if((i + 2) % 25 == 0)
+                track.add(new Cell(CellType.ENTRY));
+            else
+                track.add(new Cell(CellType.NORMAL));
         }
         //change 8 random Normal track cells to be flagged as a trap
         for(int i = 0; i < 8; i++){
