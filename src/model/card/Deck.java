@@ -17,7 +17,7 @@ public class Deck {
    private static final String CARDS_FILE= "Cards.csv";
    private static ArrayList<Card> cardsPool;
 
-public static void loadCardPool(BoardManager boardManager, GameManager gameManager) throws IOException {
+    public static void loadCardPool(BoardManager boardManager, GameManager gameManager) throws IOException {
     BufferedReader reader = new BufferedReader(new FileReader(CARDS_FILE));
     cardsPool = new ArrayList<>();
     String currentLine = null;
@@ -80,4 +80,12 @@ public static void loadCardPool(BoardManager boardManager, GameManager gameManag
     }
     return cards;
     }
+
+    public static void refillPool(ArrayList<Card> cards){
+        cardsPool.addAll(cards);
+    }
+    public static int getPoolSize() {
+        return cardsPool.size();
+    }
+
 }
