@@ -1,9 +1,7 @@
 package engine;
 
 import engine.board.Board;
-import exception.CannotDiscardException;
-import exception.CannotFieldException;
-import exception.IllegalDestroyException;
+import exception.*;
 import model.Colour;
 import model.card.Card;
 import model.card.Deck;
@@ -100,6 +98,38 @@ public class Game implements GameManager {
     @Override
     public Colour getNextPlayerColour() {
         return players.get(currentPlayerIndex + 1).getColour();
+    }
+
+    public void selectCard(Card card) throws InvalidCardException {
+        Player player = players.get(currentPlayerIndex);
+        player.selectCard(card);
+    }
+
+    public void selectMarble(Marble marble) throws InvalidMarbleException {
+        Player player = players.get(currentPlayerIndex);
+        player.selectMarble(marble);
+    }
+
+    public void deselectAll() {
+        Player player = players.get(currentPlayerIndex);
+        player.deselectAll();
+    }
+
+    public void editSplitDistance(int splitDistance) throws SplitOutOfRangeException{
+        if (splitDistance < 1 || splitDistance > 6) {
+            throw new SplitOutOfRangeException("Split distance out of range!");
+        } else {
+            board.setSplitDistance(splitDistance);
+        }
+    }
+
+    public boolean canPlayTurn() {
+        return false;
+    }
+
+    public void playTurn() throws GameException{
+        Player player = players.get(currentPlayerIndex);
+        player.play();
     }
 
 
