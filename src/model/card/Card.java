@@ -2,6 +2,11 @@ package model.card;
 
 import engine.GameManager;
 import engine.board.BoardManager;
+import exception.ActionException;
+import exception.InvalidMarbleException;
+import model.player.Marble;
+
+import java.util.ArrayList;
 
 
 public abstract class Card {
@@ -16,6 +21,14 @@ public abstract class Card {
         this.boardManager = boardManager;
         this.gameManager = gameManager;
     }
+    //el document m2alsh en dol msh abstract, bs it makes zero sense enohom mykonoosh abstract
+    //since they're about to get overridden in each card class. In addition, you can't aslan
+    //validate considering you can't access the subclass' attributes (in this case we need the ID of the card
+    //to know how many marbles should be selected).
+
+    public boolean validateMarbleSize(ArrayList<Marble> marbles);
+    public boolean validateMarbleColours(ArrayList<Marble> marbles);
+    public void act(ArrayList<Marble> marbles) throws ActionException, InvalidMarbleException;
 
     public String getName() {
         return name;
