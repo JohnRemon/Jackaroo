@@ -26,9 +26,17 @@ public abstract class Card {
     //validate considering you can't access the subclass' attributes (in this case we need the ID of the card
     //to know how many marbles should be selected).
 
-    public boolean validateMarbleSize(ArrayList<Marble> marbles);
-    public boolean validateMarbleColours(ArrayList<Marble> marbles);
-    public void act(ArrayList<Marble> marbles) throws ActionException, InvalidMarbleException;
+    public boolean validateMarbleSize(ArrayList<Marble> marbles) {
+        return false;
+    }
+
+    public boolean validateMarbleColours(ArrayList<Marble> marbles) {
+        return false;
+    }
+
+    public void act(ArrayList<Marble> marbles) throws ActionException, InvalidMarbleException {
+
+    }
 
     public String getName() {
         return name;
