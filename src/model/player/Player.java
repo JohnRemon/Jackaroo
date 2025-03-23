@@ -1,5 +1,8 @@
 package model.player;
 
+import exception.GameException;
+import exception.InvalidCardException;
+import exception.InvalidMarbleException;
 import model.Colour;
 import model.card.Card;
 import java.util.ArrayList;
@@ -9,7 +12,7 @@ public class Player {
     private final Colour colour;
     private ArrayList<Card> hand;
     private final ArrayList<Marble> marbles;
-    private final Card selectedCard;
+    private Card selectedCard;
     private final ArrayList<Marble> selectedMarbles;
     //READ getter
     //WRITE setter
@@ -24,6 +27,41 @@ public class Player {
             marbles.add(marble);
         }
         this.selectedCard = null;
+    }
+
+    public void regainMarble(Marble marble){
+        marbles.add(marble);
+    }
+
+    public Marble getOneMarble(Marble marble){
+       if (marbles.contains(marble)){
+           return marbles.get(0);
+       } else return null;
+    }
+
+    public void selectCard(Card card) throws InvalidCardException {
+        if (hand.contains(card)){
+            selectedCard = card;
+        } else {
+            throw new InvalidCardException("Card is not in hand");
+        }
+    }
+
+    public void selectMarble(Marble marble) throws InvalidMarbleException {
+        if (selectedMarbles.size() > 2)
+            throw new InvalidMarbleException("Cannot select more than two marbles!");
+        else selectedMarbles.add(marble);
+    }
+
+    public void deselectAll(){
+        selectedCard = null;
+        selectedMarbles.clear();
+    }
+
+    // hakamelha ba3den
+    public void play() throws GameException {
+        if (selectedCard == null)
+            throw new InvalidCardException("No card selected!");
     }
 
     public String getName() {
