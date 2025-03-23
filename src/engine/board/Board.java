@@ -186,7 +186,7 @@ public class Board implements BoardManager{
 
     private void validateSaving(int positionInSafeZone, int positionOnTrack) throws InvalidMarbleException{
         if(positionInSafeZone != -1 || positionOnTrack == -1){
-            throw new InvalidMarbleException("The marble is not on the safe zone");
+            throw new InvalidMarbleException("The marble is on the safe zone or not on the track");
         }
 
     }
