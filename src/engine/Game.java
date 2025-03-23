@@ -1,6 +1,8 @@
 package engine;
 
 import engine.board.Board;
+import engine.board.Cell;
+import engine.board.SafeZone;
 import exception.*;
 import model.Colour;
 import model.card.Card;
@@ -10,6 +12,7 @@ import model.player.Marble;
 import model.player.Player;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -127,10 +130,24 @@ public class Game implements GameManager {
         return false;
     }
 
-    public void playTurn() throws GameException{
+    public void playTurn() throws GameException {
         Player player = players.get(currentPlayerIndex);
         player.play();
     }
+
+    public void endPlayerTurn() {
+    }
+
+    public Colour checkWin() {
+        ArrayList<SafeZone> safeZones = board.getSafeZones();
+        for (SafeZone safeZone : safeZones) {
+            if (safeZone.isFull()) {
+                return safeZone.getColour();
+            }
+        }
+        return null;
+    }
+
 
 
 }
