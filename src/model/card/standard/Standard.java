@@ -2,6 +2,8 @@ package model.card.standard;
 
 import engine.GameManager;
 import engine.board.BoardManager;
+import exception.ActionException;
+import exception.InvalidMarbleException;
 import model.card.Card;
 import model.player.Marble;
 
@@ -21,7 +23,6 @@ public class Standard extends Card {
     public int getRank() {
         return rank;
     }
-
     public Suit getSuit() {
         return suit;
     }
