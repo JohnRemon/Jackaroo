@@ -2,6 +2,8 @@ package model.card.standard;
 
 import engine.GameManager;
 import engine.board.BoardManager;
+import exception.ActionException;
+import exception.InvalidMarbleException;
 import model.card.Card;
 import model.player.Marble;
 
@@ -18,16 +20,9 @@ public class Standard extends Card {
         this.suit = suit;
     }
 
-    public boolean validateMarbleSize(ArrayList<Marble> marbles) {
-        if (marbles.size() != 1)
-            return false;
-        return true;
-    }
-
     public int getRank() {
         return rank;
     }
-
     public Suit getSuit() {
         return suit;
     }
