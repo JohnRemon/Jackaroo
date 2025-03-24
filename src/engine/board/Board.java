@@ -145,23 +145,50 @@ public class Board implements BoardManager{
 
     private ArrayList<Cell> validateSteps(Marble marble, int steps) throws IllegalMovementException{
         ArrayList<Cell> validCells = new ArrayList<>();
-        //First Get the Marble's Current Position
-        if(getPositionInPath(track, marble) != -1){
-            //The Marble is on the track
-
-            //Check if the steps are valid
-            if(steps > track.size() - getPositionInPath(track, marble) - 1){
-                throw new IllegalMovementException("The rank of the card played is too high.");
-            }
-
-
-        }
-        else if(getPositionInPath(Objects.requireNonNull(getSafeZone(marble.getColour())), marble) != -1){
-            //The Marble is on the Safe Zone
-        }
-        else{
-            throw new IllegalMovementException("Marble is not on the track or safe zone");
-        }
+        //TODO
         return validCells;
     }
+
+    private void validatePath(Marble marble, ArrayList<Cell> path, boolean destroy) throws IllegalMovementException{
+        //TODO
+    }
+
+    private void move(Marble marble, ArrayList<Cell> fullPath, boolean destroy)throws IllegalDestroyException{
+        //TODO
+    }
+
+    private void validateSwap(Marble marble_1, Marble marble_2) throws IllegalSwapException{
+        if(getPositionInPath(track, marble_1) == -1 && getPositionInPath(track, marble_2) == -1){
+            throw new IllegalSwapException("Both marbles are not on the track");
+        }
+        if(!marble_1.getColour().equals(gameManager.getActivePlayerColour()) && getBasePosition(marble_1.getColour()) != -1){
+            throw new IllegalSwapException("The Opponent's marble is on the base");
+        }
+        if(!marble_2.getColour().equals(gameManager.getActivePlayerColour()) && getBasePosition(marble_2.getColour()) != -1){
+            throw new IllegalSwapException("The Opponent's marble is on the base");
+        }
+    }
+
+    private void validateDestroy(int positionInPath) throws IllegalDestroyException{
+        if(positionInPath == -1){
+            throw new IllegalDestroyException("The marble is not on the track");
+        }
+        if(track.get(positionInPath).getCellType() == CellType.BASE){
+            throw new IllegalDestroyException("The marble is on the base");
+        }
+    }
+
+    private void validateFielding(Cell occupiedBaseCell) throws CannotFieldException{
+        if(occupiedBaseCell.getMarble().getColour() == gameManager.getActivePlayerColour()){
+            throw new CannotFieldException("The base cell is occupied by the same colour");
+        }
+    }
+
+    private void validateSaving(int positionInSafeZone, int positionOnTrack) throws InvalidMarbleException{
+        if(positionInSafeZone != -1 || positionOnTrack == -1){
+            throw new InvalidMarbleException("The marble is on the safe zone or not on the track");
+        }
+
+    }
+
 }
