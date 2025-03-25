@@ -12,7 +12,7 @@ public class Player {
     private final Colour colour;
     private ArrayList<Card> hand;
     private final ArrayList<Marble> marbles;
-    private Card selectedCard;
+    private  Card selectedCard;
     private final ArrayList<Marble> selectedMarbles;
     //READ getter
     //WRITE setter
@@ -58,10 +58,12 @@ public class Player {
         selectedMarbles.clear();
     }
 
-    // hakamelha ba3den
     public void play() throws GameException {
         if (selectedCard == null)
             throw new InvalidCardException("No card selected!");
+        if (!(selectedCard.validateMarbleColours(selectedMarbles) || selectedCard.validateMarbleSize(selectedMarbles)))
+            throw new InvalidMarbleException("Invalid marbles!");
+        //TODO: make card do it's required functionallity after Mr. Sanad finishes his class
     }
 
     public String getName() {

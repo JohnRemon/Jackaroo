@@ -26,12 +26,10 @@ public abstract class Card {
     public boolean validateMarbleSize(ArrayList<Marble> marbles){
         return marbles.size() == 1;
     }
-    public boolean validateMarbleColours(ArrayList<Marble> marbles){
+    public boolean validateMarbleColours(ArrayList<Marble> marbles) {
         return gameManager.getActivePlayerColour().equals(marbles.get(0).getColour());
-
-    public void act(ArrayList<Marble> marbles) throws ActionException, InvalidMarbleException {
-
     }
+    // TODO: abstract void act(ArrayList<Marble> marbles) throws ActionException, InvalidMarbleException;
 
     
 
