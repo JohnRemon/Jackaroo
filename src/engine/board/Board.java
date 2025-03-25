@@ -63,37 +63,6 @@ public class Board implements BoardManager{
         track.get(randomCell).setTrap(true);
     }
 
-    @Override
-    public void moveBy(Marble marble, int steps, boolean destroy) throws IllegalMovementException, IllegalDestroyException {
-
-    }
-
-    @Override
-    public void swap(Marble marble_1, Marble marble_2) throws IllegalSwapException {
-
-    }
-
-    @Override
-    public void destroyMarble(Marble marble) throws IllegalDestroyException {
-
-    }
-
-    @Override
-    public void sendToBase(Marble marble) throws CannotFieldException, IllegalDestroyException {
-
-    }
-
-    @Override
-    public void sendToSafe(Marble marble) throws InvalidMarbleException {
-
-    }
-
-    @Override
-    public ArrayList<Marble> getActionableMarbles() {
-        return null;
-    }
-
-
     /*Returns an ArrayList of cells of a
     certain Safe Zone from the list of safeZones given the target colour, defaulting to null if Safe
     Zone color is not found.*/
@@ -189,5 +158,51 @@ public class Board implements BoardManager{
         }
 
     }
+
+    @Override
+    public void moveBy(Marble marble, int steps, boolean destroy) throws IllegalMovementException, IllegalDestroyException {
+
+    }
+
+    @Override
+    public void swap(Marble marble_1, Marble marble_2) throws IllegalSwapException {
+
+    }
+
+    @Override
+    public void destroyMarble(Marble marble) throws IllegalDestroyException {
+
+    }
+
+    @Override
+    public void sendToBase(Marble marble) throws CannotFieldException, IllegalDestroyException {
+        //get the base position of the marble
+        int basePosition = getBasePosition(marble.getColour());
+
+        //check if there is a marble
+        if(track.get(basePosition).getMarble() != null){
+
+            //validate the fielding
+            validateFielding(track.get(basePosition));
+
+            //destroy opponent's marble
+            if(track.get(basePosition).getMarble().getColour() != marble.getColour()){
+                validateDestroy(basePosition);
+                destroyMarble(track.get(basePosition).getMarble());
+            }
+        }
+        track.get(basePosition).setMarble(marble);
+    }
+
+    @Override
+    public void sendToSafe(Marble marble) throws InvalidMarbleException {
+
+    }
+
+    @Override
+    public ArrayList<Marble> getActionableMarbles() {
+        return null;
+    }
+
 
 }

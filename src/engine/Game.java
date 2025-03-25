@@ -156,13 +156,18 @@ public class Game implements GameManager {
     @Override
     public void fieldMarble() throws CannotFieldException, IllegalDestroyException {
         Player currentPlayer = players.get(currentPlayerIndex);
+
+        //get the marble to field
         Marble marble = currentPlayer.getMarbles().get(0);
+
+        //check if there is a marble to field
         if(marble == null){
             throw new CannotFieldException("There is no marble to field");
         }else{
-            //TODO needs the sendToBase beta3et Mr Sanad
+            //Send the marble to the board
+            board.sendToBase(marble);
+            currentPlayer.getMarbles().remove(marble);
         }
-
     }
 
     @Override
