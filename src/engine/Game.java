@@ -16,6 +16,8 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import static model.card.Deck.*;
+
 public class Game implements GameManager {
 
     private final Board board;
@@ -31,7 +33,7 @@ public class Game implements GameManager {
         ArrayList<Colour> colours = new ArrayList<>();
         Collections.addAll(colours, Colour.values());
         Collections.shuffle(colours);
-        this.board = new Board(colours, this);
+        this.board = new Board(colours,this);
 
         //Loaded the card pool
         Deck.loadCardPool(board, this);
@@ -48,7 +50,7 @@ public class Game implements GameManager {
 
         //Created a hand for every Player
         for (Player player : players) {
-            ArrayList<Card> hand = Deck.drawCards();
+            ArrayList<Card> hand = drawCards();
             player.setHand(hand);
         }
 
@@ -127,15 +129,42 @@ public class Game implements GameManager {
     }
 
     public boolean canPlayTurn() {
-        return false;
+        Player player = players.get(currentPlayerIndex);
+        return turn == player.getHand().size();
     }
 
-    public void playTurn() throws GameException {
+    public void playPlayerTurn() throws GameException {
         Player player = players.get(currentPlayerIndex);
         player.play();
     }
 
     public void endPlayerTurn() {
+        Player player = players.get(currentPlayerIndex);
+        //remove the selected card and add it to the player
+        firePit.add(player.getSelectedCard());
+        player.getHand().remove(player.getSelectedCard());
+        //deselect everything
+        player.deselectAll();
+        //move onto the next player
+        currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+        //if player 4 then we start a new turn
+        if(currentPlayerIndex == 0){
+            turn++;
+        }
+        //start a new round
+        if(turn % 4 == 0){
+            //reset the turn
+            turn = 0;
+            //refill players' hands
+            for(Player p : players){
+                p.setHand(drawCards());
+            }
+            //refill the cardPool
+            if(getPoolSize() < 4){
+                refillPool(firePit);
+                firePit.clear();
+            }
+        }
     }
 
     public Colour checkWin() {
