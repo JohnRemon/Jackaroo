@@ -85,12 +85,30 @@ public class Game implements GameManager {
 
     @Override
     public void discardCard(Colour colour) throws CannotDiscardException {
-
+        Player player = null;
+        for (Player playerSearch : players) {
+            if (playerSearch.getColour().equals(colour)) {
+                player = playerSearch;
+            }
+        }
+        assert player != null;
+        ArrayList<Card> hand = player.getHand();
+        if (hand.isEmpty()) {
+            throw new CannotDiscardException(player.getName() + " has an empty hand");
+        }
+        int handSize = hand.size();
+        int rand = (int) Math.random() * handSize;
+        Card randCard = hand.get(rand);
+        firePit.add(randCard);
+        hand.remove(randCard);
     }
 
     @Override
     public void discardCard() throws CannotDiscardException {
-
+        ArrayList<Colour> colours = new ArrayList<>();
+        Collections.addAll(colours, Colour.values());
+        int rand = (int) Math.random() * colours.size();
+        discardCard(colours.get(rand));
     }
 
     @Override
