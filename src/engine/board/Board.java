@@ -154,7 +154,7 @@ public class Board implements BoardManager{
 
     private void validateSaving(int positionInSafeZone, int positionOnTrack) throws InvalidMarbleException{
         if(positionInSafeZone != -1 || positionOnTrack == -1){
-            throw new InvalidMarbleException("The marble is on the safe zone or not on the track");
+            throw new InvalidMarbleException("The marble is in the safe zone or not on the track");
         }
 
     }
@@ -196,12 +196,60 @@ public class Board implements BoardManager{
 
     @Override
     public void sendToSafe(Marble marble) throws InvalidMarbleException {
+        //get the position of the marble on the track
+        int positionOnTrack = getPositionInPath(track, marble);
+
+        //get the position of the marble in the safe zone
+        int positionInSafeZone = getPositionInPath(getSafeZone(marble.getColour()), marble);
+
+        //Validate the marble Saving
+        validateSaving(positionInSafeZone, positionOnTrack);
+
+        //get the unoccupied cells
+        ArrayList<Cell> unoccupiedCells = new ArrayList<>();
+        for(SafeZone safeZone : safeZones){
+            if(safeZone.getColour() == marble.getColour()){
+                for(Cell cell : safeZone.getCells()){
+                    if(cell.getMarble() == null){
+                        unoccupiedCells.add(cell);
+                    }
+                }
+            }
+        }
+
+        //get a random cell from the unoccupied cells
+        int random = (int) (Math.random() * unoccupiedCells.size());
+
+        //set the marble to the cell
+        unoccupiedCells.get(random).setMarble(marble);
 
     }
 
     @Override
     public ArrayList<Marble> getActionableMarbles() {
-        return null;
+        ArrayList<Marble> actionableMarbles= new ArrayList<>();
+        //check all the cells in the track
+        for(Cell cell : track){
+            //if the cell is not empty and the marble is of the same colour as the active player
+            if(cell.getMarble() != null && cell.getMarble().getColour() == gameManager.getActivePlayerColour()){
+                //add the marble to the list of actionable marbles
+                actionableMarbles.add(cell.getMarble());
+            }
+        }
+        //check all the cells in the safe zones
+        for(SafeZone safeZone : safeZones){
+            //if it is the active player's safe zone
+            if(safeZone.getColour() == gameManager.getActivePlayerColour()){
+                for(Cell cell : safeZone.getCells()){
+                    //if the cell is not empty
+                    if(cell.getMarble() != null){
+                        //add the marble to the list of actionable marbles
+                        actionableMarbles.add(cell.getMarble());
+                    }
+                }
+            }
+        }
+        return actionableMarbles;
     }
 
 
