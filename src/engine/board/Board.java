@@ -5,6 +5,7 @@ import exception.*;
 import model.Colour;
 import model.player.Marble;
 
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -99,6 +100,7 @@ public class Board implements BoardManager{
     Zone color is not found.*/
     private ArrayList<Cell> getSafeZone(Colour colour){
         ArrayList<Cell> safeCells = new ArrayList<>();
+
         for(SafeZone safeZone : safeZones){
             if(safeZone.getColour() == colour){
                 safeCells.addAll(safeZone.getCells());
@@ -142,11 +144,39 @@ public class Board implements BoardManager{
         }
         return -1;
     }
+ /* Helper method for validate steps
+ *  checks if the marble is in the safe zone and returns a boolean variable
+  */
+    private boolean isInSafeZone( Marble marble){
+        Colour activePlayerColour = gameManager.getActivePlayerColour();
+        for( SafeZone safeZone : safeZones){
+            if (safeZone.getColour() == activePlayerColour){
+                for ( Cell cell : safeZone.getCells()){
+                    if( cell.getMarble() == marble){
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
 
+    //
     private ArrayList<Cell> validateSteps(Marble marble, int steps) throws IllegalMovementException{
-        ArrayList<Cell> validCells = new ArrayList<>();
-        //TODO
-        return validCells;
+        ArrayList<Cell> path = new ArrayList<>();
+
+        int currentPosition = getPositionInPath(track,marble);
+        boolean isInSafeZone = isInSafeZone(marble);
+
+        if (currentPosition == -1 && !isInSafeZone) {
+            throw new IllegalMovementException("The marble is out of the board");
+        }
+
+
+
+
+
+        return path;
     }
 
     private void validatePath(Marble marble, ArrayList<Cell> path, boolean destroy) throws IllegalMovementException{
