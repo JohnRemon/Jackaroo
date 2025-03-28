@@ -93,52 +93,41 @@ public class Board implements BoardManager{
         return null;
     }
 
-
-    /*Returns an ArrayList of cells of a
-    certain Safe Zone from the list of safeZones given the target colour, defaulting to null if Safe
-    Zone color is not found.*/
-    private ArrayList<Cell> getSafeZone(Colour colour){
-        ArrayList<Cell> safeCells = new ArrayList<>();
-        for(SafeZone safeZone : safeZones){
-            if(safeZone.getColour() == colour){
-                safeCells.addAll(safeZone.getCells());
-                return safeCells;
-            }
+    private ArrayList<Cell> getSafeZone(Colour colour)
+    {
+        for (SafeZone safeZone : safeZones) {
+            if (safeZone.getColour() == (colour)) return safeZone.getCells();
         }
         return null;
     }
 
 
-    /*Return the
-    index of a marble’s position on a given path of cells, which could be the track or a Safe Zone,
-    defaulting to -1 if the marble is not found on the given path.*/
-    private int getPositionInPath(ArrayList<Cell> path, Marble marble){
-        for(int i = 0; i < path.size(); i++){
-            if(path.get(i).getMarble() == marble){
-                return i;
-            }
+    private int getPositionInPath(ArrayList<Cell> path, Marble marble)
+    {
+        for (int i = 0; i < path.size(); i++) {
+         if (path.get(i).getMarble().equals(marble)) return i;
         }
         return -1;
     }
 
-    /*Returns the index of the Base cell position on
-    track for a given colour, defaulting to -1 if the Base is not found due to an invalid colour.*/
-    private int getBasePosition(Colour colour){
-        for(int i = 0; i < track.size(); i++){
-            if(track.get(i).getCellType() == CellType.BASE && track.get(i).getMarble().getColour() == colour){
-                return i;
-            }
+    private int getBasePosition(Colour colour) {
+        switch (colour)
+        {
+            case Colour.RED -> {return 0;}
+            case Colour.GREEN -> {return 25;}
+            case Colour.BLUE -> {return 50;}
+            case Colour.YELLOW -> {return 75;}
         }
         return -1;
     }
 
-    /*Returns the index of the Entry cell position
-    on track for a given colour, defaulting to -1 if the Entry is not found due to an invalid colour*/
-    private int getEntryPosition(Colour colour){
-        for(int i = 0; i < track.size(); i++){
-            if(track.get(i).getCellType() == CellType.ENTRY && track.get(i).getMarble().getColour() == colour){
-                return i;
-            }
+    private int getEntryPosition(Colour colour) {
+        switch (colour)
+        {
+            case Colour.RED -> {return 98;}
+            case Colour.GREEN -> {return 23;}
+            case Colour.BLUE -> {return 48;}
+            case Colour.YELLOW -> {return 73;}
         }
         return -1;
     }
