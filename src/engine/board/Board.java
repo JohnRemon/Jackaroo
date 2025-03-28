@@ -96,6 +96,7 @@ public class Board implements BoardManager{
     private ArrayList<Cell> getSafeZone(Colour colour)
     {
         for (SafeZone safeZone : safeZones) {
+            // we can use == in this case as we're comparing enums.
             if (safeZone.getColour() == (colour)) return safeZone.getCells();
         }
         return null;
@@ -104,9 +105,16 @@ public class Board implements BoardManager{
 
     private int getPositionInPath(ArrayList<Cell> path, Marble marble)
     {
-        for (int i = 0; i < path.size(); i++) {
-         if (path.get(i).getMarble().equals(marble)) return i;
-        }
+        for (int i = 0; i < path.size(); i++)
+            //check the track first
+         if (marble.equals(path.get(i).getMarble())) return i;
+
+
+        //then check safeZone of the marble's colour
+        ArrayList<Cell> safeZoneCopy = new ArrayList<>(Objects.requireNonNull(getSafeZone(marble.getColour())));
+        for (int i = 0; i < safeZoneCopy.size(); i++)
+             if (marble.equals(safeZoneCopy.get(i).getMarble())) return i;
+
         return -1;
     }
 
@@ -117,8 +125,8 @@ public class Board implements BoardManager{
             case Colour.GREEN -> {return 25;}
             case Colour.BLUE -> {return 50;}
             case Colour.YELLOW -> {return 75;}
+            default -> {return -1;}
         }
-        return -1;
     }
 
     private int getEntryPosition(Colour colour) {
@@ -128,14 +136,15 @@ public class Board implements BoardManager{
             case Colour.GREEN -> {return 23;}
             case Colour.BLUE -> {return 48;}
             case Colour.YELLOW -> {return 73;}
+            default -> {return -1;}
         }
-        return -1;
     }
 
     private ArrayList<Cell> validateSteps(Marble marble, int steps) throws IllegalMovementException{
-        ArrayList<Cell> validCells = new ArrayList<>();
-        //TODO
-        return validCells;
+        int pos = getPositionInPath(track, marble);
+        if (pos == -1) throw new IllegalMovementException("Marble not on board!");
+
+
     }
 
     private void validatePath(Marble marble, ArrayList<Cell> path, boolean destroy) throws IllegalMovementException{
