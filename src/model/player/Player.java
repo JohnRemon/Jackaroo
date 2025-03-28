@@ -58,7 +58,7 @@ public class Player {
         selectedMarbles.clear();
     }
 
-    // hakamelha ba3den
+
     public void play() throws GameException {
         if (selectedCard == null)
             throw new InvalidCardException("No card selected!");

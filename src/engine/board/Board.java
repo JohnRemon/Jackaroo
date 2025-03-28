@@ -5,7 +5,6 @@ import exception.*;
 import model.Colour;
 import model.player.Marble;
 
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -70,8 +69,24 @@ public class Board implements BoardManager{
     }
 
     @Override
+
     public void swap(Marble marble_1, Marble marble_2) throws IllegalSwapException {
 
+        validateSwap(marble_1, marble_2);
+
+        int position_1 = getPositionInPath(track, marble_1);
+        int position_2 = getPositionInPath(track, marble_2);
+
+        if (position_1 == -1 || position_2 == -1){
+        throw new IllegalSwapException("Both marbles must be on the track");
+        }
+
+        Cell cell_1 = track.get(position_1);
+        Cell cell_2 = track.get(position_2);
+
+        Marble temp = cell_1.getMarble();
+        cell_1.setMarble(cell_2.getMarble());
+        cell_2.setMarble(temp);
     }
 
     @Override
@@ -89,9 +104,33 @@ public class Board implements BoardManager{
 
     }
 
+    /*Returns all the marbles that are on the track
+     as well as marbles in the Safe Zone of the current player.*/
     @Override
     public ArrayList<Marble> getActionableMarbles() {
-        return null;
+        ArrayList<Marble> actionableMarbles = new ArrayList<>();
+        Colour activePlayerColour = gameManager.getActivePlayerColour();
+
+      for (Cell cell : track) {
+          Marble marble = cell.getMarble();
+          if(marble.getColour().equals(activePlayerColour)){
+              actionableMarbles.add(marble);
+          }
+      }
+
+      for (SafeZone safeZone : safeZones) {
+          if(safeZone.getColour().equals(activePlayerColour)){
+            for(Cell safeCell : safeZone.getCells()){
+                Marble marble = safeCell.getMarble();
+                if(marble != null){
+                    actionableMarbles.add(marble);
+                }
+
+            }
+          }
+      }
+
+      return actionableMarbles;
     }
 
 
@@ -144,6 +183,7 @@ public class Board implements BoardManager{
         }
         return -1;
     }
+
  /* Helper method for validate steps
  *  checks if the marble is in the safe zone and returns a boolean variable
   */
