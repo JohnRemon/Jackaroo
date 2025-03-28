@@ -172,7 +172,9 @@ public class Board implements BoardManager{
             throw new IllegalMovementException("The marble is out of the board");
         }
 
+        if ( isInSafeZone ){
 
+        }
 
 
 
