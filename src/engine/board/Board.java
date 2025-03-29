@@ -68,6 +68,7 @@ public class Board implements BoardManager{
     Zone color is not found.*/
     private ArrayList<Cell> getSafeZone(Colour colour){
         ArrayList<Cell> safeCells = new ArrayList<>();
+
         for(SafeZone safeZone : safeZones){
             if(safeZone.getColour() == colour){
                 safeCells.addAll(safeZone.getCells());
@@ -111,10 +112,41 @@ public class Board implements BoardManager{
         return -1;
     }
 
+ /* Helper method for validate steps
+ *  checks if the marble is in the safe zone and returns a boolean variable
+  */
+    private boolean isInSafeZone( Marble marble){
+        Colour activePlayerColour = gameManager.getActivePlayerColour();
+        for( SafeZone safeZone : safeZones){
+            if (safeZone.getColour() == activePlayerColour){
+                for ( Cell cell : safeZone.getCells()){
+                    if( cell.getMarble() == marble){
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    //
     private ArrayList<Cell> validateSteps(Marble marble, int steps) throws IllegalMovementException{
-        ArrayList<Cell> validCells = new ArrayList<>();
-        //TODO
-        return validCells;
+        ArrayList<Cell> path = new ArrayList<>();
+
+        int currentPosition = getPositionInPath(track,marble);
+        boolean isInSafeZone = isInSafeZone(marble);
+
+        if (currentPosition == -1 && !isInSafeZone) {
+            throw new IllegalMovementException("The marble is out of the board");
+        }
+
+        if ( isInSafeZone ){
+
+        }
+
+
+
+        return path;
     }
 
     private void validatePath(Marble marble, ArrayList<Cell> path, boolean destroy) throws IllegalMovementException{
@@ -164,9 +196,23 @@ public class Board implements BoardManager{
 
     }
 
-    @Override
     public void swap(Marble marble_1, Marble marble_2) throws IllegalSwapException {
 
+        validateSwap(marble_1, marble_2);
+
+        int position_1 = getPositionInPath(track, marble_1);
+        int position_2 = getPositionInPath(track, marble_2);
+
+        if (position_1 == -1 || position_2 == -1){
+        throw new IllegalSwapException("Both marbles must be on the track");
+        }
+
+        Cell cell_1 = track.get(position_1);
+        Cell cell_2 = track.get(position_2);
+
+        Marble temp = cell_1.getMarble();
+        cell_1.setMarble(cell_2.getMarble());
+        cell_2.setMarble(temp);
     }
 
     @Override

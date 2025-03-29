@@ -58,6 +58,7 @@ public class Player {
         selectedMarbles.clear();
     }
 
+
     public void play() throws GameException {
         if (selectedCard == null)
             throw new InvalidCardException("No card selected!");
