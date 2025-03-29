@@ -137,6 +137,7 @@ public class Board implements BoardManager{
         int pos = getPositionInPath(track, marble);
         ArrayList<Cell> safeZoneCopy = new ArrayList<>(Objects.requireNonNull(getSafeZone(marble.getColour())));
         boolean inSafeZone = false;
+
         for (Cell cell : safeZoneCopy)
             if (marble.equals(cell.getMarble())) {
                 inSafeZone = true;
