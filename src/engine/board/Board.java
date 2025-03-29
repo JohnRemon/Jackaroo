@@ -106,14 +106,7 @@ public class Board implements BoardManager{
     private int getPositionInPath(ArrayList<Cell> path, Marble marble)
     {
         for (int i = 0; i < path.size(); i++)
-            //check the track first
          if (marble.equals(path.get(i).getMarble())) return i;
-
-
-        //then check safeZone of the marble's colour
-        ArrayList<Cell> safeZoneCopy = new ArrayList<>(Objects.requireNonNull(getSafeZone(marble.getColour())));
-        for (int i = 0; i < safeZoneCopy.size(); i++)
-             if (marble.equals(safeZoneCopy.get(i).getMarble())) return i;
 
         return -1;
     }
@@ -142,9 +135,20 @@ public class Board implements BoardManager{
 
     private ArrayList<Cell> validateSteps(Marble marble, int steps) throws IllegalMovementException{
         int pos = getPositionInPath(track, marble);
-        if (pos == -1) throw new IllegalMovementException("Marble not on board!");
+        ArrayList<Cell> safeZoneCopy = new ArrayList<>(Objects.requireNonNull(getSafeZone(marble.getColour())));
+        boolean inSafeZone = false;
+        for (Cell cell : safeZoneCopy)
+            if (marble.equals(cell.getMarble())) {
+                inSafeZone = true;
+                break;
+            }
 
+        if (!inSafeZone && pos == -1) throw new IllegalMovementException("Marble cannot be moved!");
 
+        if (!inSafeZone) // -> if marble is on track
+            return getJourneyTrack(marble, steps, pos, safeZoneCopy);
+        else
+            return getJourneySafeZone(marble, steps, safeZoneCopy);
     }
 
     private void validatePath(Marble marble, ArrayList<Cell> path, boolean destroy) throws IllegalMovementException{
@@ -187,6 +191,44 @@ public class Board implements BoardManager{
             throw new InvalidMarbleException("The marble is on the safe zone or not on the track");
         }
 
+    }
+    // Helpers
+    private ArrayList<Cell> getJourneyTrack(Marble marble, int steps, int pos, ArrayList<Cell> safeZoneCopy) throws IllegalMovementException {
+        int entryPos = getEntryPosition(marble.getColour());
+        int stepsTillEntryPos = (entryPos - pos + 100) %100; // add 100 then modulos 100 in case the track loops.
+
+        if (steps > stepsTillEntryPos + safeZoneCopy.size()) throw new IllegalMovementException("Rank too high!");
+
+        ArrayList<Cell> journey = new ArrayList<>();
+        if (steps > stepsTillEntryPos && steps != 5)
+        {
+            int count = 0;
+            for (int i = 1; i <= steps; i++)
+            {
+                if (i <= stepsTillEntryPos)
+                    journey.add(track.get((pos +i)%100));
+                else
+                    journey.add(safeZoneCopy.get(count++));
+            }
+            return journey;
+        }
+
+        for (int i = 0; i < steps; i++)
+            journey.add(track.get((pos +i)%100));
+
+        return journey;
+    }
+    private ArrayList<Cell> getJourneySafeZone(Marble marble, int steps, ArrayList<Cell> safeZoneCopy) throws IllegalMovementException {
+        int pos;
+        pos = getPositionInPath(safeZoneCopy, marble);
+        if (steps < 0) throw new IllegalMovementException("Cannot move backwards in safe zone!");
+
+        if (pos + steps > safeZoneCopy.size() - 1) throw new IllegalMovementException("Rank too high!");
+
+        ArrayList<Cell> journey = new ArrayList<>();
+        for (int i = 0; i < steps; i++)
+            journey.add(safeZoneCopy.get(pos+i));
+        return journey;
     }
 
 }
