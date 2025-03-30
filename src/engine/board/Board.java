@@ -152,8 +152,28 @@ public class Board implements BoardManager{
             return getJourneySafeZone(marble, steps, safeZoneCopy);
     }
 
-    private void validatePath(Marble marble, ArrayList<Cell> path, boolean destroy) throws IllegalMovementException{
-        //TODO
+    private void validatePath(Marble marble, ArrayList<Cell> path, boolean destroy) throws IllegalMovementException {
+        int marblesEncountered = 0;
+
+        for (Cell cell : path)
+        {
+            Marble currentMarble = cell.getMarble();
+
+            if (currentMarble != null)
+            {
+                destroy = (cell.getCellType() == CellType.SAFE) ? false : destroy;
+                if (currentMarble.getColour() == marble.getColour() && !destroy) throw new IllegalMovementException("Cannot move past own marbles!");
+                if (marblesEncountered++ > 1 && !destroy) throw new IllegalMovementException("Path blockage!");
+
+                if (cell.getCellType() == CellType.ENTRY && !destroy && getPositionInPath(track, currentMarble) == getEntryPosition(currentMarble.getColour()))
+                    throw new IllegalMovementException("SafeZone entry blocked!");
+                if (cell.getCellType() == CellType.BASE && getPositionInPath(track, currentMarble) == getBasePosition(currentMarble.getColour()))
+                    throw new IllegalMovementException("Base Cell blockage!");
+            }
+
+
+
+        }
     }
 
     private void move(Marble marble, ArrayList<Cell> fullPath, boolean destroy)throws IllegalDestroyException{
@@ -198,7 +218,7 @@ public class Board implements BoardManager{
         int entryPos = getEntryPosition(marble.getColour());
         int stepsTillEntryPos = (entryPos - pos + 100) %100; // add 100 then modulos 100 in case the track loops.
 
-        if (steps > stepsTillEntryPos + safeZoneCopy.size()) throw new IllegalMovementException("Rank too high!");
+        if (steps > stepsTillEntryPos + 4) throw new IllegalMovementException("Rank too high!");
 
         ArrayList<Cell> journey = new ArrayList<>();
         if (steps > stepsTillEntryPos && steps != 5)
