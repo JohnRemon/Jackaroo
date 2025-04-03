@@ -14,18 +14,17 @@ public class Ace extends Standard{
         super(name, description, 1, suit, boardManager, gameManager);
     }
 
-    boolean validateMarbleSize(ArrayList<Marble> marbles)
+    public boolean validateMarbleSize(ArrayList<Marble> marbles)
     {
-        if (marbles.size() < 2) return true;
-        return false;
+        return marbles.size() < 2;
     }
 
 
     @Override
-    void act(ArrayList<Marble> marbles) throws ActionException, InvalidMarbleException {
+    public void act(ArrayList<Marble> marbles) throws ActionException, InvalidMarbleException {
         if (marbles.isEmpty())
-        {
-
-        }
+            gameManager.fieldMarble();
+        else
+            boardManager.moveBy(marbles.getFirst(), this.getRank(),false);
     }
 }

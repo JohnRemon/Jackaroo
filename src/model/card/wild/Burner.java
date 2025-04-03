@@ -2,6 +2,8 @@ package model.card.wild;
 
 import engine.GameManager;
 import engine.board.BoardManager;
+import exception.ActionException;
+import exception.InvalidMarbleException;
 import model.player.Marble;
 
 import java.util.ArrayList;
@@ -13,7 +15,12 @@ public class Burner extends Wild{
     }
 
     @Override
-    boolean validateMarbleColours(ArrayList<Marble> marbles){
+    public boolean validateMarbleColours(ArrayList<Marble> marbles){
         return !gameManager.getActivePlayerColour().equals(marbles.get(0).getColour());
+    }
+
+    @Override
+    public void act(ArrayList<Marble> marbles) throws ActionException, InvalidMarbleException {
+        gameManager.sendHome(marbles.getFirst());
     }
 }
