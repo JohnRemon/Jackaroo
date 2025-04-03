@@ -13,7 +13,7 @@ public class Jack extends Standard{
     }
 
     @Override
-    boolean validateMarbleColours(ArrayList<Marble> marbles) {
+    public boolean validateMarbleColours(ArrayList<Marble> marbles) {
         if (marbles.size() == 2) { //means you won't use as a standard card
             //checks that at theres a marble owned by you, and another that isnt.
             if (!marbles.get(0).getColour().equals(gameManager.getActivePlayerColour()) &&
