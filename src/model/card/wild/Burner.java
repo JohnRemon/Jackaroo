@@ -13,7 +13,7 @@ public class Burner extends Wild{
     }
 
     @Override
-    public boolean validateMarbleColours(ArrayList<Marble> marbles){
+    boolean validateMarbleColours(ArrayList<Marble> marbles){
         return !gameManager.getActivePlayerColour().equals(marbles.get(0).getColour());
     }
 }

@@ -12,7 +12,7 @@ public class Five extends Standard{
     }
 
     @Override
-    public boolean validateMarbleColours(ArrayList<Marble> marbles){
+    boolean validateMarbleColours(ArrayList<Marble> marbles){
         //5 accepts ANY marble colour
         return true;
     }

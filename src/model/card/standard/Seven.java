@@ -17,7 +17,7 @@ public class Seven extends Standard{
     }
 
     @Override
-    public boolean validateMarbleColours(ArrayList<Marble> marbles) {
+    boolean validateMarbleColours(ArrayList<Marble> marbles) {
         if (marbles.size() == 2) {
             // if seven is used to move 2 marbles, check if both are owned by player
             if (!marbles.get(0).getColour().equals(gameManager.getActivePlayerColour())) return false;

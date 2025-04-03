@@ -4,6 +4,7 @@ import engine.board.Board;
 import exception.CannotDiscardException;
 import exception.CannotFieldException;
 import exception.IllegalDestroyException;
+import exception.InvalidCardException;
 import model.Colour;
 import model.card.Card;
 import model.card.Deck;
@@ -70,6 +71,10 @@ public class Game implements GameManager {
 
     public ArrayList<Card> getFirePit() {
         return firePit;
+    }
+
+    void selectCard(Card card) throws InvalidCardException {
+        
     }
 
     @Override
