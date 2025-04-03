@@ -100,7 +100,7 @@ public class Game implements GameManager {
 
     public boolean canPlayTurn() {
         Player player = players.get(currentPlayerIndex);
-        return turn == player.getHand().size();
+        return !player.getHand().isEmpty();
     }
 
     public void playPlayerTurn() throws GameException {
