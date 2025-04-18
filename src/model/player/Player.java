@@ -33,14 +33,12 @@ public class Player {
         marbles.add(marble);
     }
 
-    public Marble getOneMarble(Marble marble){
-       if (marbles.contains(marble)){
-           return marbles.get(0);
-       } else return null;
+    public Marble getOneMarble(){
+        return this.marbles.isEmpty() ? null : this.marbles.getFirst();
     }
 
     public void selectCard(Card card) throws InvalidCardException {
-        if (hand.contains(card)){
+        if (this.hand.contains(card)){
             selectedCard = card;
         } else {
             throw new InvalidCardException("Card is not in hand");
@@ -48,7 +46,7 @@ public class Player {
     }
 
     public void selectMarble(Marble marble) throws InvalidMarbleException {
-        if (selectedMarbles.size() > 2)
+        if (selectedMarbles.size() >= 2)
             throw new InvalidMarbleException("Cannot select more than two marbles!");
         else selectedMarbles.add(marble);
     }
