@@ -62,7 +62,7 @@ public class Player {
             throw new InvalidCardException("No card selected!");
         if (!(selectedCard.validateMarbleColours(selectedMarbles) || selectedCard.validateMarbleSize(selectedMarbles)))
             throw new InvalidMarbleException("Invalid marbles!");
-        //TODO: make card do it's required functionallity after Mr. Sanad finishes his class
+        selectedCard.act(selectedMarbles);
     }
 
     public String getName() {

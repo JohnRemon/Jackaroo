@@ -9,7 +9,7 @@ import model.player.Marble;
 import java.util.ArrayList;
 
 
-public class Card {
+public abstract class Card {
     private final String name;
     private final String description;
     protected BoardManager boardManager;
@@ -27,10 +27,11 @@ public class Card {
         return marbles.size() == 1;
     }
     public boolean validateMarbleColours(ArrayList<Marble> marbles) {
+
         return gameManager.getActivePlayerColour().equals(marbles.get(0).getColour());
     }
-    //public abstract void act(ArrayList<Marble> marbles) throws ActionException, InvalidMarbleException;
 
+    public abstract void act(ArrayList<Marble> marbles) throws ActionException, InvalidMarbleException;
 
     public String getName() {
         return name;
