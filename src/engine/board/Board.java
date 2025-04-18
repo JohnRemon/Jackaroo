@@ -83,6 +83,9 @@ public class Board implements BoardManager{
     }
 
     private int getBasePosition(Colour colour) {
+        if (colour == null) {
+            return -1;
+        }
         switch (colour){
             case RED -> {return 0;}
             case BLUE -> {return 25;}
@@ -93,6 +96,9 @@ public class Board implements BoardManager{
     }
 
     private int getEntryPosition(Colour colour) {
+        if (colour == null) {
+            return -1;
+        }
         switch (colour){
             case RED -> {return 98;}
             case BLUE -> {return 23;}
@@ -132,7 +138,7 @@ public class Board implements BoardManager{
             if (currentMarble != null)
             {
                 destroy = (cell.getCellType() == CellType.SAFE) ? false : destroy;
-                if (currentMarble.getColour() == marble.getColour() && !destroy) throw new IllegalMovementException("Cannot move past own marbles!");
+                if (currentMarble.getColour() == gameManager.getActivePlayerColour() && !destroy) throw new IllegalMovementException("Cannot move past own marbles!");
                 if (++marblesEncountered > 1 && !destroy) throw new IllegalMovementException("Path blockage!");
 
                 if (cell.getCellType() == CellType.ENTRY && !destroy && getPositionInPath(track, currentMarble) == getEntryPosition(currentMarble.getColour()))
@@ -177,22 +183,25 @@ public class Board implements BoardManager{
         } else fullPath.getLast().setMarble(marble);
     }
 
-    private void validateSwap(Marble marble_1, Marble marble_2) throws IllegalSwapException{
-        if(getPositionInPath(track, marble_1) == -1 || getPositionInPath(track, marble_2) == -1)    //this needs to be OR since you can't swap with 2 marbles if one is in a safe zone
+    private void validateSwap(Marble marble_1, Marble marble_2) throws IllegalSwapException {
+        // Ensure at least one marble is on the track
+        if (getPositionInPath(track, marble_1) == -1 || getPositionInPath(track, marble_2) == -1) {
             throw new IllegalSwapException("One of the marbles is not on the track");
+        }
 
-        if(!marble_1.getColour().equals(gameManager.getActivePlayerColour()) && getBasePosition(marble_1.getColour()) != -1)
+        // Check if marble_1 is on the base
+        int marble1Position = getPositionInPath(track, marble_1);
+        if (!marble_1.getColour().equals(gameManager.getActivePlayerColour())
+                && marble1Position == getBasePosition(marble_1.getColour())) {
             throw new IllegalSwapException("The Opponent's marble is on the base");
+        }
 
-        if(!marble_2.getColour().equals(gameManager.getActivePlayerColour()) && getBasePosition(marble_2.getColour()) != -1)
+        // Check if marble_2 is on the base
+        int marble2Position = getPositionInPath(track, marble_2);
+        if (!marble_2.getColour().equals(gameManager.getActivePlayerColour())
+                && marble2Position == getBasePosition(marble_2.getColour())) {
             throw new IllegalSwapException("The Opponent's marble is on the base");
-
-        if (marble_1.getColour() == marble_2.getColour())
-            throw new IllegalSwapException("Cannot swap owned marbles!");
-        /*
-        Same Player Ownership: Marbles owned by the same player are ineligible for swapping.
-        Technically a completely useless check since for the player no difference was made, but you never know with the test cases.
-        */
+        }
     }
 
     private void validateDestroy(int positionInPath) throws IllegalDestroyException{
@@ -262,16 +271,19 @@ public class Board implements BoardManager{
 
     @Override
     public void sendToBase(Marble marble) throws CannotFieldException, IllegalDestroyException {
-        Cell target = track.get(getBasePosition(marble.getColour()));
-
-        Marble occupyingMarble = target.getMarble();
+        Cell baseTarget = track.get(getBasePosition(marble.getColour()));
+        Marble occupyingMarble = baseTarget.getMarble();
         if (occupyingMarble != null)
         {
-            validateFielding(target);
-            validateDestroy(getPositionInPath(track, occupyingMarble));
-            sendToBase(occupyingMarble); //potentially bad recursion but should be safe
-            target.setMarble(marble);
-        } else target.setMarble(marble);
+            validateFielding(baseTarget);
+            int occupyingMarblePosition = getBasePosition(occupyingMarble.getColour());
+            if (occupyingMarblePosition != -1) {
+                validateDestroy(occupyingMarblePosition);
+            }
+            destroyMarble(occupyingMarble);
+            track.get(getBasePosition(marble.getColour())).setMarble(marble);
+        } else
+            track.get(getBasePosition(marble.getColour())).setMarble(marble);
     }
 
     @Override
