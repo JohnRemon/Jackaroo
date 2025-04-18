@@ -263,7 +263,7 @@ public class Board implements BoardManager{
         ArrayList<Cell> safeZoneCopy = getSafeZone(marble.getColour());
         int posSafe = getPositionInPath(safeZoneCopy, marble);
 
-        validateSaving(posTrack, posSafe);
+        validateSaving(posSafe, posTrack);
 
         ArrayList<Cell> unoccupied = new ArrayList<>(4);
         for (Cell cell : getSafeZone(marble.getColour())) {
