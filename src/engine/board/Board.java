@@ -79,17 +79,14 @@ public class Board implements BoardManager{
         return null;
     }
 
-            if (currentMarble != null)
-            {
-                destroy = (cell.getCellType() == CellType.SAFE) ? false : destroy;
-                if (currentMarble.getColour() == marble.getColour() && !destroy) throw new IllegalMovementException("Cannot move past own marbles!");
-                if (++marblesEncountered > 1 && !destroy) throw new IllegalMovementException("Path blockage!");
-
-                if (cell.getCellType() == CellType.ENTRY && !destroy && getPositionInPath(track, currentMarble) == getEntryPosition(currentMarble.getColour()))
-                    throw new IllegalMovementException("SafeZone entry blocked!");
-                if (cell.getCellType() == CellType.BASE && getPositionInPath(track, currentMarble) == getBasePosition(currentMarble.getColour()))
-                    throw new IllegalMovementException("Base Cell blockage!");
+    private int getPositionInPath(ArrayList<Cell> path, Marble marble){
+        for(int i = 0; i < path.size(); i++){
+            if(path.get(i).getMarble() == marble){
+                return i;
             }
+        }
+        return -1;
+    }
 
 
     /*Returns the index of the Base cell position on
@@ -110,6 +107,7 @@ public class Board implements BoardManager{
                 return i;
             }
         }
+        return -1;
     }
 
 
