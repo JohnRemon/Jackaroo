@@ -264,7 +264,9 @@ public class Board implements BoardManager{
         int posSafe = getPositionInPath(safeZoneCopy, marble);
 
         validateSaving(posSafe, posTrack);
-
+        if (posTrack != -1) {
+            track.get(posTrack).setMarble(null);
+        }
         ArrayList<Cell> unoccupied = new ArrayList<>(4);
         for (Cell cell : getSafeZone(marble.getColour())) {
             if (cell.getMarble() == null)
