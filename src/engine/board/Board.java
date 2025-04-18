@@ -108,24 +108,7 @@ public class Board implements BoardManager{
         }
     }
 
-    private ArrayList<Cell> validateSteps(Marble marble, int steps) throws IllegalMovementException{
-        int pos = getPositionInPath(track, marble);
-        ArrayList<Cell> safeZoneCopy = new ArrayList<>(Objects.requireNonNull(getSafeZone(marble.getColour())));
-        boolean inSafeZone = false;
-
-        for (Cell cell : safeZoneCopy)
-            if (marble.equals(cell.getMarble())) {
-                inSafeZone = true;
-                break;
-            }
-
-        if (!inSafeZone && pos == -1) throw new IllegalMovementException("Marble cannot be moved!");
-
-        if (!inSafeZone) // -> if marble is on track
-            return getJourneyTrack(marble, steps, pos, safeZoneCopy);
-        else
-            return getJourneySafeZone(marble, steps, safeZoneCopy);
-    }
+    //validateSteps start
 
     private void validatePath(Marble marble, ArrayList<Cell> path, boolean destroy) throws IllegalMovementException {
         int marblesEncountered = 0;
@@ -324,42 +307,88 @@ public class Board implements BoardManager{
 
 
 
-    // Helpers
-    private ArrayList<Cell> getJourneyTrack(Marble marble, int steps, int pos, ArrayList<Cell> safeZoneCopy) throws IllegalMovementException {
-        int entryPos = getEntryPosition(marble.getColour());
-        int stepsTillEntryPos = (entryPos - pos + 100) %100; // add 100 then modulos 100 in case the track loops.
+    private ArrayList<Cell> validateSteps (Marble marble, int steps) throws IllegalMovementException
+    {
+        //marble shouldn't be null anyways
 
-        if (steps > stepsTillEntryPos + 4) throw new IllegalMovementException("Rank too high!");
-
+        int currentPosition = getPositionInPath(track, marble);
+        boolean onTrack = true;
         ArrayList<Cell> journey = new ArrayList<>();
-        if (steps > stepsTillEntryPos && steps != 5)
+        ArrayList<Cell> safeZoneOfPlayer = getSafeZone(gameManager.getActivePlayerColour());
+        if (currentPosition == -1)
         {
-            int count = 0;
-            for (int i = 0; i <= steps; i++)
+            currentPosition = getPositionInPath(safeZoneOfPlayer, marble);
+            if (currentPosition == -1) throw new IllegalMovementException("Marble is not on board");
+            onTrack = false;
+        }
+        if (onTrack)
+        {
+            int stepsTillEntry = getEntryPosition(marble.getColour())-currentPosition;
+
+            if (steps == 5) //using 5 card to control a random marble
             {
-                if (i <= stepsTillEntryPos)
-                    journey.add(track.get((pos +i)%100));
-                else
-                    journey.add(safeZoneCopy.get(count++));
+                for (int i = 0; i < steps+1; i++)
+                {
+                    Marble occupyingMarble = track.get(getPositionInPath(track, marble)).getMarble();
+                    if (occupyingMarble != null)
+                    {
+                        if (occupyingMarble.getColour() == gameManager.getActivePlayerColour())
+                            throw new IllegalMovementException("Cannot bypass your own marbles using the 5 card");
+                    }
+                    journey.add(track.get((currentPosition + i) %100));
+                }
+                return journey;
+            }
+
+            if (steps != -4)
+            {
+                return getForwardJourney(steps, stepsTillEntry, journey, currentPosition, safeZoneOfPlayer);
+            } else //using -4 card
+            {
+                for (int i = 1; i <= 4; i++) {
+                    journey.add(track.get((currentPosition - i + 100) % 100));
+                } //move backwards, with wrapping
+                return journey;
+            }
+        }
+        else //safezone movement
+        {
+            if (steps == -4 || steps + (currentPosition+1) > 4)
+                throw new IllegalMovementException("Invalid movement in safezone");
+
+            for (int i = 0; i < steps+1; i++)
+            {
+                journey.add(safeZoneOfPlayer.get(i+currentPosition));
+            }
+            return journey;
+        }
+    }
+
+    private ArrayList<Cell> getForwardJourney(int steps, int stepsTillEntry, ArrayList<Cell> journey, int currentPosition, ArrayList<Cell> safeZoneOfPlayer) throws IllegalMovementException {
+        if ((steps - (stepsTillEntry)+1) > safeZoneOfPlayer.size())
+            throw new IllegalMovementException("Rank too high");
+
+        if (stepsTillEntry < 0) //this is the case where marble moves normally on track, no safezone entry
+        {
+            for (int i = 0; i < steps+1; i++)
+            {
+                journey.add(track.get((i+ currentPosition)%100));
             }
             return journey;
         }
 
-        for (int i = 0; i <= steps; i++)
-            journey.add(track.get((pos +i)%100));
-
-        return journey;
-    }
-    private ArrayList<Cell> getJourneySafeZone(Marble marble, int steps, ArrayList<Cell> safeZoneCopy) throws IllegalMovementException {
-
-        int pos = getPositionInPath(safeZoneCopy, marble);
-        if (steps < 0) throw new IllegalMovementException("Cannot move backwards in safe zone!");
-
-        if (pos + steps > safeZoneCopy.size() - 1) throw new IllegalMovementException("Rank too high!");
-
-        ArrayList<Cell> journey = new ArrayList<>();
-        for (int i = 0; i <= steps; i++)
-            journey.add(safeZoneCopy.get(pos+i));
+        int counter = 0; //used to count how many safezone cells passed if it enters safe zone
+        for (int i = 0; i < steps+1; i++) //case where marble enters a safezone from track
+        {
+           if (i <= stepsTillEntry)
+                journey.add(track.get((i+ currentPosition)%100));
+           else //entered safezone
+           {
+               journey.add(safeZoneOfPlayer.get(counter++));
+           }
+        }
+        if (counter >= 4)
+           throw new IllegalMovementException("Rank played was too high");
         return journey;
     }
 }
