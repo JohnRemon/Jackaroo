@@ -363,11 +363,7 @@ public class Board implements BoardManager{
                 break;
             }
         }
-        try {
-            sendToBase(marble);
-        } catch (CannotFieldException e) {
-            throw new IllegalDestroyException("Failed to return marble home");
-        }
+        gameManager.sendHome(marble);
     }
 
     @Override
