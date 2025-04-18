@@ -83,25 +83,20 @@ public class Board implements BoardManager{
     }
 
     private int getBasePosition(Colour colour) {
-        switch (colour)
-        {
-            case Colour.RED -> {return 0;}
-            case Colour.GREEN -> {return 25;}
-            case Colour.BLUE -> {return 50;}
-            case Colour.YELLOW -> {return 75;}
-            default -> {return -1;}
+        for(int i = 0; i < track.size(); i++) {
+            if (track.get(i).getCellType() == CellType.BASE && track.get(i).getMarble() != null && track.get(i).getMarble().getColour() == colour)
+                return i;
         }
+        return - 1;
     }
 
     private int getEntryPosition(Colour colour) {
-        switch (colour)
-        {
-            case Colour.RED -> {return 98;}
-            case Colour.GREEN -> {return 23;}
-            case Colour.BLUE -> {return 48;}
-            case Colour.YELLOW -> {return 73;}
-            default -> {return -1;}
+        for(int i = 0; i < track.size(); i++) {
+            Cell cell = track.get(i);
+            if (cell.getCellType() == CellType.ENTRY && track.get(i).getMarble() != null && cell.getMarble().getColour() == colour)
+                return i;
         }
+        return -1;
     }
 
     private ArrayList<Cell> validateSteps(Marble marble, int steps) throws IllegalMovementException{

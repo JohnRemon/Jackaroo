@@ -164,6 +164,7 @@ public class Game implements GameManager {
         if(currentPlayer.getMarbles().isEmpty()){
             throw new CannotFieldException("There is no marble to field");
         }else{
+            //get marble to field
             Marble marble = currentPlayer.getMarbles().get(0);
             //Send the marble to the board
             board.sendToBase(marble);
