@@ -63,7 +63,7 @@ public class Player {
     public void play() throws GameException {
         if (selectedCard == null)
             throw new InvalidCardException("No card selected!");
-        if (!(selectedCard.validateMarbleColours(selectedMarbles) || selectedCard.validateMarbleSize(selectedMarbles)))
+        if (!selectedCard.validateMarbleColours(selectedMarbles) || !selectedCard.validateMarbleSize(selectedMarbles))
             throw new InvalidMarbleException("Invalid marbles!");
         selectedCard.act(selectedMarbles);
     }

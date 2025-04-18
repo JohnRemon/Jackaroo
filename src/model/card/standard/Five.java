@@ -20,6 +20,6 @@ public class Five extends Standard{
         return true;
     }
     public void act(ArrayList<Marble> marbles) throws ActionException, InvalidMarbleException{
-        boardManager.moveBy(marbles.getFirst(), this.getRank(), false);
+        boardManager.moveBy(marbles.getFirst(), 5, false);
     }
 }
