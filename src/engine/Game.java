@@ -102,7 +102,7 @@ public class Game implements GameManager {
 
     public boolean canPlayTurn() {
         Player player = players.get(currentPlayerIndex);
-        return !player.getHand().isEmpty();
+        return  player.getHand().isEmpty();
     }
 
     public void playPlayerTurn() throws GameException {
@@ -159,14 +159,12 @@ public class Game implements GameManager {
     public void fieldMarble() throws CannotFieldException, IllegalDestroyException {
         Player currentPlayer = players.get(currentPlayerIndex);
 
-        //get the marble to field
-
-        Marble marble = currentPlayer.getMarbles().get(0);
-
         //check if there is a marble to field
-        if(marble == null){
+        if(currentPlayer.getMarbles().isEmpty()){
             throw new CannotFieldException("There is no marble to field");
         }else{
+            //get marble to field
+            Marble marble = currentPlayer.getMarbles().get(0);
             //Send the marble to the board
             board.sendToBase(marble);
             currentPlayer.getMarbles().remove(marble);

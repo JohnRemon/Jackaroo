@@ -103,25 +103,25 @@ public class Board implements BoardManager{
             default -> {return -1;}
         }
     }
-
-    private ArrayList<Cell> validateSteps(Marble marble, int steps) throws IllegalMovementException{
-        int pos = getPositionInPath(track, marble);
-        ArrayList<Cell> safeZoneCopy = new ArrayList<>(Objects.requireNonNull(getSafeZone(marble.getColour())));
-        boolean inSafeZone = false;
-
-        for (Cell cell : safeZoneCopy)
-            if (marble.equals(cell.getMarble())) {
-                inSafeZone = true;
-                break;
+    private boolean isInSafeZone( Marble marble){
+        Colour activePlayerColour = gameManager.getActivePlayerColour();
+        for( SafeZone safeZone : safeZones){
+            if (safeZone.getColour() == activePlayerColour){
+                for ( Cell cell : safeZone.getCells()){
+                    if( cell.getMarble() == marble){
+                        return true;
+                    }
+                }
             }
-
-        if (!inSafeZone && pos == -1) throw new IllegalMovementException("Marble cannot be moved!");
-
-        if (!inSafeZone) // -> if marble is on track
-            return getJourneyTrack(marble, steps, pos, safeZoneCopy);
-        else
-            return getJourneySafeZone(marble, steps, safeZoneCopy);
+        }
+        return false;
     }
+
+    private ArrayList<Cell> validateSteps (Marble marble, int steps) throws IllegalMovementException{
+
+        return new ArrayList<>();
+    }
+
 
     private void validatePath(Marble marble, ArrayList<Cell> path, boolean destroy) throws IllegalMovementException {
         int marblesEncountered = 0;
@@ -241,16 +241,18 @@ public class Board implements BoardManager{
     @Override
     public void sendToBase(Marble marble) throws CannotFieldException, IllegalDestroyException {
         Cell target = track.get(getBasePosition(marble.getColour()));
-
         Marble occupyingMarble = target.getMarble();
-        if (occupyingMarble != null)
-        {
-            validateFielding(target);
+
+        if (occupyingMarble != null) {
+            validateFielding(target); // Throws if same colour as active player
             validateDestroy(getPositionInPath(track, occupyingMarble));
-            sendToBase(occupyingMarble); //potentially bad recursion but should be safe
-            target.setMarble(marble);
-        } else target.setMarble(marble);
+            sendToBase(occupyingMarble);
+        }
+
+        target.setMarble(marble);
     }
+
+
 
     @Override
     public void sendToSafe(Marble marble) throws InvalidMarbleException {
