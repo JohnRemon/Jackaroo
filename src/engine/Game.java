@@ -1,6 +1,7 @@
 package engine;
 
 import engine.board.Board;
+
 import engine.board.Cell;
 import engine.board.SafeZone;
 import exception.*;
@@ -74,6 +75,7 @@ public class Game implements GameManager {
     public ArrayList<Card> getFirePit() {
         return firePit;
     }
+
 
     public void selectCard(Card card) throws InvalidCardException {
         Player player = players.get(currentPlayerIndex);
@@ -158,6 +160,7 @@ public class Game implements GameManager {
         Player currentPlayer = players.get(currentPlayerIndex);
 
         //get the marble to field
+
         Marble marble = currentPlayer.getMarbles().get(0);
 
         //check if there is a marble to field

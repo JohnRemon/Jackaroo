@@ -2,6 +2,8 @@ package model.card.standard;
 
 import engine.GameManager;
 import engine.board.BoardManager;
+import exception.ActionException;
+import exception.InvalidMarbleException;
 import model.player.Marble;
 
 import java.util.ArrayList;
@@ -25,5 +27,14 @@ public class Seven extends Standard{
         }
         //otherwise check if the lone marble is owned by player
         return marbles.get(0).getColour().equals(gameManager.getActivePlayerColour());
+    }
+
+    public void act(ArrayList<Marble> marbles) throws ActionException, InvalidMarbleException {
+        if (marbles.size() == 2) {
+            int splitDistance = getBoardManager().getSplitDistance();
+
+            boardManager.moveBy(marbles.getFirst(), splitDistance, false);
+            boardManager.moveBy(marbles.getLast(), 7 - splitDistance, false);
+        } else super.act(marbles);
     }
 }

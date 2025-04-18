@@ -20,6 +20,12 @@ public class Standard extends Card {
         this.suit = suit;
     }
 
+    public void act(ArrayList<Marble> marbles) throws ActionException, InvalidMarbleException {
+
+        for (Marble marble : marbles)
+            boardManager.moveBy(marble, this.getRank(), false);
+    }
+
     public int getRank() {
         return rank;
     }

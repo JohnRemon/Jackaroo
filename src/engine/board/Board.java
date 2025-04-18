@@ -63,6 +63,7 @@ public class Board implements BoardManager{
         track.get(randomCell).setTrap(true);
     }
 
+
     /*Returns an ArrayList of cells of a
     certain Safe Zone from the list of safeZones given the target colour, defaulting to null if Safe
     Zone color is not found.*/
@@ -78,18 +79,18 @@ public class Board implements BoardManager{
         return null;
     }
 
+            if (currentMarble != null)
+            {
+                destroy = (cell.getCellType() == CellType.SAFE) ? false : destroy;
+                if (currentMarble.getColour() == marble.getColour() && !destroy) throw new IllegalMovementException("Cannot move past own marbles!");
+                if (++marblesEncountered > 1 && !destroy) throw new IllegalMovementException("Path blockage!");
 
-    /*Return the
-    index of a marble’s position on a given path of cells, which could be the track or a Safe Zone,
-    defaulting to -1 if the marble is not found on the given path.*/
-    private int getPositionInPath(ArrayList<Cell> path, Marble marble){
-        for(int i = 0; i < path.size(); i++){
-            if(path.get(i).getMarble() == marble){
-                return i;
+                if (cell.getCellType() == CellType.ENTRY && !destroy && getPositionInPath(track, currentMarble) == getEntryPosition(currentMarble.getColour()))
+                    throw new IllegalMovementException("SafeZone entry blocked!");
+                if (cell.getCellType() == CellType.BASE && getPositionInPath(track, currentMarble) == getBasePosition(currentMarble.getColour()))
+                    throw new IllegalMovementException("Base Cell blockage!");
             }
-        }
-        return -1;
-    }
+
 
     /*Returns the index of the Base cell position on
     track for a given colour, defaulting to -1 if the Base is not found due to an invalid colour.*/
@@ -109,8 +110,8 @@ public class Board implements BoardManager{
                 return i;
             }
         }
-        return -1;
     }
+
 
  /* Helper method for validate steps
  *  checks if the marble is in the safe zone and returns a boolean variable
@@ -290,30 +291,34 @@ public class Board implements BoardManager{
     }
 
     private void validateSwap(Marble marble_1, Marble marble_2) throws IllegalSwapException{
-        if(getPositionInPath(track, marble_1) == -1 && getPositionInPath(track, marble_2) == -1){
-            throw new IllegalSwapException("Both marbles are not on the track");
-        }
-        if(!marble_1.getColour().equals(gameManager.getActivePlayerColour()) && getBasePosition(marble_1.getColour()) != -1){
+        if(getPositionInPath(track, marble_1) == -1 || getPositionInPath(track, marble_2) == -1)    //this needs to be OR since you can't swap with 2 marbles if one is in a safe zone
+            throw new IllegalSwapException("One of the marbles is not on the track");
+
+        if(!marble_1.getColour().equals(gameManager.getActivePlayerColour()) && getBasePosition(marble_1.getColour()) != -1)
             throw new IllegalSwapException("The Opponent's marble is on the base");
-        }
-        if(!marble_2.getColour().equals(gameManager.getActivePlayerColour()) && getBasePosition(marble_2.getColour()) != -1){
+
+        if(!marble_2.getColour().equals(gameManager.getActivePlayerColour()) && getBasePosition(marble_2.getColour()) != -1)
             throw new IllegalSwapException("The Opponent's marble is on the base");
-        }
+
+        if (marble_1.getColour() == marble_2.getColour())
+            throw new IllegalSwapException("Cannot swap owned marbles!");
+        /*
+        Same Player Ownership: Marbles owned by the same player are ineligible for swapping.
+        Technically a completely useless check since for the player no difference was made, but you never know with the test cases.
+        */
     }
 
     private void validateDestroy(int positionInPath) throws IllegalDestroyException{
-        if(positionInPath == -1){
+        if(positionInPath == -1)
             throw new IllegalDestroyException("The marble is not on the track");
-        }
-        if(track.get(positionInPath).getCellType() == CellType.BASE){
+
+        if(track.get(positionInPath).getCellType() == CellType.BASE)
             throw new IllegalDestroyException("The marble is on the base");
-        }
     }
 
     private void validateFielding(Cell occupiedBaseCell) throws CannotFieldException{
-        if(occupiedBaseCell.getMarble().getColour() == gameManager.getActivePlayerColour()){
+        if(occupiedBaseCell.getMarble().getColour() == gameManager.getActivePlayerColour())
             throw new CannotFieldException("The base cell is occupied by the same colour");
-        }
     }
 
     private void validateSaving(int positionInSafeZone, int positionOnTrack) throws InvalidMarbleException{
