@@ -148,28 +148,31 @@ public class Board implements BoardManager{
 
     private void move(Marble marble, ArrayList<Cell> fullPath, boolean destroy)throws IllegalDestroyException{
 
-        int posTrack = getPositionInPath(track, marble), posSafe = -1;
+        int posTrack = getPositionInPath(track, marble), posSafe;
 
+        //remove marble from current cell
         if (posTrack == -1)
         {
-            posSafe = getPositionInPath(Objects.requireNonNull(getSafeZone(marble.getColour())), marble);
-            if (posSafe == -1) throw new IllegalDestroyException("Marble cannot be destroyed!");
-            Objects.requireNonNull(getSafeZone(marble.getColour())).get(posSafe).setMarble(null);
-        } else track.get(posTrack).setMarble(null);
+            posSafe = getPositionInPath(getSafeZone(marble.getColour()), marble);
+            if (posSafe == -1)
+                throw new IllegalDestroyException("Marble cannot be destroyed!");
+            getSafeZone(marble.getColour()).get(posSafe).setMarble(null);
+        } else
+            track.get(posTrack).setMarble(null);
 
-
-        for (Cell currentCell : fullPath) {
-            if (currentCell.getMarble() != null && destroy) {
-                validateDestroy(getPositionInPath(track, currentCell.getMarble()));
-                //TODO: send somewhere
-                currentCell.setMarble(null);
+        //marble destroying
+        for (Cell cell : fullPath) {
+            if (cell.getMarble() != null && destroy) {
+                validateDestroy(getPositionInPath(track, cell.getMarble()));
+                cell.setMarble(null);
             }
         }
 
+        //if the target cell is a trap, we need to destroy the marble
         if (fullPath.getLast().isTrap())
         {
+            fullPath.getLast().setMarble(null);
             fullPath.getLast().setTrap(false);
-            //TODO: send somewhere
             assignTrapCell();
         } else fullPath.getLast().setMarble(marble);
     }
@@ -221,19 +224,40 @@ public class Board implements BoardManager{
     @Override
     public void swap(Marble marble_1, Marble marble_2) throws IllegalSwapException {
         validateSwap(marble_1, marble_2);
-        Marble temp = marble_2;
-        marble_2 = marble_1;
-        marble_1 = temp;
-        // TODO: verify that this is working correctly and not just doing pointer bullshit (i dont have internet rn)
+
+        int position_1 = getPositionInPath(track, marble_1);
+        int position_2 = getPositionInPath(track, marble_2);
+
+        if (position_1 == -1 || position_2 == -1){
+            throw new IllegalSwapException("Both marbles must be on the track");
+        }
+
+        Cell cell_1 = track.get(position_1);
+        Cell cell_2 = track.get(position_2);
+
+        Marble temp = cell_1.getMarble();
+        cell_1.setMarble(cell_2.getMarble());
+        cell_2.setMarble(temp);
     }
 
     @Override
     public void destroyMarble(Marble marble) throws IllegalDestroyException {
-        Cell target = track.get(getPositionInPath(track, marble));
-        validateDestroy(getPositionInPath(track, marble));
-        //TODO: should i be validating fielding of the destroyed marble? because the method signature suggests i shoudlnt
-        target.setMarble(null);
+        if (!marble.getColour().equals(gameManager.getActivePlayerColour())) {
+            int pos = getPositionInPath(track, marble);
+            validateDestroy(pos);
+        }
 
+        for (Cell cell : track) {
+            if (cell.getMarble() == marble) {
+                cell.setMarble(null);
+                break;
+            }
+        }
+        try {
+            sendToBase(marble);
+        } catch (CannotFieldException e) {
+            throw new IllegalDestroyException("Failed to return marble home");
+        }
     }
 
     @Override

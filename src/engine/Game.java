@@ -113,11 +113,14 @@ public class Game implements GameManager {
 
     public void endPlayerTurn() {
         Player player = players.get(currentPlayerIndex);
+
         //remove the selected card and add it to the player
-        firePit.add(player.getSelectedCard());
         player.getHand().remove(player.getSelectedCard());
+        firePit.add(player.getSelectedCard());
+
         //deselect everything
         player.deselectAll();
+
         //move onto the next player
         currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
         //if player 4 then we start a new turn
@@ -125,13 +128,15 @@ public class Game implements GameManager {
             turn++;
         }
         //start a new round
-        if(turn % 4 == 0){
+        if(turn % players.size() == 0){
             //reset the turn
             turn = 0;
             //refill players' hands
+
             for(Player p : players){
                 p.setHand(drawCards());
             }
+
             //refill the cardPool
             if(getPoolSize() < 4){
                 refillPool(firePit);
@@ -211,7 +216,7 @@ public class Game implements GameManager {
 
     @Override
     public Colour getNextPlayerColour() {
-        return players.get(currentPlayerIndex + 1).getColour();
+        return players.get((currentPlayerIndex + 1) % players.size()).getColour();
     }
 
 
