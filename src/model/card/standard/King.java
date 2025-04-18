@@ -18,4 +18,9 @@ public class King extends Standard {
         else
             boardManager.moveBy(marbles.getFirst(), 13, true);
     }
+
+    @Override
+    public boolean validateMarbleSize(ArrayList<Marble> marbles) {
+        return marbles.size() <= 1;
+    }
 }
