@@ -30,7 +30,6 @@ public abstract class Card {
 
         return gameManager.getActivePlayerColour().equals(marbles.get(0).getColour());
     }
-    // TODO: abstract void act(ArrayList<Marble> marbles) throws ActionException, InvalidMarbleException;
 
     public abstract void act(ArrayList<Marble> marbles) throws ActionException, InvalidMarbleException;
 
