@@ -15,6 +15,7 @@ public class Seven extends Standard{
 
     @Override
     public boolean validateMarbleSize(ArrayList<Marble> marbles){
+        if (marbles.isEmpty()) return false;
         return marbles.size() == 2 || marbles.size() == 1;
     }
 
@@ -26,10 +27,11 @@ public class Seven extends Standard{
             if (!marbles.get(0).getColour().equals(marbles.get(1).getColour())) return false;
         }
         //otherwise check if the lone marble is owned by player
-        return marbles.get(0).getColour().equals(gameManager.getActivePlayerColour());
+        return super.validateMarbleColours(marbles);
     }
 
     public void act(ArrayList<Marble> marbles) throws ActionException, InvalidMarbleException {
+        if (!validateMarbleColours(marbles) || !validateMarbleSize(marbles)) throw new InvalidMarbleException("Invalid Marble selection");
         if (marbles.size() == 2) {
             int splitDistance = getBoardManager().getSplitDistance();
 
