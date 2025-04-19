@@ -194,18 +194,6 @@ public class Board implements BoardManager{
         // if in safezone or not on board
         if (positionInPath < 0)
             throw new IllegalDestroyException("The marble is not on the track");
-
-        Cell occupyingCell = track.get(positionInPath);
-
-        if (occupyingCell.getMarble() == null)
-            throw new IllegalDestroyException("No marble to destroy");
-
-        if (getBasePosition(occupyingCell.getMarble().getColour()) != positionInPath)
-            throw new IllegalDestroyException("Marble is safe in its base cell");
-
-        if (occupyingCell.getMarble().getColour() == gameManager.getActivePlayerColour()) {
-            throw new IllegalDestroyException("Cannot destroy your own marble");
-        }
     }
 
     private void validateFielding(Cell occupiedBaseCell) throws CannotFieldException{
@@ -251,13 +239,6 @@ public class Board implements BoardManager{
             int pos = getPositionInPath(track, marble);
             validateDestroy(pos);
         }
-
-//        for (Cell cell : track) {
-//            if (cell.getMarble() == marble) {
-//                cell.setMarble(null);
-//                break;
-//            }
-//        }
 
         Cell occupiedCell = track.get(getPositionInPath(track,marble));
         occupiedCell.setMarble(null);
