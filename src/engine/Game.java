@@ -113,14 +113,19 @@ public class Game implements GameManager {
 
     public void endPlayerTurn() {
         Player player = players.get(currentPlayerIndex);
-        //remove the selected card and add it to the player
-        firePit.add(player.getSelectedCard());
-        player.getHand().remove(player.getSelectedCard());
+
+        //remove the selected card and add it to the firepit
+        if (player.getHand() != null && !player.getHand().isEmpty()) {
+            firePit.add(player.getSelectedCard());
+            player.getHand().remove(player.getSelectedCard());
+        }
+
         //deselect everything
         player.deselectAll();
 
         //move onto the next player
         currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+
         //if player 4 then we start a new turn
         if(currentPlayerIndex == 0){
             turn++;
@@ -129,15 +134,15 @@ public class Game implements GameManager {
         if(turn % players.size() == 0){
             //reset the turn
             turn = 0;
-            //refill players' hands
 
+            //refill players' hands
             for(Player p : players){
-                p.setHand(drawCards());
                 //refill the cardPool
                 if(getPoolSize() < 4){
                     refillPool(firePit);
                     firePit.clear();
                 }
+                p.setHand(drawCards());
             }
         }
     }
@@ -156,7 +161,6 @@ public class Game implements GameManager {
     public void sendHome(Marble marble) {
         Player currentPlayer = players.get(currentPlayerIndex);
         currentPlayer.regainMarble(marble);
-
     }
 
     @Override
@@ -168,7 +172,7 @@ public class Game implements GameManager {
             throw new CannotFieldException("There is no marble to field");
         }else{
             //get marble to field
-            Marble marble = currentPlayer.getOneMarble();
+            Marble marble = currentPlayer.getMarbles().get(0);
             //Send the marble to the board
             board.sendToBase(marble);
             currentPlayer.getMarbles().remove(marble);
@@ -188,9 +192,11 @@ public class Game implements GameManager {
         if (hand.isEmpty()) {
             throw new CannotDiscardException(player.getName() + " has an empty hand");
         }
-        int rand = (int) (Math.random() * hand.size());
-        Card randCard = player.getHand().get(rand);
-        player.getHand().remove(randCard);
+        int handSize = hand.size();
+        int rand = (int) (Math.random() * handSize);
+        Card randCard = hand.get(rand);
+        firePit.add(randCard);
+        hand.remove(randCard);
     }
 
     @Override

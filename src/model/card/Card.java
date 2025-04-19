@@ -27,7 +27,7 @@ public abstract class Card {
         return marbles.size() == 1;
     }
     public boolean validateMarbleColours(ArrayList<Marble> marbles) {
-
+        if (!validateMarbleSize(marbles)) return false;
         return gameManager.getActivePlayerColour().equals(marbles.get(0).getColour());
     }
 
