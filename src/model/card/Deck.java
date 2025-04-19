@@ -75,7 +75,7 @@ public class Deck {
     Collections.shuffle(cardsPool);
     ArrayList<Card> cards = new ArrayList<>();
     // Assuming that if cardsPool is less than 4, it wants the current cards still
-    for(int i = 0; i < 4 && !cardsPool.isEmpty(); i++) {
+    for(int i = 0; i < 4 ; i++) {
         cards.add(cardsPool.remove(0));
     }
     return cards;

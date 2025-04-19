@@ -20,6 +20,7 @@ public class Five extends Standard{
         return true;
     }
     public void act(ArrayList<Marble> marbles) throws ActionException, InvalidMarbleException{
-        boardManager.moveBy(marbles.getFirst(), 5, false);
+        if (!super.validateMarbleSize(marbles)) throw new InvalidMarbleException("Invalid marble size");
+        boardManager.moveBy(marbles.get(0), 5, false);
     }
 }

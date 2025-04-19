@@ -4,6 +4,7 @@ import engine.GameManager;
 import exception.*;
 import model.Colour;
 import model.player.Marble;
+import model.player.Player;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -239,14 +240,17 @@ public class Board implements BoardManager{
             validateDestroy(pos);
         }
 
-        for (Cell cell : track) {
-            if (cell.getMarble() == marble) {
-                cell.setMarble(null);
-                break;
-            }
-        }
+//        for (Cell cell : track) {
+//            if (cell.getMarble() == marble) {
+//                cell.setMarble(null);
+//                break;
+//            }
+//        }
+        Cell occupiedCell = track.get(getPositionInPath(track,marble));
+        occupiedCell.setMarble(null);
         try {
             sendToBase(marble);
+            gameManager.sendHome(marble);
         } catch (CannotFieldException e) {
             throw new IllegalDestroyException("Failed to return marble home");
         }
