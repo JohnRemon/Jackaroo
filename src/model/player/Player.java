@@ -85,7 +85,7 @@ public class Player {
     }
 
     public ArrayList<Marble> getMarbles() {
-        return new ArrayList<>(marbles);
+        return marbles;
     }
 
     public Card getSelectedCard() {
