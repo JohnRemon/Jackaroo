@@ -159,8 +159,12 @@ public class Game implements GameManager {
 
     @Override
     public void sendHome(Marble marble) {
-        Player currentPlayer = players.get(currentPlayerIndex);
-        currentPlayer.regainMarble(marble);
+        for(Player player : players){
+            if(player.getColour().equals(marble.getColour())){
+                player.regainMarble(marble);
+                break;
+            }
+        }
     }
 
     @Override

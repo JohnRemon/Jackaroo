@@ -164,6 +164,7 @@ public class Board implements BoardManager{
         //if the target cell is a trap, we need to destroy the marble
         if (fullPath.getLast().isTrap())
         {
+            destroyMarble(fullPath.getLast().getMarble());
             fullPath.getLast().setTrap(false);
             assignTrapCell();
         } else fullPath.getLast().setMarble(marble);
@@ -191,9 +192,13 @@ public class Board implements BoardManager{
     }
 
     private void validateDestroy(int positionInPath) throws IllegalDestroyException{
-        // if in safezone or not on board
         if (positionInPath < 0)
             throw new IllegalDestroyException("The marble is not on the track");
+
+        Cell cell = track.get(positionInPath);
+        if (cell.getCellType() == CellType.BASE && cell.getMarble() != null && !cell.getMarble().getColour().equals(gameManager.getActivePlayerColour())) {
+            throw new IllegalDestroyException("Cannot destroy a marble in the Base Cell");
+        }
     }
 
     private void validateFielding(Cell occupiedBaseCell) throws CannotFieldException{
@@ -235,19 +240,13 @@ public class Board implements BoardManager{
 
     @Override
     public void destroyMarble(Marble marble) throws IllegalDestroyException {
+        int posTrack = getPositionInPath(track, marble);
         if (!marble.getColour().equals(gameManager.getActivePlayerColour())) {
-            int pos = getPositionInPath(track, marble);
-            validateDestroy(pos);
+            validateDestroy(posTrack);
         }
-
-        Cell occupiedCell = track.get(getPositionInPath(track,marble));
+        Cell occupiedCell = track.get(posTrack);
         occupiedCell.setMarble(null);
-        try {
-            sendToBase(marble);
-            gameManager.sendHome(marble);
-        } catch (CannotFieldException e) {
-            throw new IllegalDestroyException("Failed to return marble home");
-        }
+        gameManager.sendHome(marble);
     }
 
     @Override
