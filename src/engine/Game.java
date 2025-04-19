@@ -115,7 +115,7 @@ public class Game implements GameManager {
         Player player = players.get(currentPlayerIndex);
 
         //remove the selected card and add it to the firepit
-        if (player.getSelectedCard() != null) {
+        if (player.getHand() != null && !player.getHand().isEmpty()) {
             firePit.add(player.getSelectedCard());
             player.getHand().remove(player.getSelectedCard());
         }
@@ -135,6 +135,7 @@ public class Game implements GameManager {
             //reset the turn
             turn = 0;
 
+            int counter = 0;
             //refill players' hands
             for(Player p : players){
                 //refill the cardPool
