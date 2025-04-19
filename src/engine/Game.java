@@ -113,11 +113,9 @@ public class Game implements GameManager {
 
     public void endPlayerTurn() {
         Player player = players.get(currentPlayerIndex);
-
         //remove the selected card and add it to the player
-        player.getHand().remove(player.getSelectedCard());
         firePit.add(player.getSelectedCard());
-
+        player.getHand().remove(player.getSelectedCard());
         //deselect everything
         player.deselectAll();
 
@@ -135,12 +133,11 @@ public class Game implements GameManager {
 
             for(Player p : players){
                 p.setHand(drawCards());
-            }
-
-            //refill the cardPool
-            if(getPoolSize() < 4){
-                refillPool(firePit);
-                firePit.clear();
+                //refill the cardPool
+                if(getPoolSize() < 4){
+                    refillPool(firePit);
+                    firePit.clear();
+                }
             }
         }
     }
@@ -159,6 +156,7 @@ public class Game implements GameManager {
     public void sendHome(Marble marble) {
         Player currentPlayer = players.get(currentPlayerIndex);
         currentPlayer.regainMarble(marble);
+
     }
 
     @Override
@@ -170,7 +168,7 @@ public class Game implements GameManager {
             throw new CannotFieldException("There is no marble to field");
         }else{
             //get marble to field
-            Marble marble = currentPlayer.getMarbles().get(0);
+            Marble marble = currentPlayer.getOneMarble();
             //Send the marble to the board
             board.sendToBase(marble);
             currentPlayer.getMarbles().remove(marble);
@@ -190,11 +188,9 @@ public class Game implements GameManager {
         if (hand.isEmpty()) {
             throw new CannotDiscardException(player.getName() + " has an empty hand");
         }
-        int handSize = hand.size();
-        int rand = (int) (Math.random() * handSize);
-        Card randCard = hand.get(rand);
-        firePit.add(randCard);
-        hand.remove(randCard);
+        int rand = (int) (Math.random() * hand.size());
+        Card randCard = player.getHand().get(rand);
+        player.getHand().remove(randCard);
     }
 
     @Override

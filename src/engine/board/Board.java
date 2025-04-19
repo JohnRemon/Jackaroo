@@ -196,7 +196,7 @@ public class Board implements BoardManager{
     }
 
     private void validateFielding(Cell occupiedBaseCell) throws CannotFieldException{
-        if(occupiedBaseCell.getMarble().getColour() == gameManager.getActivePlayerColour())
+        if(occupiedBaseCell.getMarble() != null && occupiedBaseCell.getMarble().getColour() == gameManager.getActivePlayerColour())
             throw new CannotFieldException("The base cell is occupied by the same colour");
     }
 
@@ -255,18 +255,18 @@ public class Board implements BoardManager{
     @Override
     public void sendToBase(Marble marble) throws CannotFieldException, IllegalDestroyException {
         Cell baseTarget = track.get(getBasePosition(marble.getColour()));
-        Marble occupyingMarble = baseTarget.getMarble();
-        if (occupyingMarble != null)
-        {
+        Marble opponent = baseTarget.getMarble();
+        if(opponent == null){
+            baseTarget.setMarble(marble);
+        }else{
+            System.out.println(baseTarget.getMarble().getColour());
+            System.out.println(marble.getColour());
+            System.out.println(opponent.getColour());
+            System.out.println(gameManager.getActivePlayerColour());
             validateFielding(baseTarget);
-            int occupyingMarblePosition = getBasePosition(occupyingMarble.getColour());
-            if (occupyingMarblePosition != -1) {
-                validateDestroy(occupyingMarblePosition);
-            }
-            destroyMarble(occupyingMarble);
-            track.get(getBasePosition(marble.getColour())).setMarble(marble);
-        } else
-            track.get(getBasePosition(marble.getColour())).setMarble(marble);
+            destroyMarble(opponent);
+            baseTarget.setMarble(marble);
+        }
     }
 
     @Override
