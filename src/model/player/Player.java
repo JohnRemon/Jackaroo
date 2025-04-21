@@ -14,8 +14,7 @@ public class Player {
     private final ArrayList<Marble> marbles;
     private  Card selectedCard;
     private final ArrayList<Marble> selectedMarbles;
-    //READ getter
-    //WRITE setter
+
     public Player(String name, Colour colour) {
         this.name = name;
         this.colour = colour;
@@ -30,7 +29,7 @@ public class Player {
     }
 
     public void regainMarble(Marble marble){
-        marbles.add(marble);
+        this.getMarbles().add(marble);
     }
 
     public Marble getOneMarble(){

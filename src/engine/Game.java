@@ -160,8 +160,11 @@ public class Game implements GameManager {
 
     @Override
     public void sendHome(Marble marble) {
-        Player currentPlayer = players.get(currentPlayerIndex);
-        currentPlayer.regainMarble(marble);
+        for (Player p1 : players)
+        {
+            if (p1.getColour() == marble.getColour())
+                p1.regainMarble(marble);
+        }
     }
 
     @Override
