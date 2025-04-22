@@ -253,14 +253,10 @@ public class Board implements BoardManager{
     public void sendToBase(Marble marble) throws CannotFieldException, IllegalDestroyException {
         Cell baseTarget = track.get(getBasePosition(marble.getColour()));
         Marble opponent = baseTarget.getMarble();
+        validateFielding(baseTarget);
         if(opponent == null){
             baseTarget.setMarble(marble);
         }else{
-            System.out.println(baseTarget.getMarble().getColour());
-            System.out.println(marble.getColour());
-            System.out.println(opponent.getColour());
-            System.out.println(gameManager.getActivePlayerColour());
-            validateFielding(baseTarget);
             destroyMarble(opponent);
             baseTarget.setMarble(marble);
         }
