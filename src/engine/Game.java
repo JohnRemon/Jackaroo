@@ -135,7 +135,7 @@ public class Game implements GameManager {
             //reset the turn
             turn = 0;
 
-            int counter = 0;
+
             //refill players' hands
             for(Player p : players){
                 //refill the cardPool

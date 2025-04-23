@@ -169,6 +169,7 @@ public class Board implements BoardManager{
         //if the target cell is a trap, we need to destroy the marble
         if (fullPath.getLast().isTrap())
         {
+            destroyMarble(fullPath.getLast().getMarble());
             fullPath.getLast().setTrap(false);
             assignTrapCell();
         } else fullPath.getLast().setMarble(marble);
@@ -199,6 +200,9 @@ public class Board implements BoardManager{
         // if in safezone or not on board
         if (positionInPath < 0)
             throw new IllegalDestroyException("The marble is not on the track");
+        Cell cell = track.get(positionInPath);
+        if (cell.getMarble() != null && cell.getCellType() == CellType.BASE && cell.getMarble().getColour() == gameManager.getActivePlayerColour())
+            throw new IllegalDestroyException("Cannot destroy a marble on its base cell!");
     }
 
     private void validateFielding(Cell occupiedBaseCell) throws CannotFieldException{
