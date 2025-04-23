@@ -135,6 +135,7 @@ public class Game implements GameManager {
             //reset the turn
             turn = 0;
 
+
             //refill players' hands
             for(Player p : players){
                 //refill the cardPool
@@ -159,10 +160,10 @@ public class Game implements GameManager {
 
     @Override
     public void sendHome(Marble marble) {
-        for(Player player : players){
-            if(player.getColour().equals(marble.getColour())){
-                player.regainMarble(marble);
-                break;
+        for (Player p1 : players)
+        {
+            if (marble != null && p1.getColour() == marble.getColour()) {
+                p1.regainMarble(marble);
             }
         }
     }

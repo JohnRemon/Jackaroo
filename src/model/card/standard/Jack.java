@@ -41,11 +41,9 @@ public class Jack extends Standard{
         if (!validateMarbleSize(marbles) || !validateMarbleColours(marbles))
             throw new InvalidMarbleException("Invalid Marble choice!");
 
-        if (validateMarbleSize(marbles) && validateMarbleColours(marbles)) {
-            if (marbles.size() == 1) //playing as standard card or not
-                boardManager.moveBy(marbles.get(0), this.getRank(), false);
-            else
-                boardManager.swap(marbles.get(0), marbles.get(1));
-        }
+        if (marbles.size() == 1) //playing as standard card or not
+            boardManager.moveBy(marbles.get(0), this.getRank(), false);
+        else
+            boardManager.swap(marbles.get(0), marbles.get(1));
     }
 }
