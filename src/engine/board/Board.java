@@ -78,7 +78,7 @@ public class Board implements BoardManager{
     private int getPositionInPath(ArrayList<Cell> path, Marble marble)
     {
         for (int i = 0; i < path.size(); i++)
-            if (marble.equals(path.get(i).getMarble())) return i;
+            if (marble == path.get(i).getMarble()) return i;
 
         return -1;
     }
@@ -147,24 +147,43 @@ public class Board implements BoardManager{
             track.get(posTrack).setMarble(null);
 
         //marble destroying
-        for (Cell cell : fullPath) {
-            if (cell.getMarble() != null && destroy) {
-                int position = getPositionInPath(track, cell.getMarble());
-                if (position != -1)
-                {
-                    validateDestroy(position);
-                    track.get(position).setMarble(null);
-                } else throw new IllegalDestroyException("Marble cannot be destroyed!");
+        for (int i = 1; i < fullPath.size(); i++) {
+            Cell cell = fullPath.get(i);
+
+            // Advance posTrack only for non-safe cells
+            if (cell.getCellType() != CellType.SAFE)
+                posTrack++;
+
+            if (cell.getMarble() != null && destroy ) {
+                // destroy the marble at the corresponding track cell
+                Marble morble = track.get(posTrack).getMarble();
+                destroyMarble(track.get(posTrack).getMarble());
             }
         }
+
 
         //if the target cell is a trap, we need to destroy the marble
         if (fullPath.getLast().isTrap())
         {
-            destroyMarble(fullPath.getLast().getMarble());
-            fullPath.getLast().setTrap(false);
-            assignTrapCell();
-        } else fullPath.getLast().setMarble(marble);
+            Cell targetCell = fullPath.getLast();
+            for (int i = 0; i < track.size(); i++) {
+                if (track.get(i) == targetCell) {
+                    if (track.get(i).getMarble() != null)
+                        destroyMarble(track.get(i).getMarble());
+                    track.get(i).setTrap(false);
+                    assignTrapCell();
+                    break;
+                }
+            }
+        } else {
+            Cell targetCell = fullPath.getLast();
+            if (targetCell.getMarble() != null && !destroy)
+                throw new IllegalDestroyException("Can't destroy marble without a king card!");
+            for (int i = 0; i < track.size(); i++) {
+                if (track.get(i) == targetCell)
+                    track.get(i).setMarble(marble);
+            }
+        }
     }
 
     private void validateSwap(Marble marble_1, Marble marble_2) throws IllegalSwapException {
@@ -193,13 +212,16 @@ public class Board implements BoardManager{
         if (positionInPath < 0)
             throw new IllegalDestroyException("The marble is not on the track");
         Cell cell = track.get(positionInPath);
-        if (cell.getMarble() != null && cell.getCellType() == CellType.BASE && cell.getMarble().getColour() == gameManager.getActivePlayerColour())
+       // if (cell.getMarble() != null && cell.getCellType() == CellType.BASE && cell.getMarble().getColour() == gameManager.getActivePlayerColour())
+        if (cell.getMarble() != null && cell.getCellType() == CellType.BASE && track.get(getBasePosition(cell.getMarble().getColour())) == cell) {
             throw new IllegalDestroyException("Cannot destroy a marble on its base cell!");
+        }
     }
 
     private void validateFielding(Cell occupiedBaseCell) throws CannotFieldException{
-        if(occupiedBaseCell.getMarble().getColour() == gameManager.getActivePlayerColour())
-            throw new CannotFieldException("The base cell is occupied by the same colour");
+        if (occupiedBaseCell.getMarble() != null)
+            if(occupiedBaseCell.getMarble().getColour() == gameManager.getActivePlayerColour())
+                throw new CannotFieldException("The base cell is occupied by the same colour");
     }
 
     private void validateSaving(int positionInSafeZone, int positionOnTrack) throws InvalidMarbleException{
@@ -236,34 +258,23 @@ public class Board implements BoardManager{
     @Override
    public void destroyMarble(Marble marble) throws IllegalDestroyException {
     int position = getPositionInPath(track, marble);
-    Cell cell = track.get(position);
     validateDestroy(position);
-
-    if (cell.getCellType() == CellType.BASE)
-       throw new IllegalDestroyException("Cannot destroy a marble on its base cell!");
 
     track.get(position).setMarble(null);
     gameManager.sendHome(marble);
    }
 
     @Override
-    public void sendToBase(Marble marble) throws CannotFieldException, IllegalDestroyException {
-        Cell baseTarget = track.get(getBasePosition(marble.getColour()));
-        Marble occupyingMarble = baseTarget.getMarble();
-        if (occupyingMarble != null)
-        {
-            validateFielding(baseTarget);
-            int occupyingMarblePosition = getBasePosition(occupyingMarble.getColour());
-            if (occupyingMarblePosition != -1) {
-                validateDestroy(occupyingMarblePosition);
-            }
-            destroyMarble(occupyingMarble);
-            track.get(getBasePosition(marble.getColour())).setMarble(marble);
-        } else
-            track.get(getBasePosition(marble.getColour())).setMarble(marble);
-    }
+   public void sendToBase(Marble marble) throws CannotFieldException, IllegalDestroyException {
+   Cell target = track.get(getBasePosition(marble.getColour()));
+   validateFielding(target);
 
-    @Override
+   if (target.getMarble() != null)
+       destroyMarble(target.getMarble());
+
+   target.setMarble(marble);
+   }
+
     public void sendToSafe(Marble marble) throws InvalidMarbleException {
         int posTrack = getPositionInPath(track, marble);
         ArrayList<Cell> safeZoneCopy = getSafeZone(marble.getColour());

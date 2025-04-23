@@ -162,8 +162,9 @@ public class Game implements GameManager {
     public void sendHome(Marble marble) {
         for (Player p1 : players)
         {
-            if (p1.getColour() == marble.getColour())
+            if (marble != null && p1.getColour() == marble.getColour()) {
                 p1.regainMarble(marble);
+            }
         }
     }
 
