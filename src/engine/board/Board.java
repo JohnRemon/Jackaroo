@@ -84,29 +84,21 @@ public class Board implements BoardManager{
     }
 
     private int getBasePosition(Colour colour) {
-        if (colour == null) {
-            return -1;
+        for(int i = 0; i < getSafeZones().size(); i++){
+            if(safeZones.get(i).getColour() == colour){
+                return i * 25;
+            }
         }
-        switch (colour){
-            case RED -> {return 0;}
-            case BLUE -> {return 25;}
-            case YELLOW -> {return 50;}
-            case GREEN -> {return 75;}
-            default -> {return -1;}
-        }
+        return -1;
     }
 
     private int getEntryPosition(Colour colour) {
-        if (colour == null) {
-            return -1;
+        for(int i = 0; i < getSafeZones().size(); i++){
+            if(safeZones.get(i).getColour() == colour){
+                return ((i * 25) - 2 + 100) % 100;
+            }
         }
-        switch (colour){
-            case RED -> {return 98;}
-            case BLUE -> {return 23;}
-            case YELLOW -> {return 48;}
-            case GREEN -> {return 73;}
-            default -> {return -1;}
-        }
+        return -1;
     }
 
     //validateSteps start
