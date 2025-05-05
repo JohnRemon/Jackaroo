@@ -28,8 +28,6 @@ public class Game implements GameManager {
     private int turn;
 
     public Game(String playerName) throws IOException {
-        System.out.println(playerName);
-
         //Created a new board with Game as game manager and randomised colours
         ArrayList<Colour> colours = new ArrayList<>();
         Collections.addAll(colours, Colour.values());

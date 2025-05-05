@@ -10,42 +10,29 @@ import java.io.IOException;
 import java.net.URL;
 
 public class Main extends Application {
-    private static Parent root;
-    private static Scene scene;
-    private static Stage primaryStage;
-    private static FXMLLoader loader;
+    public static Stage primaryStage;
 
     public static Stage getPrimaryStage() {
-        return primaryStage;
+        return Main.primaryStage;
     }
-    public static FXMLLoader getLoader() {
-        return loader;
-    }
-    public void setPrimaryStage(Stage primaryStage) {
-        this.primaryStage = primaryStage;
-    }
-    public static Parent getRoot() {
-        return root;
-    }
-    public static void setRoot(Parent root) {
-        Main.root = root;
-    }
+
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        loader = new FXMLLoader(getClass().getResource("TitleScreen.fxml"));
-        root = loader.load();
-        scene = new Scene(root);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("TitleScreen.fxml"));
+        Parent root = loader.load();
+        Scene scene = new Scene(root);
 
         URL css = getClass().getResource("application.css");
         if (css != null) {
             scene.getStylesheets().add(css.toExternalForm());
         }
-        Main.primaryStage = primaryStage;
-
+        MainMenuController controller = loader.getController();
+        controller.loadValues();
         primaryStage.setScene(scene);
         primaryStage.setTitle("Jackaroo Launcher");
         primaryStage.show();
+        Main.primaryStage = primaryStage;
     }
 
     public static void main(String[] args) {
