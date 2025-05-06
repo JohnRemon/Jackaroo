@@ -1,0 +1,33 @@
+.settingsBackground{
+    -fx-background-image: url("blue.jpg");
+    -fx-background-size: cover;
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+    -fx-padding: 20;
+}
+
+/* Settings label styling */
+.settingsLabel {
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-align: center;
+}
+
+/* Button styling */
+.settingsButton {
+    -fx-background-color: white;
+    -fx-border-radius: 10;
+    -fx-background-radius: 15;
+    -fx-text-fill: #3B3B3B;
+    -fx-font-family: "Arial";
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-padding: 8 12;
+    -fx-cursor: pointer;
+    -fx-alignment: center;
+}
+
+
+
+

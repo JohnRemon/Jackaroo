@@ -28,8 +28,6 @@ public class Game implements GameManager {
     private int turn;
 
     public Game(String playerName) throws IOException {
-
-
         //Created a new board with Game as game manager and randomised colours
         ArrayList<Colour> colours = new ArrayList<>();
         Collections.addAll(colours, Colour.values());
@@ -102,7 +100,8 @@ public class Game implements GameManager {
 
     public boolean canPlayTurn() {
         Player player = players.get(currentPlayerIndex);
-        return  player.getHand().isEmpty();
+        int size = player.getHand().size();
+        return size == turn;
     }
 
     public void playPlayerTurn() throws GameException {
@@ -112,29 +111,37 @@ public class Game implements GameManager {
 
     public void endPlayerTurn() {
         Player player = players.get(currentPlayerIndex);
-        //remove the selected card and add it to the player
-        firePit.add(player.getSelectedCard());
-        player.getHand().remove(player.getSelectedCard());
+
+        //remove the selected card and add it to the firepit
+        if (player.getHand() != null && !player.getHand().isEmpty()) {
+            firePit.add(player.getSelectedCard());
+            player.getHand().remove(player.getSelectedCard());
+        }
+
         //deselect everything
         player.deselectAll();
+
         //move onto the next player
         currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+
         //if player 4 then we start a new turn
         if(currentPlayerIndex == 0){
             turn++;
         }
         //start a new round
-        if(turn % 4 == 0){
+        if(turn % players.size() == 0){
             //reset the turn
             turn = 0;
+
+
             //refill players' hands
             for(Player p : players){
+                //refill the cardPool
+                if(getPoolSize() < 4){
+                    refillPool(firePit);
+                    firePit.clear();
+                }
                 p.setHand(drawCards());
-            }
-            //refill the cardPool
-            if(getPoolSize() < 4){
-                refillPool(firePit);
-                firePit.clear();
             }
         }
     }
@@ -151,8 +158,12 @@ public class Game implements GameManager {
 
     @Override
     public void sendHome(Marble marble) {
-        Player currentPlayer = players.get(currentPlayerIndex);
-        currentPlayer.regainMarble(marble);
+        for (Player p1 : players)
+        {
+            if (marble != null && p1.getColour() == marble.getColour()) {
+                p1.regainMarble(marble);
+            }
+        }
     }
 
     @Override
@@ -210,7 +221,7 @@ public class Game implements GameManager {
 
     @Override
     public Colour getNextPlayerColour() {
-        return players.get(currentPlayerIndex + 1).getColour();
+        return players.get((currentPlayerIndex + 1) % players.size()).getColour();
     }
 
 

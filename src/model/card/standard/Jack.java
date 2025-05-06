@@ -33,10 +33,17 @@ public class Jack extends Standard{
 
     @Override
     public boolean validateMarbleSize(ArrayList<Marble> marbles){
-        return marbles.size() == 2 || marbles.size() == 1;
+        if (marbles.isEmpty()) return false;
+        return (marbles.size() == 2 || marbles.size() == 1);
     }
     @Override
     public void act(ArrayList<Marble> marbles) throws ActionException, InvalidMarbleException {
-        boardManager.moveBy(marbles.getFirst(), this.getRank(), false);
+        if (!validateMarbleSize(marbles) || !validateMarbleColours(marbles))
+            throw new InvalidMarbleException("Invalid Marble choice!");
+
+        if (marbles.size() == 1) //playing as standard card or not
+            boardManager.moveBy(marbles.get(0), this.getRank(), false);
+        else
+            boardManager.swap(marbles.get(0), marbles.get(1));
     }
 }

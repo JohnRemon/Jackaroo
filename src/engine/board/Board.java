@@ -4,6 +4,7 @@ import engine.GameManager;
 import exception.*;
 import model.Colour;
 import model.player.Marble;
+import model.player.Player;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -77,134 +78,150 @@ public class Board implements BoardManager{
     private int getPositionInPath(ArrayList<Cell> path, Marble marble)
     {
         for (int i = 0; i < path.size(); i++)
-            if (marble.equals(path.get(i).getMarble())) return i;
+            if (marble == path.get(i).getMarble()) return i;
 
         return -1;
     }
 
     private int getBasePosition(Colour colour) {
-        switch (colour)
-        {
-            case Colour.RED -> {return 0;}
-            case Colour.GREEN -> {return 25;}
-            case Colour.BLUE -> {return 50;}
-            case Colour.YELLOW -> {return 75;}
-            default -> {return -1;}
+        for(int i = 0; i < getSafeZones().size(); i++){
+            if(safeZones.get(i).getColour() == colour){
+                return i * 25;
+            }
         }
+        return -1;
     }
 
     private int getEntryPosition(Colour colour) {
-        switch (colour)
-        {
-            case Colour.RED -> {return 98;}
-            case Colour.GREEN -> {return 23;}
-            case Colour.BLUE -> {return 48;}
-            case Colour.YELLOW -> {return 73;}
-            default -> {return -1;}
-        }
-    }
-    private boolean isInSafeZone( Marble marble){
-        Colour activePlayerColour = gameManager.getActivePlayerColour();
-        for( SafeZone safeZone : safeZones){
-            if (safeZone.getColour() == activePlayerColour){
-                for ( Cell cell : safeZone.getCells()){
-                    if( cell.getMarble() == marble){
-                        return true;
-                    }
-                }
+        for(int i = 0; i < getSafeZones().size(); i++){
+            if(safeZones.get(i).getColour() == colour){
+                return ((i * 25) - 2 + 100) % 100;
             }
         }
-        return false;
+        return -1;
     }
 
-    private ArrayList<Cell> validateSteps (Marble marble, int steps) throws IllegalMovementException{
-
-        return new ArrayList<>();
-    }
-
+    //validateSteps start
 
     private void validatePath(Marble marble, ArrayList<Cell> path, boolean destroy) throws IllegalMovementException {
         int marblesEncountered = 0;
-
-        for (Cell cell : path)
+        for (int i = 1; i < path.size(); i++)
         {
-            if (cell == path.getFirst()) continue;
+            Cell cell = path.get(i);
+            boolean enterSafeZone = false;
             Marble currentMarble = cell.getMarble();
-
+            if (i != path.size()-1)
+            {
+                if (path.get(i+1).getCellType() == CellType.SAFE)
+                    enterSafeZone = true;
+            }
             if (currentMarble != null)
             {
-                destroy = (cell.getCellType() == CellType.SAFE) ? false : destroy;
-                if (currentMarble.getColour() == marble.getColour() && !destroy) throw new IllegalMovementException("Cannot move past own marbles!");
-                if (++marblesEncountered > 1 && !destroy) throw new IllegalMovementException("Path blockage!");
-
-                if (cell.getCellType() == CellType.ENTRY && !destroy && getPositionInPath(track, currentMarble) == getEntryPosition(currentMarble.getColour()))
+                destroy = cell.getCellType() != CellType.SAFE && destroy;
+                if (currentMarble.getColour() == gameManager.getActivePlayerColour() && !destroy)
+                    throw new IllegalMovementException("Cannot move past own marbles!");
+                if (marblesEncountered++ > 1 && !destroy)
+                    throw new IllegalMovementException("Path blockage!");
+                if (cell.getCellType() == CellType.ENTRY && !destroy && enterSafeZone)
+                {
                     throw new IllegalMovementException("SafeZone entry blocked!");
+                }
                 if (cell.getCellType() == CellType.BASE && getPositionInPath(track, currentMarble) == getBasePosition(currentMarble.getColour()))
                     throw new IllegalMovementException("Base Cell blockage!");
             }
-
-
 
         }
     }
 
     private void move(Marble marble, ArrayList<Cell> fullPath, boolean destroy)throws IllegalDestroyException{
+        int posTrack = getPositionInPath(track, marble), posSafe;
 
-        int posTrack = getPositionInPath(track, marble), posSafe = -1;
-
+        //remove marble from current cell
         if (posTrack == -1)
         {
-            posSafe = getPositionInPath(Objects.requireNonNull(getSafeZone(marble.getColour())), marble);
-            if (posSafe == -1) throw new IllegalDestroyException("Marble cannot be destroyed!");
-            Objects.requireNonNull(getSafeZone(marble.getColour())).get(posSafe).setMarble(null);
-        } else track.get(posTrack).setMarble(null);
+            posSafe = getPositionInPath(getSafeZone(marble.getColour()), marble);
+            if (posSafe == -1)
+                throw new IllegalDestroyException("Marble cannot be moved!");
+            getSafeZone(marble.getColour()).get(posSafe).setMarble(null);
+        } else
+            track.get(posTrack).setMarble(null);
 
+        //marble destroying
+        for (int i = 1; i < fullPath.size(); i++) {
+            Cell cell = fullPath.get(i);
 
-        for (Cell currentCell : fullPath) {
-            if (currentCell.getMarble() != null && destroy) {
-                validateDestroy(getPositionInPath(track, currentCell.getMarble()));
-                //TODO: send somewhere
-                currentCell.setMarble(null);
+            // Advance posTrack only for non-safe cells
+            if (cell.getCellType() != CellType.SAFE)
+                posTrack++;
+
+            if (cell.getMarble() != null && destroy ) {
+                // destroy the marble at the corresponding track cell
+                Marble morble = track.get(posTrack).getMarble();
+                destroyMarble(track.get(posTrack).getMarble());
             }
         }
 
+
+        //if the target cell is a trap, we need to destroy the marble
         if (fullPath.getLast().isTrap())
         {
-            fullPath.getLast().setTrap(false);
-            //TODO: send somewhere
-            assignTrapCell();
-        } else fullPath.getLast().setMarble(marble);
+            Cell targetCell = fullPath.getLast();
+            for (int i = 0; i < track.size(); i++) {
+                if (track.get(i) == targetCell) {
+                    if (track.get(i).getMarble() != null)
+                        destroyMarble(track.get(i).getMarble());
+                    track.get(i).setTrap(false);
+                    assignTrapCell();
+                    break;
+                }
+            }
+        } else {
+            Cell targetCell = fullPath.getLast();
+            if (targetCell.getMarble() != null && !destroy)
+                throw new IllegalDestroyException("Can't destroy marble without a king card!");
+            for (int i = 0; i < track.size(); i++) {
+                if (track.get(i) == targetCell)
+                    track.get(i).setMarble(marble);
+            }
+        }
     }
 
-    private void validateSwap(Marble marble_1, Marble marble_2) throws IllegalSwapException{
-        if(getPositionInPath(track, marble_1) == -1 || getPositionInPath(track, marble_2) == -1)    //this needs to be OR since you can't swap with 2 marbles if one is in a safe zone
+    private void validateSwap(Marble marble_1, Marble marble_2) throws IllegalSwapException {
+        // Ensure at least one marble is on the track
+        if (getPositionInPath(track, marble_1) == -1 || getPositionInPath(track, marble_2) == -1) {
             throw new IllegalSwapException("One of the marbles is not on the track");
+        }
 
-        if(!marble_1.getColour().equals(gameManager.getActivePlayerColour()) && getBasePosition(marble_1.getColour()) != -1)
+        // Check if marble_1 is on the base
+        int marble1Position = getPositionInPath(track, marble_1);
+        if (!marble_1.getColour().equals(gameManager.getActivePlayerColour())
+                && marble1Position == getBasePosition(marble_1.getColour())) {
             throw new IllegalSwapException("The Opponent's marble is on the base");
+        }
 
-        if(!marble_2.getColour().equals(gameManager.getActivePlayerColour()) && getBasePosition(marble_2.getColour()) != -1)
+        // Check if marble_2 is on the base
+        int marble2Position = getPositionInPath(track, marble_2);
+        if (!marble_2.getColour().equals(gameManager.getActivePlayerColour())
+                && marble2Position == getBasePosition(marble_2.getColour())) {
             throw new IllegalSwapException("The Opponent's marble is on the base");
-
-        if (marble_1.getColour() == marble_2.getColour())
-            throw new IllegalSwapException("Cannot swap owned marbles!");
-        /*
-        Same Player Ownership: Marbles owned by the same player are ineligible for swapping.
-        Technically a completely useless check since for the player no difference was made, but you never know with the test cases.
-        */
+        }
     }
 
     private void validateDestroy(int positionInPath) throws IllegalDestroyException{
-        if(positionInPath == -1)
+        // if in safezone or not on board
+        if (positionInPath < 0)
             throw new IllegalDestroyException("The marble is not on the track");
-
-        if(track.get(positionInPath).getCellType() == CellType.BASE)
-            throw new IllegalDestroyException("The marble is on the base");
+        Cell cell = track.get(positionInPath);
+       // if (cell.getMarble() != null && cell.getCellType() == CellType.BASE && cell.getMarble().getColour() == gameManager.getActivePlayerColour())
+        if (cell.getMarble() != null && cell.getCellType() == CellType.BASE && track.get(getBasePosition(cell.getMarble().getColour())) == cell) {
+            throw new IllegalDestroyException("Cannot destroy a marble on its base cell!");
+        }
     }
 
     private void validateFielding(Cell occupiedBaseCell) throws CannotFieldException{
-        if(occupiedBaseCell.getMarble().getColour() == gameManager.getActivePlayerColour())
-            throw new CannotFieldException("The base cell is occupied by the same colour");
+        if (occupiedBaseCell.getMarble() != null)
+            if(occupiedBaseCell.getMarble().getColour() == gameManager.getActivePlayerColour())
+                throw new CannotFieldException("The base cell is occupied by the same colour");
     }
 
     private void validateSaving(int positionInSafeZone, int positionOnTrack) throws InvalidMarbleException{
@@ -217,51 +234,56 @@ public class Board implements BoardManager{
         ArrayList<Cell> journey = validateSteps(marble, steps);
         validatePath(marble, journey, destroy);
         move(marble, journey, destroy);
-
     }
 
     @Override
     public void swap(Marble marble_1, Marble marble_2) throws IllegalSwapException {
         validateSwap(marble_1, marble_2);
-        Marble temp = marble_2;
-        marble_2 = marble_1;
-        marble_1 = temp;
-        // TODO: verify that this is working correctly and not just doing pointer bullshit (i dont have internet rn)
-    }
 
-    @Override
-    public void destroyMarble(Marble marble) throws IllegalDestroyException {
-        Cell target = track.get(getPositionInPath(track, marble));
-        validateDestroy(getPositionInPath(track, marble));
-        //TODO: should i be validating fielding of the destroyed marble? because the method signature suggests i shoudlnt
-        target.setMarble(null);
+        int position_1 = getPositionInPath(track, marble_1);
+        int position_2 = getPositionInPath(track, marble_2);
 
-    }
-
-    @Override
-    public void sendToBase(Marble marble) throws CannotFieldException, IllegalDestroyException {
-        Cell target = track.get(getBasePosition(marble.getColour()));
-        Marble occupyingMarble = target.getMarble();
-
-        if (occupyingMarble != null) {
-            validateFielding(target); // Throws if same colour as active player
-            validateDestroy(getPositionInPath(track, occupyingMarble));
-            sendToBase(occupyingMarble);
+        if (position_1 == -1 || position_2 == -1){
+            throw new IllegalSwapException("Both marbles must be on the track");
         }
 
-        target.setMarble(marble);
+        Cell cell_1 = track.get(position_1);
+        Cell cell_2 = track.get(position_2);
+
+        Marble temp = cell_1.getMarble();
+        cell_1.setMarble(cell_2.getMarble());
+        cell_2.setMarble(temp);
     }
 
+    @Override
+   public void destroyMarble(Marble marble) throws IllegalDestroyException {
+    int position = getPositionInPath(track, marble);
+    validateDestroy(position);
 
+    track.get(position).setMarble(null);
+    gameManager.sendHome(marble);
+   }
 
     @Override
+   public void sendToBase(Marble marble) throws CannotFieldException, IllegalDestroyException {
+   Cell target = track.get(getBasePosition(marble.getColour()));
+   validateFielding(target);
+
+   if (target.getMarble() != null)
+       destroyMarble(target.getMarble());
+
+   target.setMarble(marble);
+   }
+
     public void sendToSafe(Marble marble) throws InvalidMarbleException {
         int posTrack = getPositionInPath(track, marble);
         ArrayList<Cell> safeZoneCopy = getSafeZone(marble.getColour());
         int posSafe = getPositionInPath(safeZoneCopy, marble);
 
-        validateSaving(posTrack, posSafe);
-
+        validateSaving(posSafe, posTrack);
+        if (posTrack != -1) {
+            track.get(posTrack).setMarble(null);
+        }
         ArrayList<Cell> unoccupied = new ArrayList<>(4);
         for (Cell cell : getSafeZone(marble.getColour())) {
             if (cell.getMarble() == null)
@@ -290,42 +312,85 @@ public class Board implements BoardManager{
 
 
 
-    // Helpers
-    private ArrayList<Cell> getJourneyTrack(Marble marble, int steps, int pos, ArrayList<Cell> safeZoneCopy) throws IllegalMovementException {
-        int entryPos = getEntryPosition(marble.getColour());
-        int stepsTillEntryPos = (entryPos - pos + 100) %100; // add 100 then modulos 100 in case the track loops.
+    private ArrayList<Cell> validateSteps (Marble marble, int steps) throws IllegalMovementException
+    {
+        //marble shouldn't be null anyways
+        if (marble == null) throw new IllegalMovementException("No marble to move!");
 
-        if (steps > stepsTillEntryPos + 4) throw new IllegalMovementException("Rank too high!");
 
+        int currentPosition = getPositionInPath(track, marble);
+        boolean onTrack = true, ownMarble = gameManager.getActivePlayerColour() == marble.getColour();
         ArrayList<Cell> journey = new ArrayList<>();
-        if (steps > stepsTillEntryPos && steps != 5)
+        ArrayList<Cell> safeZoneOfPlayer = getSafeZone(gameManager.getActivePlayerColour());
+        if (currentPosition == -1)
         {
-            int count = 0;
-            for (int i = 0; i <= steps; i++)
+            currentPosition = getPositionInPath(safeZoneOfPlayer, marble);
+            if (currentPosition == -1) throw new IllegalMovementException("Marble is not on board");
+            onTrack = false;
+        }
+        if (onTrack)
+        {
+            int stepsTillEntry = getEntryPosition(marble.getColour())-currentPosition;
+
+            if (!ownMarble)
+                return getJourneyNoSafeZone(steps, stepsTillEntry, journey, currentPosition, safeZoneOfPlayer);
+
+            if (steps != -4)
             {
-                if (i <= stepsTillEntryPos)
-                    journey.add(track.get((pos +i)%100));
-                else
-                    journey.add(safeZoneCopy.get(count++));
+                return getForwardJourney(steps, stepsTillEntry, journey, currentPosition, safeZoneOfPlayer);
+            } else //using -4 card
+            {
+                for (int i = 1; i <= 4; i++) {
+                    journey.add(track.get((currentPosition - i + 100) % 100));
+                } //move backwards, with wrapping
+                return journey;
+            }
+        }
+        else //safezone movement
+        {
+            if (steps == -4 || steps + (currentPosition+1) > 4)
+                throw new IllegalMovementException("Invalid movement in safezone");
+
+            for (int i = 0; i < steps+1; i++)
+            {
+                journey.add(safeZoneOfPlayer.get(i+currentPosition));
             }
             return journey;
         }
+    }
 
-        for (int i = 0; i <= steps; i++)
-            journey.add(track.get((pos +i)%100));
+    private ArrayList<Cell> getForwardJourney(int steps, int stepsTillEntry, ArrayList<Cell> journey, int currentPosition, ArrayList<Cell> safeZoneOfPlayer) throws IllegalMovementException {
+        if ((steps  - (stepsTillEntry)) > safeZoneOfPlayer.size()) {
+            throw new IllegalMovementException("Rank too high");
+        }
 
+        if (stepsTillEntry < 0) //this is the case where marble moves normally on track, no safezone entry
+        {
+            return getJourneyNoSafeZone(steps, stepsTillEntry, journey, currentPosition, safeZoneOfPlayer);
+        }
+
+        int counter = 0; //used to count how many safezone cells passed if it enters safe zone
+        for (int i = 0; i < steps+1; i++) //case where marble enters a safezone from track
+        {
+           if (i <= stepsTillEntry)
+                journey.add(track.get((i+ currentPosition)%100));
+           else //entered safezone
+           {
+               journey.add(safeZoneOfPlayer.get(counter++));
+           }
+        }
+        if (counter > 4) {
+            throw new IllegalMovementException("Rank played was too high");
+        }
         return journey;
     }
-    private ArrayList<Cell> getJourneySafeZone(Marble marble, int steps, ArrayList<Cell> safeZoneCopy) throws IllegalMovementException {
 
-        int pos = getPositionInPath(safeZoneCopy, marble);
-        if (steps < 0) throw new IllegalMovementException("Cannot move backwards in safe zone!");
-
-        if (pos + steps > safeZoneCopy.size() - 1) throw new IllegalMovementException("Rank too high!");
-
-        ArrayList<Cell> journey = new ArrayList<>();
+    private ArrayList<Cell> getJourneyNoSafeZone(int steps, int stepsTillEntry, ArrayList<Cell> journey, int currentPosition, ArrayList<Cell> safeZoneOfPlayer)
+    {
         for (int i = 0; i <= steps; i++)
-            journey.add(safeZoneCopy.get(pos+i));
+        {
+            journey.add(track.get((currentPosition+i+100)%100));
+        }
         return journey;
     }
 }
