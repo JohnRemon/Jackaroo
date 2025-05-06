@@ -8,9 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -25,17 +23,15 @@ public class MainMenuController extends Application {
     public Button settingsButton;
     public Pane settingsPane;
     public Button SubmitName;
-    public Button SubmitName1;
-    public TextField nameLabel1;
-    public Label resetName;
     public Button saveAndExit;
     public AnchorPane mainMenu;
-
-    public static String nameChosen;
+    public Slider sfxSlider;
+    public Slider musicSlider;
+    public ChoiceBox<String> themeChosen;
 
     @Override
     public void start(Stage stage) throws Exception {
-
+        //required to be declared
     }
 
     @FXML
@@ -51,36 +47,37 @@ public class MainMenuController extends Application {
 //        Scene gameScene = new Scene(boardRoot);
 //        gameStage.setScene(gameScene);
 //        gameStage.setTitle("Jackaroo");
+
         //close launcher
-        Stage stage = Main.getPrimaryStage();
+        Stage stage = Main.primaryStage;
         stage.close();
-        BoardView.setBoardPane();
+        BoardView.setBoardPane(nameLabel.getText());
         //show the board
         //gameStage.show();
     }
 
-
-    public void setName(ActionEvent actionEvent) {
-        //TODO: clean this garbage. Will be cleaned when UserSettings is implemented.
-        nameChosen = nameLabel.getText() == null ? nameLabel1.getText() : nameLabel.getText();
-    }
-
-    public void hideSettingsMenu(ActionEvent actionEvent) {
+    public void hideSettingsMenu(ActionEvent actionEvent) throws IOException {
         settingsPane.setVisible(false);
+        saveSettings();
     }
 
-    /*public Game initGame() {
+    @FXML
+    private void saveSettings() throws IOException {
+        String playerName = nameLabel.getText();
+        double sfx = sfxSlider.getValue();
+        double music = musicSlider.getValue();
+        String theme = themeChosen.getValue();
 
+        UserSettings settings = new UserSettings(playerName, sfx, music, theme);
+        settings.SaveSettings(settings);
     }
 
-    public Game initStartup() {
-        //initalizes the start menu.
+    public void loadValues() throws IOException {
+        UserSettings controller = new UserSettings();
+        UserSettings temp = controller.LoadSettings();
+        nameLabel.setText(temp.getName());
+        sfxSlider.setValue(temp.getSfx());
+        musicSlider.setValue(temp.getMusic());
+        themeChosen.setValue(temp.getTheme());
     }
-
-    @Override
-    public void start(Stage stage) throws Exception {
-
-    }
-
-     */
 }
