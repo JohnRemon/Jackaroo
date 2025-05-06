@@ -7,7 +7,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.net.URL;
+
 
 public class Main extends Application {
     public static Stage primaryStage;
@@ -22,11 +22,7 @@ public class Main extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("TitleScreen.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root);
-
-        URL css = getClass().getResource("application.css");
-        if (css != null) {
-            scene.getStylesheets().add(css.toExternalForm());
-        }
+        scene.getStylesheets().add(getClass().getResource("title_screen.css").toExternalForm());
         MainMenuController controller = loader.getController();
         controller.loadValues();
         primaryStage.setScene(scene);

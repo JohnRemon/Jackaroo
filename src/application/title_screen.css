@@ -1,0 +1,45 @@
+.mainBackground {
+    -fx-background-image: url("green.jpg");
+    -fx-background-size: cover;
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+    -fx-padding: 20;
+}
+
+/* Name label styling */
+.nameLabel {
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-align: center;
+}
+
+/* Text field styling */
+.nameTextField {
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-border-color: #cccccc;
+    -fx-border-width: 1;
+    -fx-background-color: rgba(255, 255, 255, 0.85);
+    -fx-padding: 5 10;
+    -fx-font-size: 18px;
+}
+
+/* Button styling */
+.mainButton {
+    -fx-background-color: white;
+    -fx-border-radius: 15;
+    -fx-background-radius: 15;
+    -fx-text-fill: #3B3B3B;
+    -fx-font-family: "Arial";
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-padding: 16 24;
+    -fx-cursor: hand;
+    -fx-alignment: center;
+}
+
+
+
+
+

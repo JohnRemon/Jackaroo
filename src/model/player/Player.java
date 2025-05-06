@@ -33,7 +33,12 @@ public class Player {
     }
 
     public Marble getOneMarble(){
-        return this.marbles.isEmpty() ? null : this.marbles.getFirst();
+        for(Marble marble : marbles){
+            if(marble != null){
+                return marble;
+            }
+        }
+        return null;
     }
 
     public void selectCard(Card card) throws InvalidCardException {
