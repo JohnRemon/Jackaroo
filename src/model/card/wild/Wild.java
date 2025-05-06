@@ -5,7 +5,11 @@ import engine.board.BoardManager;
 import model.card.Card;
 
 public abstract class Wild extends Card {
-    public Wild(String name, String description, BoardManager boardManager, GameManager gameManager){
+
+    private final String image;
+
+    public Wild(String name, String description, BoardManager boardManager, GameManager gameManager, String image) {
         super(name, description, boardManager, gameManager);
+        this.image = image;
     }
 }
