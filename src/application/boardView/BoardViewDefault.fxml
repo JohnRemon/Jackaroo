@@ -10,13 +10,8 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.boardView.BoardViewAlien">
+<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.boardView.BoardViewDefault">
    <children>
-      <ImageView fx:id="boardImage" fitHeight="800.0" fitWidth="800.0" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <image>
-            <Image url="@../../view/textures/alien/oard.png" />
-         </image>
-      </ImageView>
       <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <ImageView fitHeight="800.0" fitWidth="808.0" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-8.0" AnchorPane.topAnchor="0.0">
@@ -38,22 +33,22 @@
                   <Font name="System Bold" size="23.0" />
                </font>
             </Label>
-            <Label fx:id="CPU1Label" alignment="CENTER" layoutX="-48.0" layoutY="383.0" prefHeight="18.0" prefWidth="124.0" rotate="90.0" text="CPU1" textFill="#5fb961">
+            <Label fx:id="CPU1Label" alignment="CENTER" layoutX="-36.0" layoutY="368.0" prefHeight="18.0" prefWidth="124.0" rotate="90.0" text="CPU1" textFill="#5fb961">
                <font>
                   <Font name="System Bold" size="23.0" />
                </font>
             </Label>
-            <Label fx:id="CPU2Label" alignment="CENTER" layoutX="332.0" layoutY="14.0" prefHeight="18.0" prefWidth="124.0" text="CPU2" textFill="#5fb961">
+            <Label fx:id="CPU2Label" alignment="CENTER" layoutX="333.0" layoutY="5.0" prefHeight="18.0" prefWidth="124.0" text="CPU2" textFill="#5fb961">
                <font>
                   <Font name="System Bold" size="23.0" />
                </font>
             </Label>
-            <Label fx:id="CPU1RemainingCards" alignment="CENTER" layoutX="-13.0" layoutY="383.0" prefHeight="18.0" prefWidth="124.0" rotate="90.0" text="4" textFill="#5fb961">
+            <Label fx:id="CPU1RemainingCards" alignment="CENTER" layoutX="-13.0" layoutY="368.0" prefHeight="18.0" prefWidth="124.0" rotate="90.0" text="4" textFill="#5fb961">
                <font>
                   <Font name="System Bold" size="23.0" />
                </font>
             </Label>
-            <Label fx:id="CPU2RemainingCards" alignment="CENTER" layoutX="332.0" layoutY="48.0" prefHeight="18.0" prefWidth="124.0" text="4" textFill="#5fb961">
+            <Label fx:id="CPU2RemainingCards" alignment="CENTER" layoutX="332.0" layoutY="31.0" prefHeight="18.0" prefWidth="124.0" text="4" textFill="#5fb961">
                <font>
                   <Font name="System Bold" size="23.0" />
                </font>
