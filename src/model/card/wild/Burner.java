@@ -10,8 +10,10 @@ import java.util.ArrayList;
 
 public class Burner extends Wild{
 
+
+
     public Burner(String name, String description, BoardManager boardManager, GameManager gameManager){
-        super(name,description,boardManager,gameManager);
+        super(name,description,boardManager,gameManager, "burner.png");
     }
 
     @Override
