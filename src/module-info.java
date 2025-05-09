@@ -4,6 +4,7 @@ module Jackaroo {
     requires junit;
     requires java.desktop;
     requires javafx.media;
+    requires com.google.gson;
 
     opens application;
     opens application.boardView;

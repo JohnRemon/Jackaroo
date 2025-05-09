@@ -32,5 +32,6 @@
         <jarDirectory url="file://C:/Programming/junit4-r4.13.2/lib" recursive="false" type="SOURCES" />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="gson-2.10.1" level="project" />
   </component>
 </module>

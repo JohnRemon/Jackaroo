@@ -1,11 +1,13 @@
 package application.boardView;
 
+import application.PegLoader;
 import engine.Game;
 import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
 import javafx.animation.ScaleTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -21,9 +23,11 @@ import javafx.util.Duration;
 import model.Colour;
 import model.player.Player;
 import javafx.scene.media.AudioClip;
-
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class BoardView {
 
@@ -58,6 +62,7 @@ public class BoardView {
     @FXML
     private Rectangle firePit;
 
+    private Map<Integer, Circle> trackCells = new HashMap<>();
 
     private Game game;
 
@@ -130,25 +135,46 @@ public class BoardView {
         });
     }
 
+
+
+
     private void drawTrack(double width, double height) {
-        int cellSize = 20;
-        double radius = 250;
-        double centerX = width / 2;
-        double centerY = height / 2;
+        trackpane.getChildren().clear(); // Clear existing cells
+        System.out.println("Drawing track with width: " + width + ", height: " + height);
 
-        for (int i = 0; i < 100; i++) {
-            double angle = 2 * Math.PI * i / 100;
-            double x = centerX + radius * Math.cos(angle);
-            double y = centerY + radius * Math.sin(angle);
+        // Load traced positions from JSON
+        List<Point2D> pegPositions = PegLoader.loadPegsFromJson();
 
-            Circle cell = new Circle(cellSize / 2);
-            cell.setCenterX(x);
-            cell.setCenterY(y);
-            cell.setFill(Color.LIGHTGRAY);
-            cell.setStroke(Color.BLACK);
-
-            trackpane.getChildren().add(cell);
+        if (pegPositions == null || pegPositions.isEmpty()) {
+            System.err.println("Error: Failed to load peg positions or list is empty.");
+            return;
         }
+
+        // Take the first 100 positions if more are present
+        List<Point2D> trimmedPositions = pegPositions.subList(0, Math.min(100, pegPositions.size()));
+        if (trimmedPositions.size() != 100) {
+            System.err.println("Warning: Trimmed to " + trimmedPositions.size() + " peg positions.");
+        } else {
+            System.out.println("Successfully loaded 100 peg positions.");
+        }
+
+        // Log the first and last points for debugging
+        System.out.println("First point: x=" + (width * trimmedPositions.get(0).getX()) + ", y=" + (height * trimmedPositions.get(0).getY()));
+        System.out.println("Last point: x=" + (width * trimmedPositions.get(99).getX()) + ", y=" + (height * trimmedPositions.get(99).getY()));
+
+        // Draw the track cells using the trimmed positions
+        for (int i = 0; i < trimmedPositions.size(); i++) {
+            Point2D relPos = trimmedPositions.get(i);
+            double x = width * relPos.getX();
+            double y = height * relPos.getY();
+            Circle peg = new Circle(x, y, 7, Color.BLACK);
+            peg.setStroke(Color.WHITE);
+            peg.setStrokeWidth(1.5);
+            peg.setId("cell" + i); // Add ID for reference
+            trackCells.put(i, peg);
+            trackpane.getChildren().add(peg);
+        }
+        System.out.println("Track drawing complete. Added " + trackCells.size() + " cells.");
     }
 
     // Firepit
@@ -161,7 +187,7 @@ public class BoardView {
 
         // has an issue with returning null will solve it later
 
-        addHoverEffect(cardImage);
+//        addHoverEffect(cardImage);
     }
 
     Node cardImage = null;
@@ -171,7 +197,6 @@ public class BoardView {
         burnSound.play();
 
         // Cards integrated here....
-
 
         FadeTransition fade = new FadeTransition(Duration.seconds(1.5), cardImage);
         fade.setFromValue(1.0);
@@ -194,25 +219,4 @@ public class BoardView {
 
     // card hovering
 
-    private void addHoverEffect(Node node) {
-        DropShadow glow = new DropShadow(20, Color.GOLD);
-
-        node.setOnMouseEntered(e -> {
-            node.setEffect(glow);
-
-            ScaleTransition scaleUp = new ScaleTransition(Duration.millis(200), node);
-            scaleUp.setToX(1.1);
-            scaleUp.setToY(1.1);
-            scaleUp.play();
-        });
-
-        node.setOnMouseExited(e -> {
-            node.setEffect(null);
-
-            ScaleTransition scaleDown = new ScaleTransition(Duration.millis(200), node);
-            scaleDown.setToX(1.0);
-            scaleDown.setToY(1.0);
-            scaleDown.play();
-        });
-    }
 }

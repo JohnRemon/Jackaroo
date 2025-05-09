@@ -128,12 +128,7 @@
             </Text>
             <Pane fx:id="trackpane" layoutX="172.0" layoutY="133.0" minHeight="495.0" minWidth="758.0" prefHeight="501.0" prefWidth="758.0" style="-fx-background-color: lightgrey;">
 
-               <!-- Home Zones -->
-               <Pane fx:id="playerHomeZone" layoutX="50.0" layoutY="50.0" prefHeight="52.0" prefWidth="52.0" style="-fx-border-color: black; -fx-background-color: red;" />
-               <Pane fx:id="cpu1HomeZone" layoutX="658.0" layoutY="50.0" prefHeight="52.0" prefWidth="52.0" style="-fx-border-color: black; -fx-background-color: yellow;" />
-               <Pane fx:id="cpu2HomeZone" layoutX="658.0" layoutY="407.0" prefHeight="52.0" prefWidth="52.0" style="-fx-border-color: black; -fx-background-color: blue;" />
-               <Pane fx:id="cpu3HomeZone" layoutX="50.0" layoutY="407.0" prefHeight="52.0" prefWidth="52.0" style="-fx-border-color: black; -fx-background-color: green;" />
-               <ImageView fitHeight="88.0" fitWidth="91.0" layoutX="335.0" layoutY="231.0" pickOnBounds="true" preserveRatio="true">
+               <ImageView fitHeight="88.0" fitWidth="91.0" layoutX="334.0" layoutY="206.5" pickOnBounds="true" preserveRatio="true">
                   <image>
                      <Image url="@images/Firepit.jpg" />
                   </image>
