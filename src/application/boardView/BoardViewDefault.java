@@ -1,34 +1,19 @@
 package application.boardView;
 
 import application.Main;
-import application.UserSettings;
 import engine.Game;
-import exception.InvalidCardException;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import model.card.Card;
-import model.player.Player;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
-import static application.Main.getPrimaryStage;
-
-public class BoardViewAlien extends BoardView {
-    public static void setBoardPaneAlien(String username) throws IOException {
-        FXMLLoader loader = new FXMLLoader(BoardViewAlien.class.getResource("BoardViewAlien.fxml"));
+public class BoardViewDefault extends BoardView{
+    public static void setBoardPaneDefault(String username) throws IOException {
+        FXMLLoader loader = new FXMLLoader(BoardViewDefault.class.getResource("BoardViewDefault.fxml"));
         Parent boardRoot = loader.load();
-        BoardViewAlien controller = loader.getController();
+        BoardViewDefault controller = loader.getController();
         Game game = new Game(username);
         // Set all the static objects in place
         controller.initGame(game);
@@ -49,7 +34,7 @@ public class BoardViewAlien extends BoardView {
             }
         });
 
-        gameScene.getRoot().requestFocus();
+        gameScene.getRoot().requestFocus(); // Ensure the anchor pane is taking input correctly
         stage.setResizable(false);
         stage.centerOnScreen();
         stage.show();

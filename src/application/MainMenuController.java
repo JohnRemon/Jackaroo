@@ -2,6 +2,7 @@ package application;
 
 import application.boardView.BoardView;
 import application.boardView.BoardViewAlien;
+import application.boardView.BoardViewDefault;
 import engine.Game;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -56,12 +57,11 @@ public class MainMenuController extends Application {
 
         //close launcher
         Stage stage = Main.primaryStage;
-        stage.close();
         switch (userSettings.getTheme())
         {
-            case "default": BoardView.setBoardPane(nameLabel.getText());
+            case "default": BoardViewDefault.setBoardPaneDefault(nameLabel.getText());
             break;
-            case "Alien": BoardViewAlien.setBoardPane(nameLabel.getText());
+            case "Alien": BoardViewAlien.setBoardPaneAlien(nameLabel.getText());
             break;
         }
         //show the board
