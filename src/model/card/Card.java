@@ -22,6 +22,7 @@ public abstract class Card {
         this.gameManager = gameManager;
     }
 
+    public abstract String getFileName();
 
     public boolean validateMarbleSize(ArrayList<Marble> marbles){
         return marbles.size() == 1;

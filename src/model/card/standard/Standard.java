@@ -34,5 +34,7 @@ public class Standard extends Card {
     public Suit getSuit() {
         return suit;
     }
-    public String getImage() {return image;}
+    public String getFileName() {
+        return image;
+    }
 }

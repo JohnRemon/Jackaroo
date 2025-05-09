@@ -15,6 +15,9 @@ public class Burner extends Wild{
     public Burner(String name, String description, BoardManager boardManager, GameManager gameManager){
         super(name,description,boardManager,gameManager, "burner.png");
     }
+    public String getFileName() {
+        return "burner.png";
+    }
 
     @Override
     public boolean validateMarbleColours(ArrayList<Marble> marbles){

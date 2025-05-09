@@ -3,6 +3,8 @@ package model.player;
 import exception.GameException;
 import exception.InvalidCardException;
 import exception.InvalidMarbleException;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import model.Colour;
 import model.card.Card;
 import java.util.ArrayList;
@@ -78,6 +80,17 @@ public class Player {
 
     public Colour getColour() {
         return colour;
+    }
+    public Paint getColourFX()
+    {
+        switch(colour) {
+            case RED -> {return Color.RED;}
+            case BLUE -> {return Color.BLUE;}
+            case GREEN -> {return Color.GREEN;}
+            case YELLOW -> {return Color.YELLOW;}
+            default -> {return Color.BLACK;}
+        }
+
     }
 
     public ArrayList<Card> getHand() {
