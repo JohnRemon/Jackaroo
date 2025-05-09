@@ -13,6 +13,10 @@ public class Saver extends Wild {
         super(name, description, boardManager, gameManager, "saver.png");
     }
 
+    public String getFileName() {
+        return "saver.png";
+    }
+
     public void act(ArrayList<Marble> marbles) throws ActionException, InvalidMarbleException {
         boardManager.sendToSafe(marbles.getFirst());
     }

@@ -1,6 +1,7 @@
 package application;
 
 import application.boardView.BoardView;
+import application.boardView.BoardViewAlien;
 import engine.Game;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -28,6 +29,10 @@ public class MainMenuController extends Application {
     public Slider sfxSlider;
     public Slider musicSlider;
     public ChoiceBox<String> themeChosen;
+    public final UserSettings userSettings = new UserSettings().LoadSettings();
+
+    public MainMenuController() throws IOException {
+    }
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -36,6 +41,7 @@ public class MainMenuController extends Application {
 
     @FXML
     public void openSettings(ActionEvent actionEvent) throws IOException {
+        themeChosen.getItems().addAll("default", "Alien");
         settingsPane.setVisible(true);
     }
     @FXML
@@ -51,7 +57,13 @@ public class MainMenuController extends Application {
         //close launcher
         Stage stage = Main.primaryStage;
         stage.close();
-        BoardView.setBoardPane(nameLabel.getText());
+        switch (userSettings.getTheme())
+        {
+            case "default": BoardView.setBoardPane(nameLabel.getText());
+            break;
+            case "Alien": BoardViewAlien.setBoardPane(nameLabel.getText());
+            break;
+        }
         //show the board
         //gameStage.show();
     }
