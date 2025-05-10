@@ -114,8 +114,13 @@ public abstract class BoardView {
         CPU3RemainingCards.setText(players.get(3).getHand().size() + "");
     }
     public void returnMainMenu() throws IOException {
+        UserSettings currentSettings = new UserSettings().LoadSettings();
+        currentSettings.SaveSettings(currentSettings);
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/TitleScreen.fxml"));
         Parent root = loader.load();
+        MainMenuController controller = loader.getController();
+        controller.loadValues();
         Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("/application/title_screen.css").toExternalForm());
 
