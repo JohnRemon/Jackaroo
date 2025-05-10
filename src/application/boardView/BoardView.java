@@ -1,5 +1,6 @@
 package application.boardView;
 
+import application.MainMenuController;
 import application.UserSettings;
 import engine.Game;
 import exception.InvalidCardException;
@@ -20,6 +21,7 @@ import model.card.Card;
 import model.player.Player;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -48,7 +50,7 @@ public abstract class BoardView {
 
             for (int i = 0; i < playerCardsImages.size(); i++) {
                 ImageView iv = playerCardsImages.get(i);
-                iv.setFitHeight(i == index ? 110 : 100);
+                iv.setFitHeight(i == index ? 100 : 90);
             }
 
         } catch (InvalidCardException | IndexOutOfBoundsException e) {
@@ -56,7 +58,7 @@ public abstract class BoardView {
         }
     }
 
-    public void initGame(Game game) {
+    public void initGame(Game game) throws IOException {
         this.assignPlayers(game);
         this.assignCards(game);
     }
@@ -68,10 +70,17 @@ public abstract class BoardView {
         ArrayList<Card> playerCards = game.getPlayers().get(0).getHand();
         for (Card card : playerCards) {
             String imageLocation = "/view/textures/cards/" + card.getFileName();
-            Image texture = new Image(Objects.requireNonNull(getClass().getResourceAsStream(imageLocation)));
+            Image texture = null;
+            InputStream stream = getClass().getResourceAsStream(imageLocation);
+            if (stream == null) {
+                System.out.println("Image not found at: " + imageLocation);
+            } else {
+                texture = new Image(stream);
+            }
+
             ImageView imageView = new ImageView(texture);
 
-            imageView.setFitHeight(100);
+            imageView.setFitHeight(90);
             imageView.preserveRatioProperty().set(true);
 
             playerCardsRow.getChildren().add(imageView);
@@ -79,8 +88,8 @@ public abstract class BoardView {
         }
     }
 
-    public void assignPlayers(Game game) {
-        UserSettings settings = new UserSettings();
+    public void assignPlayers(Game game) throws IOException {
+        UserSettings settings = new UserSettings().LoadSettings();
         ArrayList<Player> players = game.getPlayers();
 
         playerLabel.setText(settings.getName());
@@ -104,16 +113,15 @@ public abstract class BoardView {
         CPU2RemainingCards.setText(players.get(2).getHand().size() + "");
         CPU3RemainingCards.setText(players.get(3).getHand().size() + "");
     }
-
     public void returnMainMenu() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/TitleScreen.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("/application/title_screen.css").toExternalForm());
 
-        Stage stage = (Stage) rootPane.getScene().getWindow(); // Reuse the current stage
+        Stage stage = (Stage) rootPane.getScene().getWindow();
         stage.setScene(scene);
-        stage.centerOnScreen(); // Center the window on the screen
+        stage.centerOnScreen();
         stage.show();
     }
 }
