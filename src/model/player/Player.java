@@ -67,6 +67,7 @@ public class Player {
 
 
     public void play() throws GameException {
+        System.out.println("Selected card: " + selectedCard.getName());
         if (selectedCard == null)
             throw new InvalidCardException("No card selected!");
         if (!selectedCard.validateMarbleSize(selectedMarbles) || !selectedCard.validateMarbleColours(selectedMarbles))

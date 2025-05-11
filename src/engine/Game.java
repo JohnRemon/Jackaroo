@@ -100,8 +100,7 @@ public class Game implements GameManager {
 
     public boolean canPlayTurn() {
         Player player = players.get(currentPlayerIndex);
-        int size = player.getHand().size();
-        return size == turn;
+        return player.getHand().size() + turn == 4;
     }
 
     public void playPlayerTurn() throws GameException {
@@ -110,40 +109,29 @@ public class Game implements GameManager {
     }
 
     public void endPlayerTurn() {
-        Player player = players.get(currentPlayerIndex);
+        Card selected = players.get(currentPlayerIndex).getSelectedCard();
+        players.get(currentPlayerIndex).getHand().remove(selected);
+        firePit.add(selected);
+        players.get(currentPlayerIndex).deselectAll();
 
-        //remove the selected card and add it to the firepit
-        if (player.getHand() != null && !player.getHand().isEmpty()) {
-            firePit.add(player.getSelectedCard());
-            player.getHand().remove(player.getSelectedCard());
-        }
+        currentPlayerIndex = (currentPlayerIndex + 1) % 4;
 
-        //deselect everything
-        player.deselectAll();
-
-        //move onto the next player
-        currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
-
-        //if player 4 then we start a new turn
-        if(currentPlayerIndex == 0){
+        if(currentPlayerIndex == 0 && turn < 3)
             turn++;
-        }
-        //start a new round
-        if(turn % players.size() == 0){
-            //reset the turn
+
+        else if (currentPlayerIndex == 0 && turn == 3) {
             turn = 0;
-
-
-            //refill players' hands
-            for(Player p : players){
-                //refill the cardPool
-                if(getPoolSize() < 4){
-                    refillPool(firePit);
+            for (Player p : players) {
+                if(Deck.getPoolSize() < 4) {
+                    Deck.refillPool(firePit);
                     firePit.clear();
                 }
-                p.setHand(drawCards());
+                ArrayList<Card> newHand = Deck.drawCards();
+                p.setHand(newHand);
             }
+
         }
+
     }
 
     public Colour checkWin() {
@@ -225,4 +213,11 @@ public class Game implements GameManager {
     }
 
 
+    public int getCurrentPlayerIndex() {
+        return currentPlayerIndex % players.size();
+    }
+
+    public int getNextPlayerIndex(){
+        return (currentPlayerIndex + 1) % players.size();
+    }
 }

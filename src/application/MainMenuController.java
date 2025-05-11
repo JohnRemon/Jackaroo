@@ -4,6 +4,7 @@ import application.boardView.BoardView;
 import application.boardView.BoardViewAlien;
 import application.boardView.BoardViewDefault;
 import engine.Game;
+import exception.GameException;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -48,7 +49,7 @@ public class MainMenuController extends Application {
         settingsPane.setVisible(true);
     }
     @FXML
-    private void transitionToBoard(ActionEvent event) throws IOException {
+    private void transitionToBoard(ActionEvent event) throws IOException, GameException {
 //        FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/boardView/boardView.fxml"));
 //        Parent boardRoot = loader.load();
 //

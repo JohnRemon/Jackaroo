@@ -4,6 +4,7 @@ import engine.GameManager;
 import engine.board.BoardManager;
 import exception.ActionException;
 import exception.InvalidMarbleException;
+import model.Colour;
 import model.player.Marble;
 
 import java.util.ArrayList;
@@ -28,8 +29,14 @@ public abstract class Card {
         return marbles.size() == 1;
     }
     public boolean validateMarbleColours(ArrayList<Marble> marbles) {
-        if (!validateMarbleSize(marbles)) return false;
-        return gameManager.getActivePlayerColour().equals(marbles.get(0).getColour());
+        Colour ownerColour = gameManager.getActivePlayerColour();
+        boolean sameColour = true;
+        for (Marble marble : marbles) {
+            if (marble.getColour() != ownerColour) {
+                sameColour = false;
+            }
+        }
+        return sameColour;
     }
 
     public abstract void act(ArrayList<Marble> marbles) throws ActionException, InvalidMarbleException;
