@@ -1,5 +1,7 @@
 package model.card;
 
+import java.util.ArrayList;
+
 import engine.GameManager;
 import engine.board.BoardManager;
 import exception.ActionException;
@@ -7,11 +9,8 @@ import exception.InvalidMarbleException;
 import model.Colour;
 import model.player.Marble;
 
-import java.util.ArrayList;
-
-
 public abstract class Card {
-    private final String name;
+	private final String name;
     private final String description;
     protected BoardManager boardManager;
     protected GameManager gameManager;
@@ -23,11 +22,20 @@ public abstract class Card {
         this.gameManager = gameManager;
     }
 
-    public abstract String getFileName();
+    public String getName() {
+        return name;
+    }
 
-    public boolean validateMarbleSize(ArrayList<Marble> marbles){
+    public String getDescription() {
+        return description;
+    }
+    
+    public abstract void act(ArrayList<Marble> marbles) throws ActionException, InvalidMarbleException;
+    
+    public boolean validateMarbleSize(ArrayList<Marble> marbles) {
         return marbles.size() == 1;
     }
+    
     public boolean validateMarbleColours(ArrayList<Marble> marbles) {
         Colour ownerColour = gameManager.getActivePlayerColour();
         boolean sameColour = true;
@@ -38,23 +46,6 @@ public abstract class Card {
         }
         return sameColour;
     }
-
-    public abstract void act(ArrayList<Marble> marbles) throws ActionException, InvalidMarbleException;
-
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    //gameManager and boardManager getters
-    public BoardManager getBoardManager() {
-        return boardManager;
-    }
-
-    public GameManager getGameManager() {
-        return gameManager;
-    }
+    public abstract String getFileName();
+    
 }

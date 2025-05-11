@@ -1,32 +1,29 @@
 package model.card.wild;
 
+import java.util.ArrayList;
+
 import engine.GameManager;
 import engine.board.BoardManager;
 import exception.ActionException;
 import exception.InvalidMarbleException;
 import model.player.Marble;
 
-import java.util.ArrayList;
+public class Burner extends Wild {
 
-public class Burner extends Wild{
-
-
-
-    public Burner(String name, String description, BoardManager boardManager, GameManager gameManager){
-        super(name,description,boardManager,gameManager, "burner.png");
+    public Burner(String name, String description, BoardManager boardManager, GameManager gameManager) {
+        super(name, description, boardManager, gameManager);
     }
     public String getFileName() {
         return "burner.png";
     }
-
     @Override
-    public boolean validateMarbleColours(ArrayList<Marble> marbles){
-        if (marbles.isEmpty()) return false;
-        return !gameManager.getActivePlayerColour().equals(marbles.get(0).getColour());
+    public boolean validateMarbleColours(ArrayList<Marble> marbles) {
+        return !super.validateMarbleColours(marbles);
     }
 
     @Override
     public void act(ArrayList<Marble> marbles) throws ActionException, InvalidMarbleException {
         boardManager.destroyMarble(marbles.get(0));
     }
+    
 }
