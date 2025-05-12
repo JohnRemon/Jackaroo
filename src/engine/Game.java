@@ -8,6 +8,7 @@ import exception.*;
 import model.Colour;
 import model.card.Card;
 import model.card.Deck;
+import model.card.standard.King;
 import model.player.CPU;
 import model.player.Marble;
 import model.player.Player;
@@ -223,6 +224,5 @@ public class Game implements GameManager {
     public Colour getNextPlayerColour() {
         return players.get((currentPlayerIndex + 1) % players.size()).getColour();
     }
-
 
 }
