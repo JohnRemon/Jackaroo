@@ -4,9 +4,12 @@ import application.boardView.BoardView;
 import engine.Game;
 import exception.GameException;
 import exception.InvalidMarbleException;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.shape.Circle;
 import model.card.Deck;
 import model.player.CPU;
 import model.player.Player;
@@ -20,6 +23,7 @@ public class GameController {
     private final BoardView boardView;
     private Scene scene;
 
+
     public GameController(Game game, BoardView boardView, Scene scene) {
         this.game = game;
         this.boardView = boardView;
@@ -30,20 +34,19 @@ public class GameController {
         Player currentPlayer = game.getPlayers().get(game.getCurrentPlayerIndex());
         Player nextPlayer = game.getPlayers().get(game.getNextPlayerIndex());
 
-        System.out.println(currentPlayer.getMarbles().size());
+        System.out.println("Home Marbles: " + currentPlayer.getMarbles().size());
+        System.out.println("Hand Size: " + currentPlayer.getHand().size());
 
         System.out.println(currentPlayer.getName() + " turn");
 
         if (!(currentPlayer instanceof CPU)) {
             scene.setOnKeyPressed(event -> {
-                System.out.println(event.getCode());
                 switch (event.getCode()) {
                     case DIGIT1 -> boardView.selectCard(0, game);
                     case DIGIT2 -> boardView.selectCard(1, game);
                     case DIGIT3 -> boardView.selectCard(2, game);
                     case DIGIT4 -> boardView.selectCard(3, game);
                     case ENTER -> {
-                        System.out.println("ENTER key detected");
                         if (game.canPlayTurn()) {
                             try {
                                 game.playPlayerTurn();
@@ -82,5 +85,9 @@ public class GameController {
             System.out.println("Next turn");
             handleTurn();
         }
+    }
+
+    public Game getGame() {
+        return game;
     }
 }

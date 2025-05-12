@@ -7,6 +7,7 @@ import application.UserSettings;
 import engine.Game;
 import exception.GameException;
 import exception.InvalidCardException;
+import exception.InvalidMarbleException;
 import javafx.embed.swing.JFXPanel;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,23 +19,28 @@ import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import model.Colour;
 import model.card.Card;
+import model.player.Marble;
 import model.player.Player;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Objects;
 import model.card.Deck;
 
 public abstract class BoardView {
     public ArrayList<ImageView> playerCardsImages = new ArrayList<>();
     @FXML public AnchorPane rootPane;
-    @FXML public ImageView gridImage;
     @FXML public ImageView boardImage;
     @FXML public Label playerLabel;
     @FXML public Label CPU1Label;
@@ -47,7 +53,29 @@ public abstract class BoardView {
     @FXML public TextArea cardDescription;
     @FXML public Button returnMainMenu;
     private GameController gameController;
+    @FXML private Circle PlayerMarbleOne;
+    @FXML private Circle PlayerMarbleTwo;
+    @FXML private Circle PlayerMarbleThree;
+    @FXML private Circle PlayerMarbleFour;
 
+    @FXML private Circle CPU1MarbleOne;
+    @FXML private Circle CPU1MarbleTwo;
+    @FXML private Circle CPU1MarbleThree;
+    @FXML private Circle CPU1MarbleFour;
+
+    @FXML private Circle CPU2MarbleOne;
+    @FXML private Circle CPU2MarbleTwo;
+    @FXML private Circle CPU2MarbleThree;
+    @FXML private Circle CPU2MarbleFour;
+
+    @FXML private Circle CPU3MarbleOne;
+    @FXML private Circle CPU3MarbleTwo;
+    @FXML private Circle CPU3MarbleThree;
+    @FXML private Circle CPU3MarbleFour;
+
+    @FXML private GridPane gridInshallah;
+
+    private final HashMap<Circle, Marble> marbleMapping = new HashMap<>();
     public void selectCard(int index, Game game) {
         try {
             Player player = game.getPlayers().get(0);
@@ -65,6 +93,34 @@ public abstract class BoardView {
         }
     }
 
+
+    public void selectMarble(MouseEvent event) {
+        Circle circle = (Circle) event.getSource();
+        Player humanPlayer = gameController.getGame().getPlayers().get(0);
+        marbleMapping.put(PlayerMarbleOne, humanPlayer.getMarbles().get(0));
+        marbleMapping.put(PlayerMarbleTwo, humanPlayer.getMarbles().get(1));
+        marbleMapping.put(PlayerMarbleThree, humanPlayer.getMarbles().get(2));
+        marbleMapping.put(PlayerMarbleFour, humanPlayer.getMarbles().get(3));
+        Marble marble = marbleMapping.get(circle);
+
+        if(circle.getFill().equals(humanPlayer.getColourFX())){
+            Boolean isSelected = (Boolean) circle.getProperties().getOrDefault("selected", false);
+            try{
+                if(isSelected){
+                    circle.getProperties().put("selected", false);
+                    circle.setRadius(circle.getRadius() - 2);
+                    humanPlayer.getSelectedMarbles().remove(marble);
+                }else{
+                    circle.getProperties().put("selected", true);
+                    circle.setRadius(circle.getRadius() + 2);
+                    humanPlayer.selectMarble(marble);
+                }
+            }catch(InvalidMarbleException e){
+                e.printStackTrace();
+            }
+        }
+
+    }
 
     public void assignCards(Game game) {
         playerCardsRow.getChildren().clear();
@@ -109,16 +165,40 @@ public abstract class BoardView {
         CPU2RemainingCards.setTextFill(players.get(2).getColourFX());
         CPU3RemainingCards.setTextFill(players.get(3).getColourFX());
 
+        playerLabel.setTextFill(players.get(0).getColourFX());
+        CPU1Label.setTextFill(players.get(1).getColourFX());
+        CPU2Label.setTextFill(players.get(2).getColourFX());
+        CPU3Label.setTextFill(players.get(3).getColourFX());
+
+        CPU1RemainingCards.setTextFill(players.get(1).getColourFX());
+        CPU2RemainingCards.setTextFill(players.get(2).getColourFX());
+        CPU3RemainingCards.setTextFill(players.get(3).getColourFX());
+
+        // Set marble colors based on player colors
+        PlayerMarbleOne.setFill(players.get(0).getColourFX());
+        PlayerMarbleTwo.setFill(players.get(0).getColourFX());
+        PlayerMarbleThree.setFill(players.get(0).getColourFX());
+        PlayerMarbleFour.setFill(players.get(0).getColourFX());
+
+        CPU1MarbleOne.setFill(players.get(1).getColourFX());
+        CPU1MarbleTwo.setFill(players.get(1).getColourFX());
+        CPU1MarbleThree.setFill(players.get(1).getColourFX());
+        CPU1MarbleFour.setFill(players.get(1).getColourFX());
+
+        CPU2MarbleOne.setFill(players.get(2).getColourFX());
+        CPU2MarbleTwo.setFill(players.get(2).getColourFX());
+        CPU2MarbleThree.setFill(players.get(2).getColourFX());
+        CPU2MarbleFour.setFill(players.get(2).getColourFX());
+
+        CPU3MarbleOne.setFill(players.get(3).getColourFX());
+        CPU3MarbleTwo.setFill(players.get(3).getColourFX());
+        CPU3MarbleThree.setFill(players.get(3).getColourFX());
+        CPU3MarbleFour.setFill(players.get(3).getColourFX());
 
     }
 
     public void updateCounters(Game game) {
         ArrayList<Player> players = game.getPlayers();
-
-        System.out.println("Player Remaining Cards: " + players.get(0).getHand().size());
-        System.out.println("CPU1 Remaining Cards: " + players.get(1).getHand().size());
-        System.out.println("CPU2 Remaining Cards: " + players.get(2).getHand().size());
-        System.out.println("CPU3 Remaining Cards: " + players.get(3).getHand().size());
 
         CPU1RemainingCards.setText(players.get(1).getHand().size() + "");
         CPU2RemainingCards.setText(players.get(2).getHand().size() + "");
@@ -160,12 +240,35 @@ public abstract class BoardView {
         stage.setResizable(false);
         stage.centerOnScreen();
         boardRoot.requestFocus();
+        controller.testTrack(game);
         stage.show();
 
         // Initialize the game and pass the Scene explicitly
         GameController gameController = new GameController(game, controller, gameScene);
+        controller.setGameController(gameController);
         controller.assignPlayers(game);
         controller.assignCards(game);
         gameController.handleTurn();
+    }
+
+    public void setGameController(GameController gameController) {
+        this.gameController = gameController;
+    }
+
+    private void testTrack(Game game){
+        GridLoader.loadGrid();
+        ArrayList<int[]> grid = GridLoader.getGrid();
+        for (int i = 0; i < grid.size(); i++)
+        {
+            Circle marble = new Circle();
+            marble.setFill(Color.RED);
+            marble.setRadius(10);
+
+            int[] point = grid.get(i);
+            GridPane.setRowIndex(marble, point[0]);
+            GridPane.setColumnIndex(marble, point[1]);
+
+            gridInshallah.getChildren().add(marble);
+        }
     }
 }

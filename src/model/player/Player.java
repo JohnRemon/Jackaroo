@@ -114,4 +114,8 @@ public class Player {
         }
 
     }
+
+    public ArrayList<Marble> getSelectedMarbles() {
+        return selectedMarbles;
+    }
 }

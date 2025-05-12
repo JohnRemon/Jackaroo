@@ -55,6 +55,7 @@ public class CPU extends Player {
                     try {
                         // Attempt to act with no marbles if the count is 0.
                         getSelectedCard().act(new ArrayList<>());
+                        System.out.println("Acting with no marbles" + getSelectedCard().getName());
                         return; // Return after successful action.
                     }
                     catch(Exception e) {
@@ -70,6 +71,7 @@ public class CPU extends Player {
                         if(card.validateMarbleColours(toSend)) {
                             try {
                                 getSelectedCard().act(toSend);
+                                System.out.println("Acting with one marble" + getSelectedCard().getName());
                                 return; // Return after successful action.
                             }
                             catch(Exception e) {
@@ -90,6 +92,7 @@ public class CPU extends Player {
                             if(card.validateMarbleColours(toSend)) {
                                 try {
                                     getSelectedCard().act(toSend);
+                                    System.out.println("Acting with two marbles" + getSelectedCard().getName());
                                     return; // Return after successful action.
                                 }
                                 catch(Exception e) {
@@ -104,8 +107,10 @@ public class CPU extends Player {
         }
         
         // If no cards were played, select the first card by default.
-        if (cards.size() == initialHandSize)
+        if (cards.size() == initialHandSize) {
             this.selectCard(this.getHand().get(0));
+            System.out.println("Acting with no cards");
+        }
     }
     
 }
