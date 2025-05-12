@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.effect.ColorAdjust?>
@@ -66,8 +67,9 @@
                   <Font name="System Bold" size="23.0" />
                </font>
             </Label>
-            <GridPane fx:id="gridInshallah" layoutX="167.0" layoutY="-5.6" prefHeight="689.0" prefWidth="508.0" AnchorPane.bottomAnchor="116.79999999999995" AnchorPane.leftAnchor="167.0" AnchorPane.rightAnchor="125.79999999999995" AnchorPane.topAnchor="-5.6">
+            <GridPane fx:id="gridInshallah" layoutX="178.4" layoutY="0.19999999999999996" prefHeight="689.0" prefWidth="508.0" AnchorPane.bottomAnchor="111.0" AnchorPane.leftAnchor="178.4" AnchorPane.rightAnchor="114.39999999999998" AnchorPane.topAnchor="0.19999999999999996">
                <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -123,13 +125,8 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
-               <children>
-                  <Circle fx:id="CPU2MarbleOne" fill="DODGERBLUE" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="10" GridPane.rowIndex="3" />
-                  <Circle fx:id="CPU2MarbleTwo" fill="DODGERBLUE" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="11" GridPane.rowIndex="3" />
-                  <Circle fx:id="CPU2MarbleThree" fill="DODGERBLUE" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="12" GridPane.rowIndex="3" />
-                  <Circle fx:id="CPU2MarbleFour" fill="DODGERBLUE" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="13" GridPane.rowIndex="3" />
-               </children>
             </GridPane>
             <Circle fx:id="CPU3MarbleThree" fill="DODGERBLUE" layoutX="716.0" layoutY="410.0" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
             <Circle fx:id="CPU3MarbleFour" fill="DODGERBLUE" layoutX="716.0" layoutY="430.0" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
@@ -139,6 +136,10 @@
             <Circle fx:id="CPU1MarbleFour" fill="DODGERBLUE" layoutX="76.0" layoutY="371.0" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
             <Circle fx:id="CPU1MarbleTwo" fill="DODGERBLUE" layoutX="76.0" layoutY="410.0" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
             <Circle fx:id="CPU1MarbleOne" fill="DODGERBLUE" layoutX="76.0" layoutY="430.0" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle fx:id="CPU2MarbleOne" fill="DODGERBLUE" layoutX="374.0" layoutY="92.0" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle fx:id="CPU2MarbleTwo" fill="DODGERBLUE" layoutX="394.0" layoutY="92.0" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle fx:id="CPU2MarbleFour" fill="DODGERBLUE" layoutX="433.0" layoutY="92.0" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle fx:id="CPU2MarbleThree" fill="DODGERBLUE" layoutX="413.0" layoutY="92.0" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
          </children>
       </AnchorPane>
       <AnchorPane prefHeight="188.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="612.0">
@@ -153,6 +154,7 @@
             <Circle fx:id="PlayerMarbleThree" fill="DODGERBLUE" layoutX="749.0" layoutY="160.0" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
             <Circle fx:id="PlayerMarbleTwo" fill="DODGERBLUE" layoutX="721.0" layoutY="160.0" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
             <Circle fx:id="PlayerMarbleOne" fill="DODGERBLUE" layoutX="693.0" layoutY="160.0" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
+            <Button layoutX="362.0" layoutY="147.0" mnemonicParsing="false" onAction="#returnMainMenu" text="Main Menu" />
          </children>
       </AnchorPane>
    </children>

@@ -5,38 +5,37 @@ import application.Main;
 import application.MainMenuController;
 import application.UserSettings;
 import engine.Game;
+import engine.board.Board;
 import exception.GameException;
 import exception.InvalidCardException;
 import exception.InvalidMarbleException;
-import javafx.embed.swing.JFXPanel;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
-import model.Colour;
 import model.card.Card;
 import model.player.Marble;
 import model.player.Player;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Objects;
-import model.card.Deck;
 
 public abstract class BoardView {
     public ArrayList<ImageView> playerCardsImages = new ArrayList<>();
@@ -74,6 +73,7 @@ public abstract class BoardView {
     @FXML private Circle CPU3MarbleFour;
 
     @FXML private GridPane gridInshallah;
+    private Board board;
 
     private final HashMap<Circle, Marble> marbleMapping = new HashMap<>();
     public void selectCard(int index, Game game) {
@@ -97,10 +97,6 @@ public abstract class BoardView {
     public void selectMarble(MouseEvent event) {
         Circle circle = (Circle) event.getSource();
         Player humanPlayer = gameController.getGame().getPlayers().get(0);
-        marbleMapping.put(PlayerMarbleOne, humanPlayer.getMarbles().get(0));
-        marbleMapping.put(PlayerMarbleTwo, humanPlayer.getMarbles().get(1));
-        marbleMapping.put(PlayerMarbleThree, humanPlayer.getMarbles().get(2));
-        marbleMapping.put(PlayerMarbleFour, humanPlayer.getMarbles().get(3));
         Marble marble = marbleMapping.get(circle);
 
         if(circle.getFill().equals(humanPlayer.getColourFX())){
@@ -119,7 +115,6 @@ public abstract class BoardView {
                 e.printStackTrace();
             }
         }
-
     }
 
     public void assignCards(Game game) {
@@ -220,8 +215,6 @@ public abstract class BoardView {
         stage.centerOnScreen();
         stage.show();
     }
-    //implement current player turn
-    //implement next player turn
     //implement a timer
     //implement the marble mover
     //implement the card moving into fire pit
@@ -231,6 +224,8 @@ public abstract class BoardView {
         Parent boardRoot = loader.load();
         BoardView controller = loader.getController();
         Game game = new Game(username);
+        Board board = game.getBoard();
+        controller.setBoard(board);
 
         // Create the Scene and set it to the Stage
         Scene gameScene = new Scene(boardRoot);
@@ -254,6 +249,9 @@ public abstract class BoardView {
     public void setGameController(GameController gameController) {
         this.gameController = gameController;
     }
+    public void setBoard(Board board){
+        this.board = board;
+    }
 
     private void testTrack(Game game){
         GridLoader.loadGrid();
@@ -261,7 +259,7 @@ public abstract class BoardView {
         for (int i = 0; i < grid.size(); i++)
         {
             Circle marble = new Circle();
-            marble.setFill(Color.RED);
+            marble.setFill(Color.BLACK);
             marble.setRadius(10);
 
             int[] point = grid.get(i);
@@ -270,5 +268,13 @@ public abstract class BoardView {
 
             gridInshallah.getChildren().add(marble);
         }
+    }
+
+    public void showException(String message){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Invalid Action");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }
