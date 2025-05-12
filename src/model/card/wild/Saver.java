@@ -1,23 +1,25 @@
 package model.card.wild;
 
+import java.util.ArrayList;
+
 import engine.GameManager;
 import engine.board.BoardManager;
 import exception.ActionException;
 import exception.InvalidMarbleException;
 import model.player.Marble;
 
-import java.util.ArrayList;
-
 public class Saver extends Wild {
-    public Saver(String name, String description, BoardManager boardManager, GameManager gameManager){
-        super(name, description, boardManager, gameManager, "saver.png");
-    }
 
+    public Saver(String name, String description, BoardManager boardManager, GameManager gameManager) {
+        super(name, description, boardManager, gameManager);
+    }
     public String getFileName() {
         return "saver.png";
     }
 
+    @Override
     public void act(ArrayList<Marble> marbles) throws ActionException, InvalidMarbleException {
-        boardManager.sendToSafe(marbles.getFirst());
+        boardManager.sendToSafe(marbles.get(0));
     }
+
 }

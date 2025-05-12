@@ -3,6 +3,7 @@ package application.boardView;
 import application.Main;
 import application.UserSettings;
 import engine.Game;
+import exception.GameException;
 import exception.InvalidCardException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -25,33 +26,7 @@ import java.util.ArrayList;
 import static application.Main.getPrimaryStage;
 
 public class BoardViewAlien extends BoardView {
-    public static void setBoardPaneAlien(String username) throws IOException {
-        FXMLLoader loader = new FXMLLoader(BoardViewAlien.class.getResource("BoardViewAlien.fxml"));
-        Parent boardRoot = loader.load();
-        BoardViewAlien controller = loader.getController();
-        Game game = new Game(username);
-        // Set all the static objects in place
-        controller.initGame(game);
-
-        // Reuse the current stage
-        Stage stage = (Stage) Main.getPrimaryStage();
-        Scene gameScene = new Scene(boardRoot);
-        stage.setScene(gameScene);
-        stage.setTitle("Jackaroo");
-
-        gameScene.setOnKeyPressed(e -> {
-            System.out.println(e.getCode() + " pressed");
-            switch (e.getCode()) {
-                case DIGIT1 -> controller.selectCard(0, game);
-                case DIGIT2 -> controller.selectCard(1, game);
-                case DIGIT3 -> controller.selectCard(2, game);
-                case DIGIT4 -> controller.selectCard(3, game);
-            }
-        });
-
-        gameScene.getRoot().requestFocus();
-        stage.setResizable(false);
-        stage.centerOnScreen();
-        stage.show();
+    public static void setBoardPaneAlien(String username) throws IOException, GameException {
+        setBoardPane("BoardViewAlien.fxml", username);
     }
 }

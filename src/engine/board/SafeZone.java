@@ -1,8 +1,8 @@
 package engine.board;
 
-import model.Colour;
-
 import java.util.ArrayList;
+
+import model.Colour;
 
 public class SafeZone {
     private final Colour colour;
@@ -11,26 +11,25 @@ public class SafeZone {
     public SafeZone(Colour colour) {
         this.colour = colour;
         this.cells = new ArrayList<>();
-        //create 4 safe cells
-        for(int i = 0; i < 4; i++) {
-            cells.add(new Cell(CellType.SAFE));
-        }
+        for (int i = 0; i < 4; i++) 
+            this.cells.add(new Cell(CellType.SAFE));
     }
 
     public Colour getColour() {
-        return colour;
+        return this.colour;
     }
 
     public ArrayList<Cell> getCells() {
-        return cells;
+        return this.cells;
     }
-
-    public boolean isFull(){
-        for(Cell cell : cells) {
-            if(cell.getMarble() == null) {
+    
+    public boolean isFull() {
+        for (Cell cell : this.cells) {
+            if (cell.getMarble() == null) 
                 return false;
-            }
         }
+            
         return true;
     }
+
 }

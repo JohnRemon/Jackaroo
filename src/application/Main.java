@@ -27,6 +27,7 @@ public class Main extends Application {
         controller.loadValues();
         primaryStage.setScene(scene);
         primaryStage.setTitle("Jackaroo Launcher");
+        primaryStage.setResizable(false);
         primaryStage.show();
         Main.primaryStage = primaryStage;
     }

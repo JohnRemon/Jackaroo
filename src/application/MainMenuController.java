@@ -4,6 +4,7 @@ import application.boardView.BoardView;
 import application.boardView.BoardViewAlien;
 import application.boardView.BoardViewDefault;
 import engine.Game;
+import exception.GameException;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -42,11 +43,13 @@ public class MainMenuController extends Application {
 
     @FXML
     public void openSettings(ActionEvent actionEvent) throws IOException {
-        themeChosen.getItems().addAll("default", "Alien");
+        themeChosen.getItems().clear();
+        themeChosen.getItems().addAll("Default", "Alien");
+        themeChosen.setValue(userSettings.getTheme());
         settingsPane.setVisible(true);
     }
     @FXML
-    private void transitionToBoard(ActionEvent event) throws IOException {
+    private void transitionToBoard(ActionEvent event) throws IOException, GameException {
 //        FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/boardView/boardView.fxml"));
 //        Parent boardRoot = loader.load();
 //
@@ -59,9 +62,9 @@ public class MainMenuController extends Application {
         Stage stage = Main.primaryStage;
         switch (userSettings.getTheme())
         {
-            case "default": BoardViewDefault.setBoardPaneDefault(nameLabel.getText());
-            break;
             case "Alien": BoardViewAlien.setBoardPaneAlien(nameLabel.getText());
+            break;
+            default: BoardViewDefault.setBoardPaneDefault(nameLabel.getText());
             break;
         }
         //show the board
@@ -71,10 +74,16 @@ public class MainMenuController extends Application {
     public void hideSettingsMenu(ActionEvent actionEvent) throws IOException {
         settingsPane.setVisible(false);
         saveSettings();
+
+        UserSettings updatedSettings = new UserSettings().LoadSettings();
+        userSettings.setName(updatedSettings.getName());
+        userSettings.setSfx((float) updatedSettings.getSfx());
+        userSettings.setMusic((float) updatedSettings.getMusic());
+        userSettings.setTheme(updatedSettings.getTheme());
     }
 
     @FXML
-    private void saveSettings() throws IOException {
+    public void saveSettings() throws IOException {
         String playerName = nameLabel.getText();
         double sfx = sfxSlider.getValue();
         double music = musicSlider.getValue();
@@ -90,6 +99,8 @@ public class MainMenuController extends Application {
         nameLabel.setText(temp.getName());
         sfxSlider.setValue(temp.getSfx());
         musicSlider.setValue(temp.getMusic());
+        themeChosen.getItems().clear();
+        themeChosen.getItems().addAll("Default", "Alien");
         themeChosen.setValue(temp.getTheme());
     }
 }
