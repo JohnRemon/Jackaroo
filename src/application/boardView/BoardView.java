@@ -93,7 +93,6 @@ public abstract class BoardView {
         }
     }
 
-
     public void selectMarble(MouseEvent event) {
         Circle circle = (Circle) event.getSource();
         Player humanPlayer = gameController.getGame().getPlayers().get(0);
@@ -107,12 +106,14 @@ public abstract class BoardView {
                     circle.setRadius(circle.getRadius() - 2);
                     humanPlayer.getSelectedMarbles().remove(marble);
                 }else{
-                    circle.getProperties().put("selected", true);
-                    circle.setRadius(circle.getRadius() + 2);
-                    humanPlayer.selectMarble(marble);
+                    if(humanPlayer.getSelectedMarbles().size() <= 2){
+                        humanPlayer.selectMarble(marble);
+                        circle.getProperties().put("selected", true);
+                        circle.setRadius(circle.getRadius() + 2);
+                    }
                 }
             }catch(InvalidMarbleException e){
-                e.printStackTrace();
+                showException(e.getMessage());
             }
         }
     }
@@ -277,4 +278,27 @@ public abstract class BoardView {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
+    public void moveCard(Game game) {
+        if(!game.getFirePit().isEmpty() && game.getFirePit().getLast() != null) {
+            String imageLocation = "/view/textures/cards/" + game.getFirePit().getLast().getFileName();
+            Image texture = null;
+            InputStream stream = getClass().getResourceAsStream(imageLocation);
+            if (stream == null) {
+                System.out.println("Image not found at: " + imageLocation);
+            } else {
+                texture = new Image(stream);
+            }
+
+            ImageView imageView = new ImageView(texture);
+            imageView.setFitHeight(90);
+            imageView.preserveRatioProperty().set(true);
+            imageView.setLayoutX(362.5 - imageView.getFitWidth() / 2);
+            imageView.setLayoutY(390 - imageView.getFitHeight() / 2);
+            rootPane.getChildren().add(imageView);
+        }
+    }
+    //get the card player when the user presses enter
+    //that is usually the last selected card
+    //move the image of the card to the middle of the board
 }

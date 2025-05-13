@@ -93,11 +93,14 @@ public class Game implements GameManager {
     }
 
     public void endPlayerTurn() {
-        Card selected = players.get(currentPlayerIndex).getSelectedCard();
-        players.get(currentPlayerIndex).getHand().remove(selected);
-        firePit.add(selected);
-        players.get(currentPlayerIndex).deselectAll();
-        
+
+        if(players.get(currentPlayerIndex).getSelectedCard() != null) {
+            Card selected = players.get(currentPlayerIndex).getSelectedCard();
+            players.get(currentPlayerIndex).getHand().remove(selected);
+            firePit.add(selected);
+            players.get(currentPlayerIndex).deselectAll();
+        }
+
         currentPlayerIndex = (currentPlayerIndex + 1) % 4;
         
         if(currentPlayerIndex == 0 && turn < 3) 
@@ -155,6 +158,7 @@ public class Game implements GameManager {
                 if(handSize == 0)
                     throw new CannotDiscardException("Player has no cards to discard.");
                 int randIndex = (int) (Math.random() * handSize);
+                System.out.println("Discarded card: " + player.getHand().get(randIndex).getName());
                 this.firePit.add(player.getHand().remove(randIndex));
             }
         }
