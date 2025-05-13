@@ -8,8 +8,9 @@ import javafx.scene.Scene;
 import javafx.util.Duration;
 import model.player.CPU;
 import model.player.Player;
+import model.card.Card;
 
-
+//note that the discarded card is placed first then the card that discards it
 public class GameController {
     private final Game game;
     private final BoardView boardView;
@@ -27,8 +28,15 @@ public class GameController {
         Player nextPlayer = game.getPlayers().get(game.getNextPlayerIndex());
         System.out.println("-----------------------------------");
         System.out.println("FirePit Size: " + game.getFirePit().size());
+        if(game.getFirePit().size() > 0) {
+            for(Card c : game.getFirePit()) {
+                System.out.println("Card in FirePit: " + c.getName());
+            }
+        }
         System.out.println(currentPlayer.getName() + " turn");
         System.out.println("Current Player Hand: " + currentPlayer.getHand().size());
+
+        boardView.moveCard(game);
         if (!(currentPlayer instanceof CPU)) {
             if(game.canPlayTurn()) {
                 System.out.println("You can play the turn");
@@ -42,7 +50,7 @@ public class GameController {
                             System.out.println("Card: " + currentPlayer.getSelectedCard().getName());
                             try {
                                 game.playPlayerTurn();
-                                boardView.moveCard(game);
+                                System.out.println("Card Moved");
                                 endTurn();
                             } catch (GameException e) {
                                 boardView.showException(e.getMessage());
@@ -58,17 +66,23 @@ public class GameController {
         } else {
             if (game.canPlayTurn()) {
                 System.out.println("You can play the turn");
-                try {
-                    game.playPlayerTurn();
-                    boardView.moveCard(game);
-                    endTurn();
-                } catch (GameException e) {
-                    boardView.showException(e.getMessage());
-                }
-            }else{
+                PauseTransition pause = new PauseTransition(Duration.seconds(2));
+                pause.setOnFinished(event -> {
+                    try {
+                        game.playPlayerTurn();
+                        System.out.println("CPU played a card");
+                        endTurn();
+                    } catch (GameException e) {
+                        boardView.showException(e.getMessage());
+                    }
+                });
+                pause.play();
+            } else {
                 System.out.println("You can't play the game after the skip");
                 game.deselectAll();
-                endTurn();
+                PauseTransition pause = new PauseTransition(Duration.seconds(2));
+                pause.setOnFinished(event -> endTurn());
+                pause.play();
             }
         }
     }
