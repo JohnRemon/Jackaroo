@@ -93,6 +93,19 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
             </GridPane>
+            <Circle fx:id="CPU3MarbleThree" fill="DODGERBLUE" layoutX="716.0" layoutY="410.0" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle fx:id="CPU3MarbleFour" fill="DODGERBLUE" layoutX="716.0" layoutY="430.0" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle fx:id="CPU3MarbleOne" fill="DODGERBLUE" layoutX="716.0" layoutY="371.0" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle fx:id="CPU3MarbleTwo" fill="DODGERBLUE" layoutX="716.0" layoutY="391.0" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle fx:id="CPU1MarbleThree" fill="DODGERBLUE" layoutX="76.0" layoutY="391.0" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle fx:id="CPU1MarbleFour" fill="DODGERBLUE" layoutX="76.0" layoutY="371.0" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle fx:id="CPU1MarbleTwo" fill="DODGERBLUE" layoutX="76.0" layoutY="410.0" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle fx:id="CPU1MarbleOne" fill="DODGERBLUE" layoutX="76.0" layoutY="430.0" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle fx:id="CPU2MarbleOne" fill="DODGERBLUE" layoutX="374.0" layoutY="92.0" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle fx:id="CPU2MarbleTwo" fill="DODGERBLUE" layoutX="394.0" layoutY="92.0" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle fx:id="CPU2MarbleFour" fill="DODGERBLUE" layoutX="433.0" layoutY="92.0" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle fx:id="CPU2MarbleThree" fill="DODGERBLUE" layoutX="413.0" layoutY="92.0" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
+
             <Label fx:id="playerLabel" alignment="CENTER" layoutY="565.0" prefHeight="18.0" prefWidth="124.0" text="PLAYER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="676.0" AnchorPane.topAnchor="765.6">
                <font>
                   <Font name="System Bold" size="23.0" />
