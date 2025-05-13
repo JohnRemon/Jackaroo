@@ -57,13 +57,13 @@ public abstract class BoardView {
     @FXML private Circle PlayerMarbleTwo;
     @FXML private Circle PlayerMarbleThree;
     @FXML private Circle PlayerMarbleFour;
+
     ArrayList<MarbleMapping> P1MarbleMappings = new ArrayList<>();
     ArrayList<MarbleMapping> CPU1MarbleMappings = new ArrayList<>();
     ArrayList<MarbleMapping> CPU2MarbleMappings = new ArrayList<>();
     ArrayList<MarbleMapping> CPU3MarbleMappings = new ArrayList<>();
 
 
-    //TODO: 7ot el marbles 3la el scenebuilder taany 3shan ana 8aby :D
     @FXML private Circle CPU1MarbleOne;
     @FXML private Circle CPU1MarbleTwo;
     @FXML private Circle CPU1MarbleThree;
@@ -111,13 +111,13 @@ public abstract class BoardView {
         System.out.println(humanPlayer.getSelectedMarbles().size());
 
         //  -- Find which marble corresponds to the circle --
-        {
-            for (MarbleMapping p1MarbleMapping : P1MarbleMappings) {
-                if (circle.equals(p1MarbleMapping.getCircle())) {
-                    marble = p1MarbleMapping.getMarble();
-                }
+
+        for (MarbleMapping p1MarbleMapping : P1MarbleMappings) {
+            if (circle.equals(p1MarbleMapping.getCircle())) {
+                marble = p1MarbleMapping.getMarble();
             }
         }
+
 
         if(circle.getFill().equals(humanPlayer.getColourFX())){
             Boolean isSelected = (Boolean) circle.getProperties().getOrDefault("selected", false);
@@ -126,23 +126,15 @@ public abstract class BoardView {
                     circle.getProperties().put("selected", false);
                     circle.setRadius(circle.getRadius() - 2);
                     humanPlayer.getSelectedMarbles().remove(marble);
-                    System.out.println(humanPlayer.getSelectedMarbles().size());
                 }else{
                     humanPlayer.selectMarble(marble);
                     circle.getProperties().put("selected", true);
                     circle.setRadius(circle.getRadius() + 2);
-                    System.out.println(humanPlayer.getSelectedMarbles().size());
                 }
             }catch(InvalidMarbleException e){
-                e.printStackTrace();
+                showException(e.getMessage());
             }
         }
-    }
-
-    public void moveMarble(Game game, MarbleMapping mp, Player player) throws GameException {
-
-        // -- Find Marble end position --
-
     }
 
     public void assignCards(Game game) {
@@ -262,7 +254,6 @@ public abstract class BoardView {
         {
             m.getCircle().setRadius(10);
             m.getCircle().setVisible(true);
-            System.out.println("alleged");
             CPU1HomeZone.getChildren().add(m.getCircle());
         }
         for (MarbleMapping m : CPU2MarbleMappings)
@@ -365,7 +356,24 @@ public abstract class BoardView {
 
     public void updateMarbles(Game game) {
         ArrayList<int[]> grid = GridLoader.getGrid();
+
+
     }
+
+    public void moveMarble(Game game, MarbleMapping mp, Player player) throws GameException {
+
+        // -- Find Marble end position --
+        Circle circle = mp.getCircle();
+        Marble marble = mp.getMarble();
+
+
+
+
+
+    }
+    //for each marble of the player in mp
+    //change the position of the marble to the ones of the grid
+    //for example if the marble is on cell 0 then the position is going to be 26, 12
 
     public void moveCard(Game game) {
         if(!game.getFirePit().isEmpty() && game.getFirePit().getLast() != null) {

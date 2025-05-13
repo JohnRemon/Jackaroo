@@ -32,41 +32,6 @@
       </AnchorPane>
       <AnchorPane fx:id="rootPane1" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Label fx:id="playerLabel" alignment="CENTER" layoutY="565.0" prefHeight="18.0" prefWidth="124.0" text="PLAYER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="676.0" AnchorPane.topAnchor="765.6">
-               <font>
-                  <Font name="System Bold" size="23.0" />
-               </font>
-            </Label>
-            <Label fx:id="CPU3Label" alignment="CENTER" layoutX="705.0" layoutY="383.0" prefHeight="18.0" prefWidth="124.0" rotate="-90.0" text="CPU3" textFill="#5fb961">
-               <font>
-                  <Font name="System Bold" size="23.0" />
-               </font>
-            </Label>
-            <Label fx:id="CPU1Label" alignment="CENTER" layoutX="-48.0" layoutY="383.0" prefHeight="18.0" prefWidth="124.0" rotate="90.0" text="CPU1" textFill="#5fb961">
-               <font>
-                  <Font name="System Bold" size="23.0" />
-               </font>
-            </Label>
-            <Label fx:id="CPU2Label" alignment="CENTER" layoutX="332.0" layoutY="14.0" prefHeight="18.0" prefWidth="124.0" text="CPU2" textFill="#5fb961">
-               <font>
-                  <Font name="System Bold" size="23.0" />
-               </font>
-            </Label>
-            <Label fx:id="CPU1RemainingCards" alignment="CENTER" layoutX="-26.0" layoutY="384.0" prefHeight="18.0" prefWidth="124.0" rotate="90.0" text="4" textFill="#5fb961">
-               <font>
-                  <Font name="System Bold" size="23.0" />
-               </font>
-            </Label>
-            <Label fx:id="CPU2RemainingCards" alignment="CENTER" layoutX="332.0" layoutY="48.0" prefHeight="18.0" prefWidth="124.0" text="4" textFill="#5fb961">
-               <font>
-                  <Font name="System Bold" size="23.0" />
-               </font>
-            </Label>
-            <Label fx:id="CPU3RemainingCards" alignment="CENTER" layoutX="681.0" layoutY="384.0" prefHeight="18.0" prefWidth="124.0" rotate="-90.0" text="4" textFill="#5fb961">
-               <font>
-                  <Font name="System Bold" size="23.0" />
-               </font>
-            </Label>
             <GridPane fx:id="gridInshallah" layoutX="178.4" layoutY="0.19999999999999996" prefHeight="689.0" prefWidth="508.0" AnchorPane.bottomAnchor="111.0" AnchorPane.leftAnchor="178.4" AnchorPane.rightAnchor="114.39999999999998" AnchorPane.topAnchor="0.19999999999999996">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -140,6 +105,45 @@
             <Circle fx:id="CPU2MarbleTwo" fill="DODGERBLUE" layoutX="394.0" layoutY="92.0" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
             <Circle fx:id="CPU2MarbleFour" fill="DODGERBLUE" layoutX="433.0" layoutY="92.0" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
             <Circle fx:id="CPU2MarbleThree" fill="DODGERBLUE" layoutX="413.0" layoutY="92.0" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
+
+            <Label fx:id="playerLabel" alignment="CENTER" layoutY="565.0" prefHeight="18.0" prefWidth="124.0" text="PLAYER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="676.0" AnchorPane.topAnchor="765.6">
+               <font>
+                  <Font name="System Bold" size="23.0" />
+               </font>
+            </Label>
+            <Label fx:id="CPU3Label" alignment="CENTER" layoutX="705.0" layoutY="383.0" prefHeight="18.0" prefWidth="124.0" rotate="-90.0" text="CPU3" textFill="#5fb961">
+               <font>
+                  <Font name="System Bold" size="23.0" />
+               </font>
+            </Label>
+            <Label fx:id="CPU1Label" alignment="CENTER" layoutX="-48.0" layoutY="383.0" prefHeight="18.0" prefWidth="124.0" rotate="90.0" text="CPU1" textFill="#5fb961">
+               <font>
+                  <Font name="System Bold" size="23.0" />
+               </font>
+            </Label>
+            <Label fx:id="CPU1RemainingCards" alignment="CENTER" layoutX="-26.0" layoutY="384.0" prefHeight="18.0" prefWidth="124.0" rotate="90.0" text="4" textFill="#5fb961">
+               <font>
+                  <Font name="System Bold" size="23.0" />
+               </font>
+            </Label>
+            <Label fx:id="CPU3RemainingCards" alignment="CENTER" layoutX="681.0" layoutY="384.0" prefHeight="18.0" prefWidth="124.0" rotate="-90.0" text="4" textFill="#5fb961">
+               <font>
+                  <Font name="System Bold" size="23.0" />
+               </font>
+            </Label>
+            <HBox fx:id="CPU1HomeZone" layoutX="31.0" layoutY="388.0" prefHeight="26.0" prefWidth="90.0" rotate="90.0" />
+            <HBox fx:id="CPU2HomeZone" layoutX="676.0" layoutY="387.0" prefHeight="26.0" prefWidth="90.0" rotate="-90.0" />
+            <HBox fx:id="CPU3HomeZone" layoutX="349.0" layoutY="68.0" prefHeight="26.0" prefWidth="90.0" />
+            <Label fx:id="CPU2Label" alignment="CENTER" layoutX="335.0" layoutY="-6.0" prefHeight="18.0" prefWidth="124.0" text="CPU2" textFill="#5fb961">
+               <font>
+                  <Font name="System Bold" size="23.0" />
+               </font>
+            </Label>
+            <Label fx:id="CPU2RemainingCards" alignment="CENTER" layoutX="332.0" layoutY="12.6" prefHeight="34.0" prefWidth="124.0" text="4" textFill="#5fb961" AnchorPane.bottomAnchor="754.6" AnchorPane.leftAnchor="332.0" AnchorPane.rightAnchor="344.0" AnchorPane.topAnchor="12.6">
+               <font>
+                  <Font name="System Bold" size="23.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
       <AnchorPane prefHeight="188.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="612.0">
