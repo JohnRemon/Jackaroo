@@ -8,32 +8,33 @@ public class Cell {
     private boolean trap;
 
     public Cell(CellType cellType) {
-        this.marble = null;
         this.cellType = cellType;
+        this.marble = null;
         this.trap = false;
     }
 
-    //getter and setter for the marble
-    public Marble getMarble() {
-        return marble;
-    }
-    public void setMarble(Marble marble) {
-        this.marble = marble;
-    }
+	public Marble getMarble() {
+		return marble;
+	}
 
-    //getter and setter for the cellType
-    public CellType getCellType() {
-        return cellType;
-    }
-    public void setCellType(CellType cellType) {
-        this.cellType = cellType;
-    }
+	public void setMarble(Marble marble) {
+		this.marble = marble;
+	}
 
-    //getter and setter for the trap
-    public boolean isTrap() {
-        return trap;
-    }
-    public void setTrap(boolean trap) {
-        this.trap = trap;
-    }
+	public CellType getCellType() {
+		return cellType;
+	}
+
+	public void setCellType(CellType cellType) {
+		this.cellType = cellType;
+	}
+
+	public boolean isTrap() {
+		return trap;
+	}
+
+	public void setTrap(boolean trap) {
+		this.trap = trap;
+	}
+
 }

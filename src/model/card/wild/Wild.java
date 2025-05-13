@@ -6,10 +6,8 @@ import model.card.Card;
 
 public abstract class Wild extends Card {
 
-    private final String image;
-
-    public Wild(String name, String description, BoardManager boardManager, GameManager gameManager, String image) {
+    public Wild(String name, String description, BoardManager boardManager, GameManager gameManager) {
         super(name, description, boardManager, gameManager);
-        this.image = image;
     }
+    
 }

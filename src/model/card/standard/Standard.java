@@ -1,14 +1,13 @@
 package model.card.standard;
 
+import java.util.ArrayList;
+
 import engine.GameManager;
 import engine.board.BoardManager;
 import exception.ActionException;
 import exception.InvalidMarbleException;
 import model.card.Card;
 import model.player.Marble;
-
-import java.util.ArrayList;
-
 
 public class Standard extends Card {
     private final int rank;
@@ -22,17 +21,17 @@ public class Standard extends Card {
         this.image = String.valueOf(rank)+suit+".png";
     }
 
-    public void act(ArrayList<Marble> marbles) throws ActionException, InvalidMarbleException {
-
-        for (Marble marble : marbles)
-            boardManager.moveBy(marble, this.getRank(), false);
-    }
-
     public int getRank() {
         return rank;
     }
+
     public Suit getSuit() {
         return suit;
+    }
+
+    @Override
+    public void act(ArrayList<Marble> marbles) throws ActionException, InvalidMarbleException{
+        this.boardManager.moveBy(marbles.get(0), rank, false);
     }
     public String getFileName() {
         return image;

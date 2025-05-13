@@ -1,91 +1,95 @@
 package model.card;
 
-import engine.GameManager;
-import engine.board.BoardManager;
-import model.card.standard.*;
-import model.card.wild.Burner;
-import model.card.wild.Saver;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 
+import engine.GameManager;
+import engine.board.BoardManager;
+import model.card.standard.Ace;
+import model.card.standard.Five;
+import model.card.standard.Four;
+import model.card.standard.Jack;
+import model.card.standard.King;
+import model.card.standard.Queen;
+import model.card.standard.Seven;
+import model.card.standard.Standard;
+import model.card.standard.Suit;
+import model.card.standard.Ten;
+import model.card.wild.Burner;
+import model.card.wild.Saver;
+
 public class Deck {
-   private static final String CARDS_FILE= "Cards.csv";
-   private static ArrayList<Card> cardsPool;
+    private static final String CARDS_FILE = "Cards.csv";
+    static private ArrayList<Card> cardsPool;
 
-    public static void loadCardPool(BoardManager boardManager, GameManager gameManager) throws IOException {
-    BufferedReader reader = new BufferedReader(new FileReader(CARDS_FILE));
-    cardsPool = new ArrayList<>();
-    String currentLine = null;
-    int code, frequency, rank;
-    String name, description;
-    Suit suit;
+    @SuppressWarnings("resource")
+	public static void loadCardPool(BoardManager boardManager, GameManager gameManager) throws IOException {
+        cardsPool = new ArrayList<>();
 
-    while ((currentLine = reader.readLine()) != null) {
+		BufferedReader br = new BufferedReader(new FileReader(CARDS_FILE));
 
-        // parses the current line into an arraylist where each value is seperated by index
-        ArrayList<String> currentCard = new ArrayList<>(Arrays.asList(currentLine.split(",")));
+		while (br.ready()) {
+			String nextLine = br.readLine();
+			String[] data = nextLine.split(",");
+			
+			if (data.length == 0) 
+				throw new IOException(nextLine);
 
-        try {
-            code = Integer.parseInt(currentCard.get(0));
-            frequency = Integer.parseInt(currentCard.get(1));
-            name = currentCard.get(2);
-            description = currentCard.get(3);
-
-            if(code == 14 || code == 15) {
-                rank = 0;
-                suit = null;
-            }else {
-                rank = Integer.parseInt(currentCard.get(4));
-                suit = Suit.valueOf(currentCard.get(5));
-            }
-
-
-            // decide on which constructor
-            for (int i = 0; i < frequency; i++) {
-                switch (code) {
-                    case 0 -> cardsPool.add(new Standard(name, description, rank, suit, boardManager, gameManager));
-                    case 1 -> cardsPool.add(new Ace(name, description, suit, boardManager, gameManager));
-                    case 4 -> cardsPool.add(new Four(name, description, suit, boardManager, gameManager));
-                    case 5 -> cardsPool.add(new Five(name, description, suit, boardManager, gameManager));
-                    case 7 -> cardsPool.add(new Seven(name, description, suit, boardManager, gameManager));
-                    case 10 -> cardsPool.add(new Ten(name, description, suit, boardManager, gameManager));
-                    case 11 -> cardsPool.add(new Jack(name, description, suit, boardManager, gameManager));
-                    case 12 -> cardsPool.add(new Queen(name, description, suit, boardManager, gameManager));
-                    case 13 -> cardsPool.add(new King(name, description, suit, boardManager, gameManager));
-                    case 14 -> cardsPool.add(new Burner(name, description, boardManager, gameManager));
-                    case 15 -> cardsPool.add(new Saver(name, description, boardManager, gameManager));
-                }
-            }
-        } catch (Exception e) {
-            System.out.println("Could not parse card");
-            System.out.println(e);
-            reader.close();
+            String name = data[2];
+            String description = data[3];
+			
+			int code = Integer.parseInt(data[0]);
+			int frequency = Integer.parseInt(data[1]);
+			
+			for (int i = 0; i < frequency; i++) {
+				Card card;
+				
+				if(code > 13) 
+					switch(code) {
+						case 14: card = new Burner(name, description, boardManager, gameManager); break;
+						case 15: card = new Saver(name, description, boardManager, gameManager); break;
+						default: throw new IOException(nextLine);
+					}
+			
+				else {
+	                int rank = Integer.parseInt(data[4]);
+	                Suit cardSuit = Suit.valueOf(data[5]);
+					switch(code) {
+						case 0: card = new Standard(name, description, rank, cardSuit, boardManager, gameManager); break;
+						case 1: card = new Ace(name, description, cardSuit, boardManager, gameManager); break;
+						case 4: card = new Four(name, description, cardSuit, boardManager, gameManager); break;
+						case 5: card = new Five(name, description, cardSuit, boardManager, gameManager); break;
+						case 7: card = new Seven(name, description, cardSuit, boardManager, gameManager); break;
+						case 10: card = new Ten(name, description, cardSuit, boardManager, gameManager); break;
+						case 11: card = new Jack(name, description, cardSuit, boardManager, gameManager); break;
+						case 12: card = new Queen(name, description, cardSuit, boardManager, gameManager); break;
+						case 13: card = new King(name, description, cardSuit, boardManager, gameManager); break;
+						default: throw new IOException(nextLine);
+					}
+				}
+				
+				cardsPool.add(card);
+			}	
         }
     }
-    reader.close();
-
-}
 
     public static ArrayList<Card> drawCards() {
-    Collections.shuffle(cardsPool);
-    ArrayList<Card> cards = new ArrayList<>();
-    // Assuming that if cardsPool is less than 4, it wants the current cards still
-    for(int i = 0; i < 4 ; i++) {
-        cards.add(cardsPool.remove(0));
+        Collections.shuffle(cardsPool);
+        ArrayList<Card> cards = new ArrayList<>(cardsPool.subList(0, 4));
+        cardsPool.subList(0, 4).clear();
+        return cards;
     }
-    return cards;
-    }
-
-    public static void refillPool(ArrayList<Card> cards){
-        cardsPool.addAll(cards);
-    }
+    
     public static int getPoolSize() {
-        return cardsPool.size();
+		return cardsPool.size();
+	}
+
+    public static void refillPool(ArrayList<Card> cards) {
+        cardsPool.addAll(cards);
     }
 
 }
+
