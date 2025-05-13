@@ -52,25 +52,35 @@ public abstract class BoardView {
     @FXML public TextArea cardDescription;
     @FXML public Button returnMainMenu;
     private GameController gameController;
+
     @FXML private Circle PlayerMarbleOne;
     @FXML private Circle PlayerMarbleTwo;
     @FXML private Circle PlayerMarbleThree;
     @FXML private Circle PlayerMarbleFour;
+    ArrayList<MarbleMapping> P1MarbleMappings = new ArrayList<>();
+    ArrayList<MarbleMapping> CPU1MarbleMappings = new ArrayList<>();
+    ArrayList<MarbleMapping> CPU2MarbleMappings = new ArrayList<>();
+    ArrayList<MarbleMapping> CPU3MarbleMappings = new ArrayList<>();
 
+
+    //TODO: 7ot el marbles 3la el scenebuilder taany 3shan ana 8aby :D
     @FXML private Circle CPU1MarbleOne;
     @FXML private Circle CPU1MarbleTwo;
     @FXML private Circle CPU1MarbleThree;
     @FXML private Circle CPU1MarbleFour;
+    @FXML private HBox CPU1HomeZone;
 
     @FXML private Circle CPU2MarbleOne;
     @FXML private Circle CPU2MarbleTwo;
     @FXML private Circle CPU2MarbleThree;
     @FXML private Circle CPU2MarbleFour;
+    @FXML private HBox CPU2HomeZone;
 
     @FXML private Circle CPU3MarbleOne;
     @FXML private Circle CPU3MarbleTwo;
     @FXML private Circle CPU3MarbleThree;
     @FXML private Circle CPU3MarbleFour;
+    @FXML private HBox CPU3HomeZone;
 
     @FXML private GridPane gridInshallah;
     private Board board;
@@ -98,6 +108,16 @@ public abstract class BoardView {
         Circle circle = (Circle) event.getSource();
         Player humanPlayer = gameController.getGame().getPlayers().get(0);
         Marble marble = marbleMapping.get(circle);
+        System.out.println(humanPlayer.getSelectedMarbles().size());
+
+        //  -- Find which marble corresponds to the circle --
+        {
+            for (MarbleMapping p1MarbleMapping : P1MarbleMappings) {
+                if (circle.equals(p1MarbleMapping.getCircle())) {
+                    marble = p1MarbleMapping.getMarble();
+                }
+            }
+        }
 
         if(circle.getFill().equals(humanPlayer.getColourFX())){
             Boolean isSelected = (Boolean) circle.getProperties().getOrDefault("selected", false);
@@ -106,15 +126,23 @@ public abstract class BoardView {
                     circle.getProperties().put("selected", false);
                     circle.setRadius(circle.getRadius() - 2);
                     humanPlayer.getSelectedMarbles().remove(marble);
+                    System.out.println(humanPlayer.getSelectedMarbles().size());
                 }else{
+                    humanPlayer.selectMarble(marble);
                     circle.getProperties().put("selected", true);
                     circle.setRadius(circle.getRadius() + 2);
-                    humanPlayer.selectMarble(marble);
+                    System.out.println(humanPlayer.getSelectedMarbles().size());
                 }
             }catch(InvalidMarbleException e){
                 e.printStackTrace();
             }
         }
+    }
+
+    public void moveMarble(Game game, MarbleMapping mp, Player player) throws GameException {
+
+        // -- Find Marble end position --
+
     }
 
     public void assignCards(Game game) {
@@ -169,27 +197,84 @@ public abstract class BoardView {
         CPU2RemainingCards.setTextFill(players.get(2).getColourFX());
         CPU3RemainingCards.setTextFill(players.get(3).getColourFX());
 
+        // Assign  marbles
+        ArrayList<Marble> p1marbles = game.getPlayers().getFirst().getMarbles();
+        MarbleMapping p1Marble1 = new MarbleMapping(p1marbles.getFirst(), PlayerMarbleOne);
+        MarbleMapping p1Marble2 = new MarbleMapping(p1marbles.get(1), PlayerMarbleTwo);
+        MarbleMapping p1Marble3 = new MarbleMapping(p1marbles.get(2), PlayerMarbleThree);
+        MarbleMapping p1Marble4 = new MarbleMapping(p1marbles.get(3), PlayerMarbleFour);
+
         // Set marble colors based on player colors
-        PlayerMarbleOne.setFill(players.get(0).getColourFX());
-        PlayerMarbleTwo.setFill(players.get(0).getColourFX());
-        PlayerMarbleThree.setFill(players.get(0).getColourFX());
-        PlayerMarbleFour.setFill(players.get(0).getColourFX());
+        p1Marble1.getCircle().setFill(players.get(0).getColourFX());
+        p1Marble2.getCircle().setFill(players.get(0).getColourFX());
+        p1Marble3.getCircle().setFill(players.get(0).getColourFX());
+        p1Marble4.getCircle().setFill(players.get(0).getColourFX());
+        P1MarbleMappings.add(p1Marble1);
+        P1MarbleMappings.add(p1Marble2);
+        P1MarbleMappings.add(p1Marble3);
+        P1MarbleMappings.add(p1Marble4);
 
-        CPU1MarbleOne.setFill(players.get(1).getColourFX());
-        CPU1MarbleTwo.setFill(players.get(1).getColourFX());
-        CPU1MarbleThree.setFill(players.get(1).getColourFX());
-        CPU1MarbleFour.setFill(players.get(1).getColourFX());
+        ArrayList<Marble> CPU1marbles = game.getPlayers().get(1).getMarbles();
+        MarbleMapping p2Marble1 = new MarbleMapping(CPU1marbles.get(0), CPU1MarbleOne);
+        MarbleMapping p2Marble2 = new MarbleMapping(CPU1marbles.get(1), CPU1MarbleTwo);
+        MarbleMapping p2Marble3 = new MarbleMapping(CPU1marbles.get(2), CPU1MarbleThree);
+        MarbleMapping p2Marble4 = new MarbleMapping(CPU1marbles.get(3), CPU1MarbleFour);
+        p2Marble1.getCircle().setFill(players.get(1).getColourFX());
+        p2Marble2.getCircle().setFill(players.get(1).getColourFX());
+        p2Marble3.getCircle().setFill(players.get(1).getColourFX());
+        p2Marble4.getCircle().setFill(players.get(1).getColourFX());
+        CPU1MarbleMappings.add(p2Marble1);
+        CPU1MarbleMappings.add(p2Marble2);
+        CPU1MarbleMappings.add(p2Marble3);
+        CPU1MarbleMappings.add(p2Marble4);
 
-        CPU2MarbleOne.setFill(players.get(2).getColourFX());
-        CPU2MarbleTwo.setFill(players.get(2).getColourFX());
-        CPU2MarbleThree.setFill(players.get(2).getColourFX());
-        CPU2MarbleFour.setFill(players.get(2).getColourFX());
+        ArrayList<Marble> CPU2marbles = game.getPlayers().get(2).getMarbles();
+        MarbleMapping p3Marble1 = new MarbleMapping(CPU2marbles.get(0), CPU2MarbleOne);
+        MarbleMapping p3Marble2 = new MarbleMapping(CPU2marbles.get(1), CPU2MarbleTwo);
+        MarbleMapping p3Marble3 = new MarbleMapping(CPU2marbles.get(2), CPU2MarbleThree);
+        MarbleMapping p3Marble4 = new MarbleMapping(CPU2marbles.get(3), CPU2MarbleFour);
+        p3Marble1.getCircle().setFill(players.get(2).getColourFX());
+        p3Marble2.getCircle().setFill(players.get(2).getColourFX());
+        p3Marble3.getCircle().setFill(players.get(2).getColourFX());
+        p3Marble4.getCircle().setFill(players.get(2).getColourFX());
+        CPU2MarbleMappings.add(p3Marble1);
+        CPU2MarbleMappings.add(p3Marble2);
+        CPU2MarbleMappings.add(p3Marble3);
+        CPU2MarbleMappings.add(p3Marble4);
 
-        CPU3MarbleOne.setFill(players.get(3).getColourFX());
-        CPU3MarbleTwo.setFill(players.get(3).getColourFX());
-        CPU3MarbleThree.setFill(players.get(3).getColourFX());
-        CPU3MarbleFour.setFill(players.get(3).getColourFX());
 
+        ArrayList<Marble> CPU3marbles = game.getPlayers().get(3).getMarbles();
+        MarbleMapping p4Marble1 = new MarbleMapping(CPU3marbles.get(0), CPU3MarbleOne);
+        MarbleMapping p4Marble2 = new MarbleMapping(CPU3marbles.get(1), CPU3MarbleTwo);
+        MarbleMapping p4Marble3 = new MarbleMapping(CPU3marbles.get(2), CPU3MarbleThree);
+        MarbleMapping p4Marble4 = new MarbleMapping(CPU3marbles.get(3), CPU3MarbleFour);
+        p4Marble1.getCircle().setFill(players.get(3).getColourFX());
+        p4Marble2.getCircle().setFill(players.get(3).getColourFX());
+        p4Marble3.getCircle().setFill(players.get(3).getColourFX());
+        p4Marble4.getCircle().setFill(players.get(3).getColourFX());
+        CPU3MarbleMappings.add(p4Marble1);
+        CPU3MarbleMappings.add(p4Marble2);
+        CPU3MarbleMappings.add(p4Marble3);
+        CPU3MarbleMappings.add(p4Marble4);
+
+        // --Add each CPU's marbles to their HBox
+        for (MarbleMapping m : CPU1MarbleMappings)
+        {
+            m.getCircle().setRadius(10);
+            m.getCircle().setVisible(true);
+            System.out.println("alleged");
+            CPU1HomeZone.getChildren().add(m.getCircle());
+        }
+        for (MarbleMapping m : CPU2MarbleMappings)
+        {
+            m.getCircle().setRadius(10);
+            CPU2HomeZone.getChildren().add(m.getCircle());
+        }
+        for (MarbleMapping m : CPU3MarbleMappings)
+        {
+            m.getCircle().setRadius(10);
+            CPU3HomeZone.getChildren().add(m.getCircle());
+        }
     }
 
     public void updateCounters(Game game) {
@@ -276,5 +361,9 @@ public abstract class BoardView {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    public void updateMarbles(Game game) {
+        ArrayList<int[]> grid = GridLoader.getGrid();
     }
 }

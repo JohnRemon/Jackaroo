@@ -50,6 +50,7 @@ public class GameController {
             if (game.canPlayTurn()) {
                 try {
                     game.playPlayerTurn();
+                    boardView.updateMarbles(game);
                     endTurn();
                 } catch (GameException e) {
                     boardView.showException(e.getMessage());
