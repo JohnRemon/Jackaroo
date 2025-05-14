@@ -93,7 +93,8 @@ public abstract class BoardView {
     private static ArrayList<GridPane> safeZones = new ArrayList<>();
     private Board board;
 
-    private final HashMap<Circle, Marble> marbleMapping = new HashMap<>();
+    private final ArrayList<Marble> globallySelectedMarbles = new ArrayList<>();
+
     public void selectCard(int index, Game game) {
         try {
             Player player = game.getPlayers().get(0);
@@ -115,35 +116,65 @@ public abstract class BoardView {
     public void selectMarble(MouseEvent event) {
         Circle circle = (Circle) event.getSource();
         ArrayList<Player> players = gameController.getGame().getPlayers();
-        Marble marble = marbleMapping.get(circle);
+        Player currentPlayer = players.get(gameController.getGame().getCurrentPlayerIndex());
 
-        //  -- Find which marble corresponds to the circle --
-        for(Player humanPlayer : players){
-            for (MarbleMapping p1MarbleMapping : P1MarbleMappings) {
-                if (circle.equals(p1MarbleMapping.getCircle())) {
-                    marble = p1MarbleMapping.getMarble();
-                }
-            }
+        ArrayList<MarbleMapping> allMappings = new ArrayList<>();
+        allMappings.addAll(P1MarbleMappings);
+        allMappings.addAll(CPU1MarbleMappings);
+        allMappings.addAll(CPU2MarbleMappings);
+        allMappings.addAll(CPU3MarbleMappings);
 
-
-            if(circle.getFill().equals(humanPlayer.getColourFX())){
-                Boolean isSelected = (Boolean) circle.getProperties().getOrDefault("selected", false);
-                try{
-                    if(isSelected){
-                        circle.getProperties().put("selected", false);
-                        circle.setRadius(circle.getRadius() - 2);
-                        humanPlayer.getSelectedMarbles().remove(marble);
-                    }else{
-                        humanPlayer.selectMarble(marble);
-                        circle.getProperties().put("selected", true);
-                        circle.setRadius(circle.getRadius() + 2);
-                    }
-                }catch(InvalidMarbleException e){
-                    showException(e.getMessage());
-                }
+        Marble marble = null;
+        for (MarbleMapping mapping : allMappings) {
+            if (circle.equals(mapping.getCircle())) {
+                marble = mapping.getMarble();
+                break;
             }
         }
+
+        boolean isSelected = (Boolean) circle.getProperties().getOrDefault("selected", false);
+
+        try {
+            if (isSelected) {
+                circle.getProperties().put("selected", false);
+                circle.setRadius(circle.getRadius() - 2);
+                currentPlayer.getSelectedMarbles().remove(marble);
+                System.out.println("Deselected Marble " + marble);
+            } else {
+                currentPlayer.selectMarble(marble);
+                circle.getProperties().put("selected", true);
+                circle.setRadius(circle.getRadius() + 2);
+                System.out.println("Selected Marble " + marble);
+            }
+
+            System.out.println("Current Player Selected Marbles: " + currentPlayer.getSelectedMarbles());
+        } catch (InvalidMarbleException e) {
+            showException(e.getMessage());
+        }
     }
+
+    public void resetAllMarbleSelections() {
+        ArrayList<MarbleMapping> allMappings = new ArrayList<>();
+        allMappings.addAll(P1MarbleMappings);
+        allMappings.addAll(CPU1MarbleMappings);
+        allMappings.addAll(CPU2MarbleMappings);
+        allMappings.addAll(CPU3MarbleMappings);
+
+        for (MarbleMapping mapping : allMappings) {
+            Circle circle = mapping.getCircle();
+            circle.getProperties().put("selected", false);
+            circle.setRadius(10);
+        }
+
+        // Clear all players' selectedMarbles
+        for (Player player : gameController.getGame().getPlayers()) {
+            player.getSelectedMarbles().clear();
+        }
+
+        System.out.println("All marbles and selections have been reset.");
+    }
+
+
 
     public void assignCards(Game game) {
         playerCardsRow.getChildren().clear();
@@ -353,14 +384,12 @@ public abstract class BoardView {
     public void updateMarbles(int pos, MarbleMapping mp, Game game) {
         ArrayList<int[]> grid = GridLoader.getGrid();
         Circle c = mp.getCircle();
-        System.out.println(mp);
 
 
             if (pos < 100) //pos is on track
             {
                 if (c.getParent() instanceof HBox){
                     ((HBox)c.getParent()).getChildren().remove(c);
-                    System.out.println("removed from hbox: " + pos);
                 }
                 int[] point = grid.get(pos);
                 GridPane.setRowIndex(c, point[0]);
@@ -372,7 +401,6 @@ public abstract class BoardView {
                 //if in safezone OR in homezone
                 int safeOrHome = pos/100;
                 int playerIndex = ((pos/10)%10);
-                System.out.println("SafeOrHome: " + safeOrHome);
                 if (safeOrHome == 1) //safezone
                 {
                     //1xy
@@ -399,16 +427,11 @@ public abstract class BoardView {
         for (Player p : players) {
             ArrayList<MarbleMapping> mapping = getMapping(p, game);
             ArrayList<Integer> newPos =  board.getMarblePositions(mapping);
-            System.out.println("Player: " + p);
-
             for (int i = 0; i < mapping.size(); i++){
                 int pos = newPos.get(i);
-                System.out.println("pos: " + pos);
-                System.out.println("Mapping.get(i) : " + mapping.get(i));
                 updateMarbles(pos, mapping.get(i), game);
 
             }
-            System.out.println("-------------------");
         }
     }
 
