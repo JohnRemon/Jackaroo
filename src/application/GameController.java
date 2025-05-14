@@ -60,7 +60,6 @@ public class GameController {
                 });
             }else{
                 System.out.println("You can't play the game after the skip");
-                game.deselectAll();
                 endTurn();
             }
         } else {
@@ -70,6 +69,7 @@ public class GameController {
                 pause.setOnFinished(event -> {
                     try {
                         game.playPlayerTurn();
+
                         System.out.println("CPU played a card");
                         endTurn();
                     } catch (GameException e) {
@@ -89,6 +89,7 @@ public class GameController {
     private void endTurn() {
         boardView.moveMarbles(game);
         game.endPlayerTurn();
+        boardView.resetAllMarbleSelections();
         boardView.updateCounters(game);
         boardView.assignCards(game);
         if (game.checkWin() != null) {
