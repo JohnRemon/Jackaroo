@@ -5,6 +5,9 @@ import exception.CannotFieldException;
 import exception.IllegalDestroyException;
 import model.Colour;
 import model.player.Marble;
+import model.player.Player;
+
+import java.util.ArrayList;
 
 public interface GameManager {
 	public void sendHome(Marble marble);
@@ -14,4 +17,5 @@ public interface GameManager {
     public Colour getActivePlayerColour();
     public Colour getNextPlayerColour();
     public int getCurrentPlayerIndex();
+    public ArrayList<Player> getPlayers();
 }
