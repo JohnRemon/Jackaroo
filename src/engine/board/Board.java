@@ -97,8 +97,9 @@ public class Board implements BoardManager {
                 pos = getPositionInPath(getSafeZone(marble.getColour()), marble);
                 if (pos == -1) {
                     indexes.add(200+ gameManager.getCurrentPlayerIndex());
-                } else
-                    indexes.add((100+pos)+gameManager.getCurrentPlayerIndex()*10); //returns {100,110,120,130}
+                } else {
+                    indexes.add((100 + pos) + gameManager.getCurrentPlayerIndex() * 10); //returns {100,110,120,130}
+                }
 
                 /*  --Encoding--
                 if its not on the track, 3 digits will be returned
@@ -109,7 +110,10 @@ public class Board implements BoardManager {
 
             } else
             //pos in track
+                {
                 indexes.add(pos);
+                System.out.println(pos);
+                }
         }
         return indexes;
     }
@@ -258,6 +262,7 @@ public class Board implements BoardManager {
         if(targetCell.isTrap()) {
             destroyMarble(marble);
             targetCell.setTrap(false);
+            System.out.printf("You have fallen for a trap");
             assignTrapCell();
         }
         

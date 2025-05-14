@@ -87,10 +87,10 @@ public class GameController {
         }
     }
     private void endTurn() {
+        boardView.moveMarbles(game);
         game.endPlayerTurn();
         boardView.updateCounters(game);
         boardView.assignCards(game);
-        boardView.updateMarbles(game);
         if (game.checkWin() != null) {
             String winner = game.getPlayers().get(game.checkWin().ordinal()).getName();
             System.out.println("Winner: " + winner);
