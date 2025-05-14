@@ -6,7 +6,7 @@ public class UserSettings {
     private String name = "Player";
     private double sfx = 100.0f;
     private double music = 100.0f;
-    private String theme = "default";
+    private String theme = "Default";
     private final String path = "Settings.txt";
 
     public UserSettings() {
@@ -46,10 +46,10 @@ public class UserSettings {
 
     public void SaveSettings(UserSettings settings) throws IOException {
         try (FileWriter fw = new FileWriter(path)) {
-            fw.write(name +
-            "\n"+ sfx +
-            "\n" + music +
-            "\n" + theme);
+            fw.write(settings.getName() +
+            "\n"+ settings.getSfx() +
+            "\n" + settings.getMusic() +
+            "\n" + settings.getTheme());
         } catch (IOException e) {
            System.out.println(path);
            System.out.println(name + " " + sfx + " " + music + " " + theme);

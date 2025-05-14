@@ -2,9 +2,7 @@ module Jackaroo {
     requires javafx.controls;
     requires javafx.fxml;
     requires junit;
-    requires java.desktop;
-    requires javafx.media;
-    requires com.google.gson;
+    requires javafx.swing;
 
     opens application;
     opens application.boardView;

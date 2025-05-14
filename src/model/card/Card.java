@@ -1,16 +1,16 @@
 package model.card;
 
+import java.util.ArrayList;
+
 import engine.GameManager;
 import engine.board.BoardManager;
 import exception.ActionException;
 import exception.InvalidMarbleException;
+import model.Colour;
 import model.player.Marble;
 
-import java.util.ArrayList;
-
-
 public abstract class Card {
-    private final String name;
+	private final String name;
     private final String description;
     protected BoardManager boardManager;
     protected GameManager gameManager;
@@ -22,17 +22,6 @@ public abstract class Card {
         this.gameManager = gameManager;
     }
 
-
-    public boolean validateMarbleSize(ArrayList<Marble> marbles){
-        return marbles.size() == 1;
-    }
-    public boolean validateMarbleColours(ArrayList<Marble> marbles) {
-        if (!validateMarbleSize(marbles)) return false;
-        return gameManager.getActivePlayerColour().equals(marbles.get(0).getColour());
-    }
-
-    public abstract void act(ArrayList<Marble> marbles) throws ActionException, InvalidMarbleException;
-
     public String getName() {
         return name;
     }
@@ -40,13 +29,23 @@ public abstract class Card {
     public String getDescription() {
         return description;
     }
-
-    //gameManager and boardManager getters
-    public BoardManager getBoardManager() {
-        return boardManager;
+    
+    public abstract void act(ArrayList<Marble> marbles) throws ActionException, InvalidMarbleException;
+    
+    public boolean validateMarbleSize(ArrayList<Marble> marbles) {
+        return marbles.size() == 1;
     }
-
-    public GameManager getGameManager() {
-        return gameManager;
+    
+    public boolean validateMarbleColours(ArrayList<Marble> marbles) {
+        Colour ownerColour = gameManager.getActivePlayerColour();
+        boolean sameColour = true;
+        for (Marble marble : marbles) {
+            if (marble.getColour() != ownerColour) {
+                sameColour = false;
+            }
+        }
+        return sameColour;
     }
+    public abstract String getFileName();
+    
 }
