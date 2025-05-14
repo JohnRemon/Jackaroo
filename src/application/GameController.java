@@ -3,8 +3,10 @@ package application;
 import application.boardView.BoardView;
 import engine.Game;
 import exception.GameException;
+import exception.SplitOutOfRangeException;
 import javafx.animation.PauseTransition;
 import javafx.scene.Scene;
+import javafx.scene.control.TextInputDialog;
 import javafx.util.Duration;
 import model.player.CPU;
 import model.player.Player;
@@ -27,14 +29,7 @@ public class GameController {
         Player currentPlayer = game.getPlayers().get(game.getCurrentPlayerIndex());
         Player nextPlayer = game.getPlayers().get(game.getNextPlayerIndex());
         System.out.println("-----------------------------------");
-        System.out.println("FirePit Size: " + game.getFirePit().size());
-        if(game.getFirePit().size() > 0) {
-            for(Card c : game.getFirePit()) {
-                System.out.println("Card in FirePit: " + c.getName());
-            }
-        }
         System.out.println(currentPlayer.getName() + " turn");
-        System.out.println("Current Player Hand: " + currentPlayer.getHand().size());
 
         boardView.moveCard(game);
         if (!(currentPlayer instanceof CPU)) {
@@ -47,7 +42,21 @@ public class GameController {
                         case DIGIT3 -> boardView.selectCard(2, game);
                         case DIGIT4 -> boardView.selectCard(3, game);
                         case ENTER -> {
-                            System.out.println("Card: " + currentPlayer.getSelectedCard().getName());
+                            if(currentPlayer.getSelectedCard().getName().equals("Seven") && currentPlayer.getSelectedMarbles().size() == 2){
+                                TextInputDialog dialog = new TextInputDialog();
+                                dialog.setTitle("Enter Split Distance");
+                                dialog.setHeaderText("Please enter the split distance for the Seven card.");
+                                dialog.setContentText("Split Distance:");
+                                dialog.setGraphic(null);
+                                dialog.showAndWait().ifPresent(input -> {
+                                    try {
+                                        int splitDistance = Integer.parseInt(input);
+                                        game.editSplitDistance(splitDistance);
+                                    } catch (NumberFormatException | SplitOutOfRangeException e) {
+                                        boardView.showException("Invalid input. Please enter a valid number.");
+                                    }
+                                });
+                            }
                             try {
                                 game.playPlayerTurn();
                                 System.out.println("Card Moved");

@@ -262,7 +262,7 @@ public class Board implements BoardManager {
         if(targetCell.isTrap()) {
             destroyMarble(marble);
             targetCell.setTrap(false);
-            System.out.printf("You have fallen for a trap");
+            System.out.println("You have fallen for a trap");
             assignTrapCell();
         }
         
