@@ -56,7 +56,7 @@ public abstract class BoardView {
     @FXML public Button returnMainMenu;
     private GameController gameController;
 
-    private static ArrayList<MarbleMapping> P1MarbleMappings = new ArrayList<>();
+    private ArrayList<MarbleMapping> P1MarbleMappings = new ArrayList<>();
     @FXML private Circle PlayerMarbleOne;
     @FXML private Circle PlayerMarbleTwo;
     @FXML private Circle PlayerMarbleThree;
@@ -64,7 +64,7 @@ public abstract class BoardView {
     @FXML private HBox PlayerHomeZone;
     @FXML private GridPane PlayerSafeZone;
 
-    private static ArrayList<MarbleMapping> CPU1MarbleMappings = new ArrayList<>();
+    private ArrayList<MarbleMapping> CPU1MarbleMappings = new ArrayList<>();
     @FXML private Circle CPU1MarbleOne;
     @FXML private Circle CPU1MarbleTwo;
     @FXML private Circle CPU1MarbleThree;
@@ -72,7 +72,7 @@ public abstract class BoardView {
     @FXML private HBox CPU1HomeZone;
     @FXML private GridPane CPU1SafeZone;
 
-    private static ArrayList<MarbleMapping> CPU2MarbleMappings = new ArrayList<>();
+    private ArrayList<MarbleMapping> CPU2MarbleMappings = new ArrayList<>();
     @FXML private Circle CPU2MarbleOne;
     @FXML private Circle CPU2MarbleTwo;
     @FXML private Circle CPU2MarbleThree;
@@ -80,7 +80,7 @@ public abstract class BoardView {
     @FXML private HBox CPU2HomeZone;
     @FXML private GridPane CPU2SafeZone;
 
-    private static ArrayList<MarbleMapping> CPU3MarbleMappings = new ArrayList<>();
+    private ArrayList<MarbleMapping> CPU3MarbleMappings = new ArrayList<>();
     @FXML private Circle CPU3MarbleOne;
     @FXML private Circle CPU3MarbleTwo;
     @FXML private Circle CPU3MarbleThree;
@@ -89,8 +89,8 @@ public abstract class BoardView {
     @FXML private GridPane CPU3SafeZone;
 
     @FXML private GridPane gridInshallah;
-    private static ArrayList<HBox> homeZones = new ArrayList<>();
-    private static ArrayList<GridPane> safeZones = new ArrayList<>();
+    private ArrayList<HBox> homeZones = new ArrayList<>();
+    private ArrayList<GridPane> safeZones = new ArrayList<>();
     private Board board;
 
     private final ArrayList<Marble> globallySelectedMarbles = new ArrayList<>();
@@ -394,21 +394,24 @@ public abstract class BoardView {
                 int[] point = grid.get(pos);
                 GridPane.setRowIndex(c, point[0]);
                 GridPane.setColumnIndex(c, point[1]);
-
                 placeMarbleOnTopOfGrid(c, gridInshallah, rootPane, point[0], point[1]);
             } else {
-                //111    210
                 //if in safezone OR in homezone
                 int safeOrHome = pos/100;
-                int playerIndex = ((pos/10)%10);
+               // int playerIndex = board.getMarbleOwnerIndex(mp.getMarble());
+                int playerIndex = (pos/10)%10;
+               // System.out.println("SafeOrHome: " + safeOrHome);
                 if (safeOrHome == 1) //safezone
                 {
-                    //1xy
                     int cellIndex = pos%10;
                     GridPane sz = safeZones.get(playerIndex);
-                    if (!(c.getParent() instanceof GridPane))
-                        sz.getChildren().add(c);
+                    if (c.getParent() instanceof Pane parent) {
+                        parent.getChildren().remove(c);
+                    }
 
+                    GridPane.setRowIndex(c, cellIndex);
+                    GridPane.setColumnIndex(c, 0);
+                    sz.getChildren().add(c);
                 }else {
                     if (!(c.getParent() instanceof HBox))
                         homeZones.get(playerIndex).getChildren().add(c);
@@ -416,6 +419,73 @@ public abstract class BoardView {
 
         }
 
+    }
+    public void updateMarbles(Board.MarblePosition newPosition, MarbleMapping mp) {
+        ArrayList<int[]> grid = GridLoader.getGrid();
+        int position = newPosition.index();
+        int playerIndex = newPosition.playerIndex();
+        Board.PlaceType pt = newPosition.type();
+        Circle c = mp.getCircle();
+        c.getParent(); // for the love of everything near and dear, do NOT remove this line.
+
+        if (pt == Board.PlaceType.TRACK)
+        {
+            if (c.getParent() instanceof HBox)
+                ((HBox)c.getParent()).getChildren().remove(c);
+
+            int[] point = grid.get(position);
+
+            GridPane.setRowIndex(c, point[0]);
+            GridPane.setColumnIndex(c, point[1]);
+
+            //gridInshallah.getChildren().add(c);
+            placeMarbleOnTopOfGrid(c, gridInshallah, rootPane, point[0], point[1]);
+
+            return;
+        }
+
+
+        HBox targetBox = homeZones.get(playerIndex);
+        if (pt == Board.PlaceType.HOMEZONE)
+        {
+            c.getParent(); // for the love of everything near and dear, do NOT remove this line.
+            if (c.getParent() != targetBox) {
+                if (c.getParent() instanceof Pane)
+                    ((Pane) c.getParent()).getChildren().remove(c);
+                targetBox.getChildren().add(c);
+                return;
+           }
+//            if (!(c.getParent() instanceof HBox))
+//                homeZones.get(playerIndex).getChildren().add(c);
+        }
+
+        c.getParent(); // for the love of everything near and dear, do NOT remove this line.
+        GridPane targetPane = safeZones.get(playerIndex);
+        if (pt == Board.PlaceType.SAFEZONE) {
+            if (c.getParent() != targetPane){
+                if (c.getParent() instanceof Pane)
+                    ((Pane) c.getParent()).getChildren().remove(c);
+
+            if (c.getParent() instanceof Pane parent) {
+                parent.getChildren().remove(c);
+            }
+
+            GridPane.setRowIndex(c, position);
+            GridPane.setColumnIndex(c, 0);
+
+            targetPane.getChildren().add(c);
+            return;
+            }
+//            GridPane sz = safeZones.get(playerIndex);
+//            if (c.getParent() instanceof Pane parent) {
+//                parent.getChildren().remove(c);
+//            }
+//
+//            GridPane.setRowIndex(c, position);
+//            GridPane.setColumnIndex(c, 0);
+//            sz.getChildren().add(c);
+
+        }
     }
 
     public void moveMarbles(Game game){
@@ -426,16 +496,16 @@ public abstract class BoardView {
 
         for (Player p : players) {
             ArrayList<MarbleMapping> mapping = getMapping(p, game);
-            ArrayList<Integer> newPos =  board.getMarblePositions(mapping);
+            ArrayList<Board.MarblePosition> newPositions =  board.getMarblePositions(mapping);
+
             for (int i = 0; i < mapping.size(); i++){
-                int pos = newPos.get(i);
-                updateMarbles(pos, mapping.get(i), game);
+                updateMarbles(newPositions.get(i), mapping.get(i));
 
             }
         }
     }
 
-    public static ArrayList<MarbleMapping> getMapping(Player p, Game game){
+    public ArrayList<MarbleMapping> getMapping(Player p, Game game){
         ArrayList<Player> players = game.getPlayers();
         int counter = 0;
         for (Player play : players)
@@ -462,7 +532,6 @@ public abstract class BoardView {
                 return null;
             }
         }
-
     }
 
     public void moveCard(Game game) {
