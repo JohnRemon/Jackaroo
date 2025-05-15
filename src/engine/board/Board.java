@@ -11,6 +11,9 @@ import exception.IllegalSwapException;
 import exception.InvalidMarbleException;
 import model.Colour;
 import model.player.Marble;
+import model.player.Player;
+
+import static application.boardView.BoardView.updateTrapFlag;
 
 @SuppressWarnings("unused")
 public class Board implements BoardManager {
@@ -82,36 +85,48 @@ public class Board implements BoardManager {
         return -1;
     }
 
-    public ArrayList<Integer> getMarblePositions(ArrayList<MarbleMapping> marbles) {
+    public record MarblePosition(int index, int playerIndex, PlaceType type) {}
+    public enum PlaceType {
+        TRACK,
+        SAFEZONE,
+        HOMEZONE
+    }
+
+    public ArrayList<MarblePosition> getMarblePositions(ArrayList<MarbleMapping> marbles) {
 
         // -- Find each marbles position in track, if not in track then check safezone--
-        ArrayList<Integer> indexes = new ArrayList<>();
+        ArrayList<MarblePosition> positions = new ArrayList<>();
         for (MarbleMapping mp : marbles) {
             Marble marble = mp.getMarble();
+            int playerIndex = getMarbleOwnerIndex(marble);
             int pos = getPositionInPath(track, marble);
 
             if (pos == -1)
             {
                 //pos either in safezone or homezone
-
                 pos = getPositionInPath(getSafeZone(marble.getColour()), marble);
                 if (pos == -1) {
-                    indexes.add(200+ gameManager.getCurrentPlayerIndex());
-                } else
-                    indexes.add((100+pos)+gameManager.getCurrentPlayerIndex()*10); //returns {100,110,120,130}
-
-                /*  --Encoding--
-                if its not on the track, 3 digits will be returned
-                Leftmost digit: Either 1 or 2. 1 = safezone, 2 = homezone
-                Middle digit: Player index it belongs to
-                Rightmost digit: which safezone cell it is (in the case of safezone)
-                */
-
+                    positions.add(new MarblePosition(-1, playerIndex, PlaceType.HOMEZONE));
+                } else {
+                    positions.add(new MarblePosition(pos, playerIndex, PlaceType.SAFEZONE));
+                }
             } else
             //pos in track
-                indexes.add(pos);
+                {
+                positions.add(new MarblePosition(pos, playerIndex,PlaceType.TRACK ));
+                }
         }
-        return indexes;
+        return positions;
+    }
+
+    public int getMarbleOwnerIndex(Marble marble) {
+        ArrayList<Player> players = gameManager.getPlayers();
+        for (int i = 0; i < players.size(); i++) {
+            if (marble.getColour() == players.get(i).getColour()) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     private int getBasePosition(Colour colour) {
@@ -258,6 +273,8 @@ public class Board implements BoardManager {
         if(targetCell.isTrap()) {
             destroyMarble(marble);
             targetCell.setTrap(false);
+            System.out.printf("You have fallen for a trap");
+            updateTrapFlag();
             assignTrapCell();
         }
         

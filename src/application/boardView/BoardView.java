@@ -9,24 +9,31 @@ import engine.board.Board;
 import exception.GameException;
 import exception.InvalidCardException;
 import exception.InvalidMarbleException;
+import javafx.animation.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Bounds;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import model.card.Card;
 import model.player.Marble;
 import model.player.Player;
@@ -36,6 +43,7 @@ import java.io.InputStream;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public abstract class BoardView {
     public ArrayList<ImageView> playerCardsImages = new ArrayList<>();
@@ -53,39 +61,50 @@ public abstract class BoardView {
     @FXML public Button returnMainMenu;
     private GameController gameController;
 
+    private ArrayList<MarbleMapping> P1MarbleMappings = new ArrayList<>();
     @FXML private Circle PlayerMarbleOne;
     @FXML private Circle PlayerMarbleTwo;
     @FXML private Circle PlayerMarbleThree;
     @FXML private Circle PlayerMarbleFour;
-    ArrayList<MarbleMapping> P1MarbleMappings = new ArrayList<>();
-    ArrayList<MarbleMapping> CPU1MarbleMappings = new ArrayList<>();
-    ArrayList<MarbleMapping> CPU2MarbleMappings = new ArrayList<>();
-    ArrayList<MarbleMapping> CPU3MarbleMappings = new ArrayList<>();
+    @FXML private HBox PlayerHomeZone;
+    @FXML private GridPane PlayerSafeZone;
 
-
-    //TODO: 7ot el marbles 3la el scenebuilder taany 3shan ana 8aby :D
+    private ArrayList<MarbleMapping> CPU1MarbleMappings = new ArrayList<>();
     @FXML private Circle CPU1MarbleOne;
     @FXML private Circle CPU1MarbleTwo;
     @FXML private Circle CPU1MarbleThree;
     @FXML private Circle CPU1MarbleFour;
     @FXML private HBox CPU1HomeZone;
+    @FXML private GridPane CPU1SafeZone;
 
+    private ArrayList<MarbleMapping> CPU2MarbleMappings = new ArrayList<>();
     @FXML private Circle CPU2MarbleOne;
     @FXML private Circle CPU2MarbleTwo;
     @FXML private Circle CPU2MarbleThree;
     @FXML private Circle CPU2MarbleFour;
     @FXML private HBox CPU2HomeZone;
+    @FXML private GridPane CPU2SafeZone;
 
+    private ArrayList<MarbleMapping> CPU3MarbleMappings = new ArrayList<>();
     @FXML private Circle CPU3MarbleOne;
     @FXML private Circle CPU3MarbleTwo;
     @FXML private Circle CPU3MarbleThree;
     @FXML private Circle CPU3MarbleFour;
     @FXML private HBox CPU3HomeZone;
+    @FXML private GridPane CPU3SafeZone;
 
     @FXML private GridPane gridInshallah;
+    private ArrayList<HBox> homeZones = new ArrayList<>();
+    private ArrayList<GridPane> safeZones = new ArrayList<>();
     private Board board;
+    public static boolean trapped = false;
 
-    private final HashMap<Circle, Marble> marbleMapping = new HashMap<>();
+    private final ArrayList<Marble> globallySelectedMarbles = new ArrayList<>();
+
+    public static void updateTrapFlag(){
+        trapped = !trapped;
+    }
+
     public void selectCard(int index, Game game) {
         try {
             Player player = game.getPlayers().get(0);
@@ -106,44 +125,66 @@ public abstract class BoardView {
 
     public void selectMarble(MouseEvent event) {
         Circle circle = (Circle) event.getSource();
-        Player humanPlayer = gameController.getGame().getPlayers().get(0);
-        Marble marble = marbleMapping.get(circle);
-        System.out.println(humanPlayer.getSelectedMarbles().size());
+        ArrayList<Player> players = gameController.getGame().getPlayers();
+        Player currentPlayer = players.get(gameController.getGame().getCurrentPlayerIndex());
 
-        //  -- Find which marble corresponds to the circle --
-        {
-            for (MarbleMapping p1MarbleMapping : P1MarbleMappings) {
-                if (circle.equals(p1MarbleMapping.getCircle())) {
-                    marble = p1MarbleMapping.getMarble();
-                }
+        ArrayList<MarbleMapping> allMappings = new ArrayList<>();
+        allMappings.addAll(P1MarbleMappings);
+        allMappings.addAll(CPU1MarbleMappings);
+        allMappings.addAll(CPU2MarbleMappings);
+        allMappings.addAll(CPU3MarbleMappings);
+
+        Marble marble = null;
+        for (MarbleMapping mapping : allMappings) {
+            if (circle.equals(mapping.getCircle())) {
+                marble = mapping.getMarble();
+                break;
             }
         }
 
-        if(circle.getFill().equals(humanPlayer.getColourFX())){
-            Boolean isSelected = (Boolean) circle.getProperties().getOrDefault("selected", false);
-            try{
-                if(isSelected){
-                    circle.getProperties().put("selected", false);
-                    circle.setRadius(circle.getRadius() - 2);
-                    humanPlayer.getSelectedMarbles().remove(marble);
-                    System.out.println(humanPlayer.getSelectedMarbles().size());
-                }else{
-                    humanPlayer.selectMarble(marble);
-                    circle.getProperties().put("selected", true);
-                    circle.setRadius(circle.getRadius() + 2);
-                    System.out.println(humanPlayer.getSelectedMarbles().size());
-                }
-            }catch(InvalidMarbleException e){
-                e.printStackTrace();
+        boolean isSelected = (Boolean) circle.getProperties().getOrDefault("selected", false);
+
+        try {
+            if (isSelected) {
+                circle.getProperties().put("selected", false);
+                circle.setRadius(circle.getRadius() - 2);
+                currentPlayer.getSelectedMarbles().remove(marble);
+                System.out.println("Deselected Marble " + marble);
+            } else {
+                currentPlayer.selectMarble(marble);
+                circle.getProperties().put("selected", true);
+                circle.setRadius(circle.getRadius() + 2);
+                System.out.println("Selected Marble " + marble);
             }
+
+            System.out.println("Current Player Selected Marbles: " + currentPlayer.getSelectedMarbles());
+        } catch (InvalidMarbleException e) {
+            showException(e.getMessage());
         }
     }
 
-    public void moveMarble(Game game, MarbleMapping mp, Player player) throws GameException {
+    public void resetAllMarbleSelections() {
+        ArrayList<MarbleMapping> allMappings = new ArrayList<>();
+        allMappings.addAll(P1MarbleMappings);
+        allMappings.addAll(CPU1MarbleMappings);
+        allMappings.addAll(CPU2MarbleMappings);
+        allMappings.addAll(CPU3MarbleMappings);
 
-        // -- Find Marble end position --
+        for (MarbleMapping mapping : allMappings) {
+            Circle circle = mapping.getCircle();
+            circle.getProperties().put("selected", false);
+            circle.setRadius(10);
+        }
 
+        // Clear all players' selectedMarbles
+        for (Player player : gameController.getGame().getPlayers()) {
+            player.getSelectedMarbles().clear();
+        }
+
+        System.out.println("All marbles and selections have been reset.");
     }
+
+
 
     public void assignCards(Game game) {
         playerCardsRow.getChildren().clear();
@@ -257,24 +298,14 @@ public abstract class BoardView {
         CPU3MarbleMappings.add(p4Marble3);
         CPU3MarbleMappings.add(p4Marble4);
 
-        // --Add each CPU's marbles to their HBox
-        for (MarbleMapping m : CPU1MarbleMappings)
-        {
-            m.getCircle().setRadius(10);
-            m.getCircle().setVisible(true);
-            System.out.println("alleged");
-            CPU1HomeZone.getChildren().add(m.getCircle());
-        }
-        for (MarbleMapping m : CPU2MarbleMappings)
-        {
-            m.getCircle().setRadius(10);
-            CPU2HomeZone.getChildren().add(m.getCircle());
-        }
-        for (MarbleMapping m : CPU3MarbleMappings)
-        {
-            m.getCircle().setRadius(10);
-            CPU3HomeZone.getChildren().add(m.getCircle());
-        }
+        homeZones.add(PlayerHomeZone);
+        homeZones.add(CPU1HomeZone);
+        homeZones.add(CPU2HomeZone);
+        homeZones.add(CPU3HomeZone);
+        safeZones.add(PlayerSafeZone);
+        safeZones.add(CPU1SafeZone);
+        safeZones.add(CPU2SafeZone);
+        safeZones.add(CPU3SafeZone);
     }
 
     public void updateCounters(Game game) {
@@ -300,9 +331,6 @@ public abstract class BoardView {
         stage.centerOnScreen();
         stage.show();
     }
-    //implement a timer
-    //implement the marble mover
-    //implement the card moving into fire pit
 
     public static void setBoardPane(String fxml, String username) throws IOException, GameException {
         FXMLLoader loader = new FXMLLoader(BoardView.class.getResource(fxml));
@@ -360,10 +388,165 @@ public abstract class BoardView {
         alert.setTitle("Invalid Action");
         alert.setHeaderText(null);
         alert.setContentText(message);
-        alert.showAndWait();
+        alert.show(); //showAndWait() throws an IllegalStateException if stepped on trap
     }
 
-    public void updateMarbles(Game game) {
+    public void updateMarbles(Board.MarblePosition newPosition, MarbleMapping mp) {
         ArrayList<int[]> grid = GridLoader.getGrid();
+        int position = newPosition.index();
+        int playerIndex = newPosition.playerIndex();
+        Board.PlaceType pt = newPosition.type();
+        Circle c = mp.getCircle();
+        c.getParent(); // for the love of everything near and dear, do NOT remove this line.
+
+        if (pt == Board.PlaceType.TRACK)
+        {
+            if (c.getParent() instanceof HBox) {
+                ((HBox) c.getParent()).getChildren().remove(c);
+            }
+
+            int[] point = grid.get(position);
+
+            GridPane.setRowIndex(c, point[0]);
+            GridPane.setColumnIndex(c, point[1]);
+            placeMarbleOnTopOfGrid(c, gridInshallah, rootPane, point[0], point[1]);
+
+            return;
+        }
+
+
+        HBox targetBox = homeZones.get(playerIndex);
+        if (pt == Board.PlaceType.HOMEZONE)
+        {
+            c.getParent(); // for the love of everything near and dear, do NOT remove this line.
+            if (c.getParent() != targetBox) {
+                if (trapped){
+                    updateTrapFlag();
+                    BoardViewAlien.playTeleportEffect(c, gridInshallah);
+                }
+
+                if (c.getParent() instanceof Pane)
+                    ((Pane) c.getParent()).getChildren().remove(c);
+                targetBox.getChildren().add(c);
+
+                return;
+           }
+        }
+
+        c.getParent(); // for the love of everything near and dear, do NOT remove this line.
+        GridPane targetPane = safeZones.get(playerIndex);
+        if (pt == Board.PlaceType.SAFEZONE) {
+
+            if (c.getParent() instanceof Pane parent) {
+                parent.getChildren().remove(c);
+            }
+
+            GridPane.setRowIndex(c, position);
+            GridPane.setColumnIndex(c, 0);
+
+            targetPane.getChildren().add(c);
+            return;
+        }
     }
+
+    public void moveMarbles(Game game){
+        ArrayList<Player> players = game.getPlayers();
+
+        for (Player p : players) {
+            ArrayList<MarbleMapping> mapping = getMapping(p, game);
+            ArrayList<Board.MarblePosition> newPositions =  board.getMarblePositions(mapping);
+
+            for (int i = 0; i < mapping.size(); i++){
+                updateMarbles(newPositions.get(i), mapping.get(i));
+
+            }
+        }
+    }
+
+    public ArrayList<MarbleMapping> getMapping(Player p, Game game){
+        ArrayList<Player> players = game.getPlayers();
+        int counter = 0;
+        for (Player play : players)
+        {
+            if (p.equals(play))
+                break;
+            counter++;
+        }
+        switch (counter)
+        {
+            case 0 -> {
+                return P1MarbleMappings;
+            }
+            case 1 -> {
+                return CPU1MarbleMappings;
+            }
+            case 2 -> {
+                return CPU2MarbleMappings;
+            }
+            case 3 -> {
+                return CPU3MarbleMappings;
+            }
+            default -> {
+                return null;
+            }
+        }
+    }
+
+    public void moveCard(Game game) {
+        if(!game.getFirePit().isEmpty() && game.getFirePit().getLast() != null) {
+            String imageLocation = "/view/textures/cards/" + game.getFirePit().getLast().getFileName();
+            Image texture = null;
+            InputStream stream = getClass().getResourceAsStream(imageLocation);
+            if (stream == null) {
+                System.out.println("Image not found at: " + imageLocation);
+            } else {
+                texture = new Image(stream);
+            }
+
+            ImageView imageView = new ImageView(texture);
+            imageView.setFitHeight(90);
+            imageView.preserveRatioProperty().set(true);
+            imageView.setLayoutX(362.5 - imageView.getFitWidth() / 2);
+            imageView.setLayoutY(390 - imageView.getFitHeight() / 2);
+            rootPane.getChildren().add(imageView);
+        }
+    }
+    public void placeMarbleOnTopOfGrid(Circle marble, GridPane grid, AnchorPane root, int row, int col) {
+        Node tile = getTileAt(grid, col, row); // Note: col, then row
+        if (tile == null) {
+            System.out.println("No tile found at (" + row + ", " + col + ")");
+            return;
+        }
+
+        // Convert tile's bounds to root coordinate space
+        Bounds sceneBounds = tile.localToScene(tile.getBoundsInLocal());
+        Bounds localBounds = root.sceneToLocal(sceneBounds);
+
+        // Remove from any old parent
+        if (marble.getParent() != null && marble.getParent() instanceof Pane parent) {
+            parent.getChildren().remove(marble);
+        }
+
+        // Add to rootPane and manually position
+        root.getChildren().add(marble);
+        double tileWidth = tile.getBoundsInLocal().getWidth();
+        double tileHeight = tile.getBoundsInLocal().getHeight();
+
+        marble.setLayoutX(localBounds.getMinX() + tileWidth / 2);
+        marble.setLayoutY(localBounds.getMinY() + tileHeight / 2);
+    }
+
+    private Node getTileAt(GridPane grid, int col, int row) {
+        for (Node node : grid.getChildren()) {
+            Integer c = GridPane.getColumnIndex(node);
+            Integer r = GridPane.getRowIndex(node);
+            if ((c != null && c == col) && (r != null && r == row)) {
+                return node;
+            }
+        }
+        return null;
+    }
+
+
+
 }
