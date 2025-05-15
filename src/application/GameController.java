@@ -95,6 +95,9 @@ public class GameController {
         if (game.checkWin() != null) {
             String winner = game.getPlayers().get(game.checkWin().ordinal()).getName();
             System.out.println("Winner: " + winner);
+
+            boardView.playSound("win.mp3");
+
         } else {
             handleTurn();
         }

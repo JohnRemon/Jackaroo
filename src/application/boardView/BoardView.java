@@ -9,6 +9,8 @@ import engine.board.Board;
 import exception.GameException;
 import exception.InvalidCardException;
 import exception.InvalidMarbleException;
+import javafx.animation.PauseTransition;
+import javafx.animation.SequentialTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Bounds;
@@ -26,21 +28,28 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import model.card.Card;
 import model.player.Marble;
 import model.player.Player;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javafx.scene.media.AudioClip;
+
 public abstract class BoardView {
+
     public ArrayList<ImageView> playerCardsImages = new ArrayList<>();
     @FXML public AnchorPane rootPane;
     @FXML public ImageView boardImage;
@@ -110,6 +119,8 @@ public abstract class BoardView {
         } catch (InvalidCardException | IndexOutOfBoundsException e) {
             // TODO: add user feedback here
         }
+
+        playSound("click.mp3");
     }
 
 
@@ -199,6 +210,8 @@ public abstract class BoardView {
             playerCardsRow.getChildren().add(imageView);
             playerCardsImages.add(imageView);
         }
+
+        playSound("shuffle.mp3");
     }
 
     public void assignPlayers(Game game) throws IOException {
@@ -503,7 +516,12 @@ public abstract class BoardView {
 
             }
         }
+
+        playSound("ball_Rolling.mp3");
     }
+
+
+
 
     public ArrayList<MarbleMapping> getMapping(Player p, Game game){
         ArrayList<Player> players = game.getPlayers();
@@ -588,5 +606,21 @@ public abstract class BoardView {
         }
         return null;
     }
+
+
+    // SOUND EFFECTS
+
+    public void playSound(String fileName) {
+        try {
+            String path = "/view/Sounds/" + fileName;
+            Media sound = new Media(getClass().getResource(path).toExternalForm());
+            MediaPlayer mediaPlayer = new MediaPlayer(sound);
+            mediaPlayer.play();
+        } catch (Exception e) {
+            System.out.println("Failed to play sound: " + fileName + " -> " + e.getMessage());
+        }
+    }
+
+
 
 }
