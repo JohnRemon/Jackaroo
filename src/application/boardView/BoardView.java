@@ -151,12 +151,18 @@ public abstract class BoardView {
                 circle.setRadius(circle.getRadius() - 2);
                 currentPlayer.getSelectedMarbles().remove(marble);
                 System.out.println("Deselected Marble " + marble);
+
+
             } else {
                 currentPlayer.selectMarble(marble);
                 circle.getProperties().put("selected", true);
                 circle.setRadius(circle.getRadius() + 2);
                 System.out.println("Selected Marble " + marble);
+
+
             }
+            playSound("click.mp3");
+
 
             System.out.println("Current Player Selected Marbles: " + currentPlayer.getSelectedMarbles());
         } catch (InvalidMarbleException e) {
@@ -211,7 +217,6 @@ public abstract class BoardView {
             playerCardsImages.add(imageView);
         }
 
-        playSound("shuffle.mp3");
     }
 
     public void assignPlayers(Game game) throws IOException {
@@ -319,6 +324,9 @@ public abstract class BoardView {
         CPU3RemainingCards.setText(players.get(3).getHand().size() + "");
     }
     public void returnMainMenu() throws IOException {
+
+        playSound("menuClick.mp3");
+
         UserSettings currentSettings = new UserSettings().LoadSettings();
         currentSettings.SaveSettings(currentSettings);
 
@@ -387,6 +395,7 @@ public abstract class BoardView {
     }
 
     public void showException(String message){
+        playSound("error.mp3");
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Invalid Action");
         alert.setHeaderText(null);
@@ -515,13 +524,11 @@ public abstract class BoardView {
                 updateMarbles(newPositions.get(i), mapping.get(i));
 
             }
+            playSound("marble.mp3");  // always plays the sound
         }
 
-        playSound("ball_Rolling.mp3");
+
     }
-
-
-
 
     public ArrayList<MarbleMapping> getMapping(Player p, Game game){
         ArrayList<Player> players = game.getPlayers();
@@ -610,10 +617,10 @@ public abstract class BoardView {
 
     // SOUND EFFECTS
 
-    public void playSound(String fileName) {
+    public static void playSound(String fileName) {
         try {
             String path = "/view/Sounds/" + fileName;
-            Media sound = new Media(getClass().getResource(path).toExternalForm());
+            Media sound = new Media(BoardView.class.getResource(path).toExternalForm());
             MediaPlayer mediaPlayer = new MediaPlayer(sound);
             mediaPlayer.play();
         } catch (Exception e) {
@@ -621,6 +628,9 @@ public abstract class BoardView {
         }
     }
 
+    public void onShuffle() {
+        playSound("cardShuffle.mp3");
+    }
 
 
 }

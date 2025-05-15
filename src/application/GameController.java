@@ -21,6 +21,13 @@ public class GameController {
         this.game = game;
         this.boardView = boardView;
         this.scene = scene;
+
+        game.setShuffleListener(new Game.ShuffleListener() {
+            @Override
+            public void onShuffle() {
+                boardView.onShuffle();
+            }
+        });
     }
 
     public void handleTurn() {
