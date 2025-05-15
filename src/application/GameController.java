@@ -3,6 +3,7 @@ package application;
 import application.boardView.BoardView;
 import engine.Game;
 import exception.GameException;
+import exception.InvalidCardException;
 import javafx.animation.PauseTransition;
 import javafx.scene.Scene;
 import javafx.util.Duration;
@@ -55,6 +56,14 @@ public class GameController {
                             } catch (GameException e) {
                                 boardView.showException(e.getMessage());
                             }
+                        }
+                        case BACK_SPACE -> {
+                                if (currentPlayer.getSelectedCard() == null) {
+                                    int cardIndex = (int) (Math.random() * currentPlayer.getHand().size());
+                                    boardView.selectCard(cardIndex, game);
+                                }
+                                game.endPlayerTurn();
+                                endTurn();
                         }
                     }
                 });
