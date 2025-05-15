@@ -3,6 +3,7 @@ package application;
 import application.boardView.BoardView;
 import engine.Game;
 import exception.GameException;
+import exception.InvalidCardException;
 import exception.SplitOutOfRangeException;
 import javafx.animation.PauseTransition;
 import javafx.scene.Scene;
@@ -29,7 +30,14 @@ public class GameController {
         Player currentPlayer = game.getPlayers().get(game.getCurrentPlayerIndex());
         Player nextPlayer = game.getPlayers().get(game.getNextPlayerIndex());
         System.out.println("-----------------------------------");
+        System.out.println("FirePit Size: " + game.getFirePit().size());
+        if(game.getFirePit().size() > 0) {
+            for(Card c : game.getFirePit()) {
+                System.out.println("Card in FirePit: " + c.getName());
+            }
+        }
         System.out.println(currentPlayer.getName() + " turn");
+        System.out.println("Current Player Hand: " + currentPlayer.getHand().size());
 
         boardView.moveCard(game);
         if (!(currentPlayer instanceof CPU)) {
@@ -42,6 +50,7 @@ public class GameController {
                         case DIGIT3 -> boardView.selectCard(2, game);
                         case DIGIT4 -> boardView.selectCard(3, game);
                         case ENTER -> {
+                            System.out.println("Card: " + currentPlayer.getSelectedCard().getName());
                             if(currentPlayer.getSelectedCard().getName().equals("Seven") && currentPlayer.getSelectedMarbles().size() == 2){
                                 TextInputDialog dialog = new TextInputDialog();
                                 dialog.setTitle("Enter Split Distance");
@@ -64,6 +73,14 @@ public class GameController {
                             } catch (GameException e) {
                                 boardView.showException(e.getMessage());
                             }
+                        }
+                        case BACK_SPACE -> {
+                                if (currentPlayer.getSelectedCard() == null) {
+                                    int cardIndex = (int) (Math.random() * currentPlayer.getHand().size());
+                                    boardView.selectCard(cardIndex, game);
+                                }
+                                game.endPlayerTurn();
+                                endTurn();
                         }
                     }
                 });

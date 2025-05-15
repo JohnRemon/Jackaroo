@@ -13,6 +13,8 @@ import model.Colour;
 import model.player.Marble;
 import model.player.Player;
 
+import static application.boardView.BoardView.updateTrapFlag;
+
 @SuppressWarnings("unused")
 public class Board implements BoardManager {
     private final ArrayList<Cell> track;
@@ -271,7 +273,8 @@ public class Board implements BoardManager {
         if(targetCell.isTrap()) {
             destroyMarble(marble);
             targetCell.setTrap(false);
-            System.out.println("You have fallen for a trap");
+            System.out.printf("You have fallen for a trap");
+            updateTrapFlag();
             assignTrapCell();
         }
         
