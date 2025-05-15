@@ -194,6 +194,16 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
             </GridPane>
+            <Label fx:id="CurrentPlayerLabel" layoutX="22.0" layoutY="20.0" text="Current Player: " textFill="WHITE">
+               <font>
+                  <Font name="Calibri Bold" size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="NextPlayerLabel" layoutX="22.0" layoutY="57.0" text="Next Player: " textFill="WHITE">
+               <font>
+                  <Font name="Calibri Bold" size="18.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
       <AnchorPane prefHeight="188.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="612.0">

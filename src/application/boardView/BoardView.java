@@ -16,10 +16,7 @@ import javafx.geometry.Bounds;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -35,6 +32,7 @@ import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.card.Card;
+import model.player.CPU;
 import model.player.Marble;
 import model.player.Player;
 
@@ -99,6 +97,9 @@ public abstract class BoardView {
     private Board board;
     public static boolean trapped = false;
 
+    @FXML private Label CurrentPlayerLabel;
+    @FXML private Label NextPlayerLabel;
+
     private final ArrayList<Marble> globallySelectedMarbles = new ArrayList<>();
 
     public static void updateTrapFlag(){
@@ -114,7 +115,19 @@ public abstract class BoardView {
 
             for (int i = 0; i < playerCardsImages.size(); i++) {
                 ImageView iv = playerCardsImages.get(i);
-                iv.setFitHeight(i == index ? 100 : 90);
+                iv.setEffect(null);
+                iv.setScaleX(1.0);
+                iv.setScaleY(1.0);
+                if(i == index){
+                    iv.setFitHeight(100);
+                    DropShadow glow = new DropShadow();
+                    glow.setColor(Color.LIMEGREEN);
+                    glow.setRadius(20);
+                    iv.setEffect(glow);
+                }else{
+                    iv.setFitHeight(90);
+                }
+
             }
 
         } catch (InvalidCardException | IndexOutOfBoundsException e) {
@@ -149,15 +162,12 @@ public abstract class BoardView {
                 circle.getProperties().put("selected", false);
                 circle.setRadius(circle.getRadius() - 2);
                 currentPlayer.getSelectedMarbles().remove(marble);
-                System.out.println("Deselected Marble " + marble);
             } else {
                 currentPlayer.selectMarble(marble);
                 circle.getProperties().put("selected", true);
                 circle.setRadius(circle.getRadius() + 2);
-                System.out.println("Selected Marble " + marble);
             }
 
-            System.out.println("Current Player Selected Marbles: " + currentPlayer.getSelectedMarbles());
         } catch (InvalidMarbleException e) {
             showException(e.getMessage());
         }
@@ -181,7 +191,6 @@ public abstract class BoardView {
             player.getSelectedMarbles().clear();
         }
 
-        System.out.println("All marbles and selections have been reset.");
     }
 
 
@@ -189,6 +198,12 @@ public abstract class BoardView {
     public void assignCards(Game game) {
         playerCardsRow.getChildren().clear();
         playerCardsImages.clear();
+
+
+        CurrentPlayerLabel.setText("Current Player: " + game.getPlayers().get(game.getCurrentPlayerIndex()).getName());
+        CurrentPlayerLabel.setTextFill(game.getPlayers().get(game.getCurrentPlayerIndex()).getColourFX());
+        NextPlayerLabel.setText("Next Player: " + game.getPlayers().get(game.getNextPlayerIndex()).getName());
+        NextPlayerLabel.setTextFill(game.getPlayers().get(game.getNextPlayerIndex()).getColourFX());
 
         ArrayList<Card> playerCards = game.getPlayers().get(0).getHand();
         for (Card card : playerCards) {
@@ -314,6 +329,7 @@ public abstract class BoardView {
         CPU1RemainingCards.setText(players.get(1).getHand().size() + "");
         CPU2RemainingCards.setText(players.get(2).getHand().size() + "");
         CPU3RemainingCards.setText(players.get(3).getHand().size() + "");
+
     }
     public void returnMainMenu() throws IOException {
         UserSettings currentSettings = new UserSettings().LoadSettings();
@@ -423,6 +439,13 @@ public abstract class BoardView {
                 if (trapped){
                     updateTrapFlag();
                     BoardViewAlien.playTeleportEffect(c, gridInshallah);
+                    if(!(gameController.getGame().getPlayers().get(gameController.getGame().getCurrentPlayerIndex()) instanceof CPU)) {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Trap Activated");
+                        alert.setHeaderText(null);
+                        alert.setContentText("You have been teleported to your Home Zone!");
+                        alert.show();
+                    }
                 }
 
                 if (c.getParent() instanceof Pane)
@@ -548,5 +571,19 @@ public abstract class BoardView {
     }
 
 
-
+    public void showWinner(String name) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Game Over");
+        alert.setHeaderText(null);
+        alert.setContentText(name + " has won the game!");
+        alert.setGraphic(null);
+        alert.setOnCloseRequest(event -> {
+            try {
+                returnMainMenu();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+        alert.showAndWait();
+    }
 }

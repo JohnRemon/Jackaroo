@@ -6,9 +6,12 @@ import exception.GameException;
 import exception.InvalidCardException;
 import exception.SplitOutOfRangeException;
 import javafx.animation.PauseTransition;
+import javafx.fxml.FXML;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextInputDialog;
 import javafx.util.Duration;
+import model.Colour;
 import model.player.CPU;
 import model.player.Player;
 import model.card.Card;
@@ -19,7 +22,6 @@ public class GameController {
     private final BoardView boardView;
     private Scene scene;
 
-
     public GameController(Game game, BoardView boardView, Scene scene) {
         this.game = game;
         this.boardView = boardView;
@@ -29,20 +31,10 @@ public class GameController {
     public void handleTurn() {
         Player currentPlayer = game.getPlayers().get(game.getCurrentPlayerIndex());
         Player nextPlayer = game.getPlayers().get(game.getNextPlayerIndex());
-        System.out.println("-----------------------------------");
-        System.out.println("FirePit Size: " + game.getFirePit().size());
-        if(game.getFirePit().size() > 0) {
-            for(Card c : game.getFirePit()) {
-                System.out.println("Card in FirePit: " + c.getName());
-            }
-        }
-        System.out.println(currentPlayer.getName() + " turn");
-        System.out.println("Current Player Hand: " + currentPlayer.getHand().size());
 
         boardView.moveCard(game);
         if (!(currentPlayer instanceof CPU)) {
             if(game.canPlayTurn()) {
-                System.out.println("You can play the turn");
                 scene.setOnKeyPressed(event -> {
                     switch (event.getCode()) {
                         case DIGIT1 -> boardView.selectCard(0, game);
@@ -50,11 +42,10 @@ public class GameController {
                         case DIGIT3 -> boardView.selectCard(2, game);
                         case DIGIT4 -> boardView.selectCard(3, game);
                         case ENTER -> {
-                            System.out.println("Card: " + currentPlayer.getSelectedCard().getName());
                             if(currentPlayer.getSelectedCard().getName().equals("Seven") && currentPlayer.getSelectedMarbles().size() == 2){
                                 TextInputDialog dialog = new TextInputDialog();
                                 dialog.setTitle("Enter Split Distance");
-                                dialog.setHeaderText("Please enter the split distance for the Seven card.");
+                                dialog.setHeaderText(null);
                                 dialog.setContentText("Split Distance:");
                                 dialog.setGraphic(null);
                                 dialog.showAndWait().ifPresent(input -> {
@@ -68,7 +59,6 @@ public class GameController {
                             }
                             try {
                                 game.playPlayerTurn();
-                                System.out.println("Card Moved");
                                 endTurn();
                             } catch (GameException e) {
                                 boardView.showException(e.getMessage());
@@ -79,24 +69,19 @@ public class GameController {
                                     int cardIndex = (int) (Math.random() * currentPlayer.getHand().size());
                                     boardView.selectCard(cardIndex, game);
                                 }
-                                game.endPlayerTurn();
                                 endTurn();
                         }
                     }
                 });
             }else{
-                System.out.println("You can't play the game after the skip");
                 endTurn();
             }
         } else {
             if (game.canPlayTurn()) {
-                System.out.println("You can play the turn");
-                PauseTransition pause = new PauseTransition(Duration.seconds(2));
+                PauseTransition pause = new PauseTransition(Duration.seconds(0));
                 pause.setOnFinished(event -> {
                     try {
                         game.playPlayerTurn();
-
-                        System.out.println("CPU played a card");
                         endTurn();
                     } catch (GameException e) {
                         boardView.showException(e.getMessage());
@@ -104,9 +89,8 @@ public class GameController {
                 });
                 pause.play();
             } else {
-                System.out.println("You can't play the game after the skip");
                 game.deselectAll();
-                PauseTransition pause = new PauseTransition(Duration.seconds(2));
+                PauseTransition pause = new PauseTransition(Duration.seconds(0));
                 pause.setOnFinished(event -> endTurn());
                 pause.play();
             }
@@ -119,8 +103,14 @@ public class GameController {
         boardView.updateCounters(game);
         boardView.assignCards(game);
         if (game.checkWin() != null) {
-            String winner = game.getPlayers().get(game.checkWin().ordinal()).getName();
-            System.out.println("Winner: " + winner);
+            Colour colour = game.checkWin();
+            for (Player player : game.getPlayers()) {
+                if (player.getColour() == colour) {
+                    boardView.showWinner(player.getName());
+                    break;
+                }
+            }
+
         } else {
             handleTurn();
         }
