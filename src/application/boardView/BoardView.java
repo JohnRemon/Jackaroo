@@ -21,6 +21,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -33,6 +34,7 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.card.Card;
@@ -45,6 +47,7 @@ import java.io.InputStream;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import javafx.scene.media.AudioClip;
 
@@ -101,8 +104,13 @@ public abstract class BoardView {
     private ArrayList<HBox> homeZones = new ArrayList<>();
     private ArrayList<GridPane> safeZones = new ArrayList<>();
     private Board board;
+    public static boolean trapped = false;
 
     private final ArrayList<Marble> globallySelectedMarbles = new ArrayList<>();
+
+    public static void updateTrapFlag(){
+        trapped = !trapped;
+    }
 
     public void selectCard(int index, Game game) {
         try {
@@ -400,48 +408,9 @@ public abstract class BoardView {
         alert.setTitle("Invalid Action");
         alert.setHeaderText(null);
         alert.setContentText(message);
-        alert.showAndWait();
+        alert.show(); //showAndWait() throws an IllegalStateException if stepped on trap
     }
 
-    public void updateMarbles(int pos, MarbleMapping mp, Game game) {
-        ArrayList<int[]> grid = GridLoader.getGrid();
-        Circle c = mp.getCircle();
-
-
-            if (pos < 100) //pos is on track
-            {
-                if (c.getParent() instanceof HBox){
-                    ((HBox)c.getParent()).getChildren().remove(c);
-                }
-                int[] point = grid.get(pos);
-                GridPane.setRowIndex(c, point[0]);
-                GridPane.setColumnIndex(c, point[1]);
-                placeMarbleOnTopOfGrid(c, gridInshallah, rootPane, point[0], point[1]);
-            } else {
-                //if in safezone OR in homezone
-                int safeOrHome = pos/100;
-               // int playerIndex = board.getMarbleOwnerIndex(mp.getMarble());
-                int playerIndex = (pos/10)%10;
-               // System.out.println("SafeOrHome: " + safeOrHome);
-                if (safeOrHome == 1) //safezone
-                {
-                    int cellIndex = pos%10;
-                    GridPane sz = safeZones.get(playerIndex);
-                    if (c.getParent() instanceof Pane parent) {
-                        parent.getChildren().remove(c);
-                    }
-
-                    GridPane.setRowIndex(c, cellIndex);
-                    GridPane.setColumnIndex(c, 0);
-                    sz.getChildren().add(c);
-                }else {
-                    if (!(c.getParent() instanceof HBox))
-                        homeZones.get(playerIndex).getChildren().add(c);
-        }
-
-        }
-
-    }
     public void updateMarbles(Board.MarblePosition newPosition, MarbleMapping mp) {
         ArrayList<int[]> grid = GridLoader.getGrid();
         int position = newPosition.index();
@@ -452,15 +421,14 @@ public abstract class BoardView {
 
         if (pt == Board.PlaceType.TRACK)
         {
-            if (c.getParent() instanceof HBox)
-                ((HBox)c.getParent()).getChildren().remove(c);
+            if (c.getParent() instanceof HBox) {
+                ((HBox) c.getParent()).getChildren().remove(c);
+            }
 
             int[] point = grid.get(position);
 
             GridPane.setRowIndex(c, point[0]);
             GridPane.setColumnIndex(c, point[1]);
-
-            //gridInshallah.getChildren().add(c);
             placeMarbleOnTopOfGrid(c, gridInshallah, rootPane, point[0], point[1]);
 
             return;
@@ -472,21 +440,22 @@ public abstract class BoardView {
         {
             c.getParent(); // for the love of everything near and dear, do NOT remove this line.
             if (c.getParent() != targetBox) {
+                if (trapped){
+                    updateTrapFlag();
+                    BoardViewAlien.playTeleportEffect(c, gridInshallah);
+                }
+
                 if (c.getParent() instanceof Pane)
                     ((Pane) c.getParent()).getChildren().remove(c);
                 targetBox.getChildren().add(c);
+
                 return;
            }
-//            if (!(c.getParent() instanceof HBox))
-//                homeZones.get(playerIndex).getChildren().add(c);
         }
 
         c.getParent(); // for the love of everything near and dear, do NOT remove this line.
         GridPane targetPane = safeZones.get(playerIndex);
         if (pt == Board.PlaceType.SAFEZONE) {
-            if (c.getParent() != targetPane){
-                if (c.getParent() instanceof Pane)
-                    ((Pane) c.getParent()).getChildren().remove(c);
 
             if (c.getParent() instanceof Pane parent) {
                 parent.getChildren().remove(c);
@@ -497,23 +466,10 @@ public abstract class BoardView {
 
             targetPane.getChildren().add(c);
             return;
-            }
-//            GridPane sz = safeZones.get(playerIndex);
-//            if (c.getParent() instanceof Pane parent) {
-//                parent.getChildren().remove(c);
-//            }
-//
-//            GridPane.setRowIndex(c, position);
-//            GridPane.setColumnIndex(c, 0);
-//            sz.getChildren().add(c);
-
         }
     }
 
     public void moveMarbles(Game game){
-        /*
-            This method should take the game, find all the marbles whose position has changed, and animate those marbles
-        */
         ArrayList<Player> players = game.getPlayers();
 
         for (Player p : players) {
@@ -615,8 +571,8 @@ public abstract class BoardView {
     }
 
 
-    // SOUND EFFECTS
 
+    // SOUND EFFECTS
     public static void playSound(String fileName) {
         try {
             String path = "/view/Sounds/" + fileName;
@@ -631,6 +587,4 @@ public abstract class BoardView {
     public void onShuffle() {
         playSound("cardShuffle.mp3");
     }
-
-
 }
