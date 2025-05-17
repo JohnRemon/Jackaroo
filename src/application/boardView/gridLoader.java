@@ -1,12 +1,11 @@
 package application.boardView;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class gridLoader {
+public class GridLoader {
     private static ArrayList<int[]> grid = new ArrayList<>();
 
     public static void loadGrid() {
@@ -27,4 +26,6 @@ public class gridLoader {
     public static ArrayList<int[]> getGrid() {
         return grid;
     }
+
+    // el class dah howa el by link index (track) wel grid (frontend)
 }
