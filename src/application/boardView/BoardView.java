@@ -9,7 +9,6 @@ import engine.board.Board;
 import exception.GameException;
 import exception.InvalidCardException;
 import exception.InvalidMarbleException;
-import javafx.animation.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Bounds;
@@ -20,7 +19,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -29,21 +27,15 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Line;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import model.card.Card;
 import model.player.Marble;
 import model.player.Player;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 public abstract class BoardView {
     public ArrayList<ImageView> playerCardsImages = new ArrayList<>();
@@ -397,23 +389,6 @@ public abstract class BoardView {
         int playerIndex = newPosition.playerIndex();
         Board.PlaceType pt = newPosition.type();
         Circle c = mp.getCircle();
-        c.getParent(); // for the love of everything near and dear, do NOT remove this line.
-
-        if (pt == Board.PlaceType.TRACK)
-        {
-            if (c.getParent() instanceof HBox) {
-                ((HBox) c.getParent()).getChildren().remove(c);
-            }
-
-            int[] point = grid.get(position);
-
-            GridPane.setRowIndex(c, point[0]);
-            GridPane.setColumnIndex(c, point[1]);
-            placeMarbleOnTopOfGrid(c, gridInshallah, rootPane, point[0], point[1]);
-
-            return;
-        }
-
 
         HBox targetBox = homeZones.get(playerIndex);
         if (pt == Board.PlaceType.HOMEZONE)
@@ -428,22 +403,50 @@ public abstract class BoardView {
                 if (c.getParent() instanceof Pane)
                     ((Pane) c.getParent()).getChildren().remove(c);
                 targetBox.getChildren().add(c);
-
-                return;
-           }
+            }
+            return;
         }
 
-        c.getParent(); // for the love of everything near and dear, do NOT remove this line.
+        int[] point = grid.get(position);
+        Integer oldRow = GridPane.getRowIndex(c);   //used wrapper class Integer as RowIndex and ColumnIndex can be null (wasn't on grid before)
+        Integer oldCol = GridPane.getColumnIndex(c);
+        int newRow = point[0];
+        int newCol = point[1];
+        boolean positionChanged = oldCol == null || oldRow == null || oldRow != newRow || oldCol != newCol;
+
+        if (pt == Board.PlaceType.TRACK)
+        {
+            c.getParent();
+            if (c.getParent() instanceof HBox) {
+                ((HBox) c.getParent()).getChildren().remove(c);
+            }
+
+            if (positionChanged)
+            {
+                BoardViewAlien.playTeleportEffect(c, gridInshallah);
+            }
+
+            GridPane.setRowIndex(c, point[0]);
+            GridPane.setColumnIndex(c, point[1]);
+            placeMarbleOnTopOfGrid(c, gridInshallah, rootPane, point[0], point[1]);
+
+            return;
+        }
+
         GridPane targetPane = safeZones.get(playerIndex);
         if (pt == Board.PlaceType.SAFEZONE) {
-
+            c.getParent(); // for the love of everything near and dear, do NOT remove this line.
             if (c.getParent() instanceof Pane parent) {
                 parent.getChildren().remove(c);
             }
 
-            GridPane.setRowIndex(c, position);
-            GridPane.setColumnIndex(c, 0);
+            if (positionChanged)
+            {
+                BoardViewAlien.playTeleportEffect(c, gridInshallah);
+            }
 
+            GridPane.setRowIndex(c, position);
+            GridPane.setColumnIndex(c,0);
             targetPane.getChildren().add(c);
             return;
         }

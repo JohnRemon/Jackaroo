@@ -58,12 +58,12 @@ public class GameController {
                             }
                         }
                         case BACK_SPACE -> {
-                                if (currentPlayer.getSelectedCard() == null) {
-                                    int cardIndex = (int) (Math.random() * currentPlayer.getHand().size());
-                                    boardView.selectCard(cardIndex, game);
-                                }
+                            if (!game.canPlayTurn()) {
                                 game.endPlayerTurn();
                                 endTurn();
+                            } else {
+                                boardView.showException("You can't skip this turn.");
+                            }
                         }
                     }
                 });

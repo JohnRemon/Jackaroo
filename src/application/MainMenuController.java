@@ -1,16 +1,11 @@
 package application;
 
-import application.boardView.BoardView;
 import application.boardView.BoardViewAlien;
 import application.boardView.BoardViewDefault;
-import engine.Game;
 import exception.GameException;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
