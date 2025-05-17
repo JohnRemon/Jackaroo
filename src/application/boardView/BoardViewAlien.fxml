@@ -14,7 +14,7 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.boardView.BoardViewAlien">
+<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="800.0" stylesheets="@BoardViewAlien.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.boardView.BoardViewAlien">
    <children>
       <ImageView fx:id="boardImage" fitHeight="800.0" fitWidth="800.0" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <image>
@@ -32,7 +32,7 @@
       </AnchorPane>
       <AnchorPane fx:id="rootPane1" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <GridPane fx:id="gridInshallah" layoutX="178.4" layoutY="0.19999999999999996" prefHeight="689.0" prefWidth="508.0" AnchorPane.bottomAnchor="111.0" AnchorPane.leftAnchor="178.4" AnchorPane.rightAnchor="114.39999999999998" AnchorPane.topAnchor="0.19999999999999996">
+            <GridPane fx:id="gridInshallah" layoutX="182.0" layoutY="-5.0" prefHeight="689.0" prefWidth="508.0" AnchorPane.bottomAnchor="116.0" AnchorPane.leftAnchor="182.0" AnchorPane.rightAnchor="110.0" AnchorPane.topAnchor="-5.0">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -95,24 +95,24 @@
             </GridPane>
             <HBox fx:id="CPU3HomeZone" layoutX="676.0" layoutY="387.0" prefHeight="26.0" prefWidth="90.0" rotate="-90.0">
                <children>
-                  <Circle fx:id="CPU3MarbleTwo" fill="DODGERBLUE" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
-                  <Circle fx:id="CPU3MarbleOne" fill="DODGERBLUE" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
-                  <Circle fx:id="CPU3MarbleThree" fill="DODGERBLUE" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
-                  <Circle fx:id="CPU3MarbleFour" fill="DODGERBLUE" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
+                  <Circle fx:id="CPU3MarbleTwo" fill="DODGERBLUE" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" styleClass="marble" />
+                  <Circle fx:id="CPU3MarbleOne" fill="DODGERBLUE" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" styleClass="marble" />
+                  <Circle fx:id="CPU3MarbleThree" fill="DODGERBLUE" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" styleClass="marble" />
+                  <Circle fx:id="CPU3MarbleFour" fill="DODGERBLUE" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" styleClass="marble" />
                </children></HBox>
             <HBox fx:id="CPU1HomeZone" layoutX="31.0" layoutY="388.0" prefHeight="26.0" prefWidth="90.0" rotate="90.0">
                <children>
-                  <Circle fx:id="CPU1MarbleOne" fill="DODGERBLUE" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
-                  <Circle fx:id="CPU1MarbleThree" fill="DODGERBLUE" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
-                  <Circle fx:id="CPU1MarbleFour" fill="DODGERBLUE" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
-                  <Circle fx:id="CPU1MarbleTwo" fill="DODGERBLUE" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
+                  <Circle fx:id="CPU1MarbleOne" fill="DODGERBLUE" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" styleClass="marble" />
+                  <Circle fx:id="CPU1MarbleThree" fill="DODGERBLUE" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" styleClass="marble" />
+                  <Circle fx:id="CPU1MarbleFour" fill="DODGERBLUE" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" styleClass="marble" />
+                  <Circle fx:id="CPU1MarbleTwo" fill="DODGERBLUE" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" styleClass="marble" />
                </children></HBox>
             <HBox fx:id="CPU2HomeZone" layoutX="356.0" layoutY="68.0" prefHeight="26.0" prefWidth="90.0">
                <children>
-                  <Circle fx:id="CPU2MarbleOne" fill="DODGERBLUE" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
-                  <Circle fx:id="CPU2MarbleTwo" fill="DODGERBLUE" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
-                  <Circle fx:id="CPU2MarbleFour" fill="DODGERBLUE" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
-                  <Circle fx:id="CPU2MarbleThree" fill="DODGERBLUE" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
+                  <Circle fx:id="CPU2MarbleOne" fill="DODGERBLUE" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" styleClass="marble" />
+                  <Circle fx:id="CPU2MarbleTwo" fill="DODGERBLUE" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" styleClass="marble" />
+                  <Circle fx:id="CPU2MarbleFour" fill="DODGERBLUE" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" styleClass="marble" />
+                  <Circle fx:id="CPU2MarbleThree" fill="DODGERBLUE" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" styleClass="marble" />
                </children></HBox>
 
             <Label fx:id="playerLabel" alignment="CENTER" layoutY="565.0" prefHeight="18.0" prefWidth="124.0" text="PLAYER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="676.0" AnchorPane.topAnchor="765.6">
@@ -150,7 +150,7 @@
                   <Font name="System Bold" size="23.0" />
                </font>
             </Label>
-            <GridPane fx:id="CPU1SafeZone" layoutX="245.0" layoutY="356.0" prefHeight="90.0" prefWidth="26.0" rotate="270.0">
+            <GridPane fx:id="CPU1SafeZone" layoutX="245.0" layoutY="356.0" prefHeight="90.0" prefWidth="26.0" rotate="270.0" styleClass="safezone">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
               </columnConstraints>
@@ -161,7 +161,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
             </GridPane>
-            <GridPane fx:id="CPU3SafeZone" layoutX="522.0" layoutY="356.0" prefHeight="90.0" prefWidth="26.0" rotate="90.0">
+            <GridPane fx:id="CPU3SafeZone" layoutX="522.0" layoutY="356.0" prefHeight="90.0" prefWidth="26.0" rotate="90.0" styleClass="safezone">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                </columnConstraints>
@@ -172,7 +172,7 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
             </GridPane>
-            <GridPane fx:id="CPU2SafeZone" layoutX="385.0" layoutY="212.0" prefHeight="90.0" prefWidth="26.0">
+            <GridPane fx:id="CPU2SafeZone" layoutX="385.0" layoutY="212.0" prefHeight="90.0" prefWidth="26.0" styleClass="safezone">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                </columnConstraints>
@@ -183,7 +183,7 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
             </GridPane>
-            <GridPane fx:id="PlayerSafeZone" layoutX="385.0" layoutY="485.4" prefHeight="90.0" prefWidth="26.0" rotate="180.0">
+            <GridPane fx:id="PlayerSafeZone" layoutX="385.0" layoutY="485.4" prefHeight="90.0" prefWidth="26.0" rotate="180.0" styleClass="safezone">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                </columnConstraints>
@@ -207,10 +207,10 @@
             <Button layoutX="362.0" layoutY="147.0" mnemonicParsing="false" onAction="#returnMainMenu" text="Main Menu" />
             <HBox fx:id="PlayerHomeZone" layoutX="695.0" layoutY="146.0" prefHeight="26.0" prefWidth="90.0" AnchorPane.bottomAnchor="15.199999999999996" AnchorPane.leftAnchor="695.0" AnchorPane.rightAnchor="14.399999999999949" AnchorPane.topAnchor="146.0">
                <children>
-                  <Circle fx:id="PlayerMarbleOne" fill="DODGERBLUE" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
-                  <Circle fx:id="PlayerMarbleTwo" fill="DODGERBLUE" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
-                  <Circle fx:id="PlayerMarbleFour" fill="DODGERBLUE" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
-                  <Circle fx:id="PlayerMarbleThree" fill="DODGERBLUE" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
+                  <Circle fx:id="PlayerMarbleOne" fill="DODGERBLUE" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" styleClass="marble" />
+                  <Circle fx:id="PlayerMarbleTwo" fill="DODGERBLUE" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" styleClass="marble" />
+                  <Circle fx:id="PlayerMarbleFour" fill="DODGERBLUE" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" styleClass="marble" />
+                  <Circle fx:id="PlayerMarbleThree" fill="DODGERBLUE" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" styleClass="marble" />
                </children>
             </HBox>
          </children>

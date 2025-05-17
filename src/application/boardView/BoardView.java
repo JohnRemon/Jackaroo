@@ -19,6 +19,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -26,7 +27,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
+import javafx.scene.paint.*;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import model.card.Card;
@@ -36,6 +37,7 @@ import model.player.Player;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 public abstract class BoardView {
     public ArrayList<ImageView> playerCardsImages = new ArrayList<>();
@@ -93,8 +95,35 @@ public abstract class BoardView {
 
     private final ArrayList<Marble> globallySelectedMarbles = new ArrayList<>();
 
-    public static void updateTrapFlag(){
-        trapped = !trapped;
+    public static void setBoardPane(String fxml, String username) throws IOException, GameException {
+        FXMLLoader loader = new FXMLLoader(BoardView.class.getResource(fxml));
+        Parent boardRoot = loader.load();
+        BoardView controller = loader.getController();
+        Game game = new Game(username);
+        Board board = game.getBoard();
+        controller.setBoard(board);
+
+        // Create the Scene and set it to the Stage
+        Scene gameScene = new Scene(boardRoot);
+        Stage stage = (Stage) Main.getPrimaryStage();
+        stage.setScene(gameScene);
+        stage.setTitle("Jackaroo");
+        stage.setResizable(false);
+        stage.centerOnScreen();
+        boardRoot.requestFocus();
+        controller.testTrack(game);
+        stage.show();
+        gameScene.getStylesheets().add(BoardViewAlien.class.getResource("BoardViewAlien.css").toExternalForm());
+
+
+
+        // Initialize the game and pass the Scene explicitly
+        GameController gameController = new GameController(game, controller, gameScene);
+        controller.setGameController(gameController);
+        controller.assignPlayersClean(game);
+        controller.assignCards(game);
+        controller.assignCardsAnimation(game);
+        gameController.handleTurn();
     }
 
     public void selectCard(int index, Game game) {
@@ -113,7 +142,6 @@ public abstract class BoardView {
             // TODO: add user feedback here
         }
     }
-
 
     public void selectMarble(MouseEvent event) {
         Circle circle = (Circle) event.getSource();
@@ -176,31 +204,62 @@ public abstract class BoardView {
         System.out.println("All marbles and selections have been reset.");
     }
 
-
-
     public void assignCards(Game game) {
         playerCardsRow.getChildren().clear();
         playerCardsImages.clear();
 
         ArrayList<Card> playerCards = game.getPlayers().get(0).getHand();
-        for (Card card : playerCards) {
+        for (int i = 0; i < playerCards.size(); i++) {
+            Card card = playerCards.get(i);
             String imageLocation = "/view/textures/cards/" + card.getFileName();
-            Image texture = null;
             InputStream stream = getClass().getResourceAsStream(imageLocation);
-            if (stream == null) {
-                System.out.println("Image not found at: " + imageLocation);
-            } else {
-                texture = new Image(stream);
-            }
+            Image texture = (stream != null) ? new Image(stream) : null;
 
             ImageView imageView = new ImageView(texture);
-
             imageView.setFitHeight(90);
-            imageView.preserveRatioProperty().set(true);
+            imageView.setPreserveRatio(true);
+
+            int index = i; //for the love of everything near and dear bardo, dont remove
+            imageView.setOnMouseClicked(event -> selectCard(index, game));
 
             playerCardsRow.getChildren().add(imageView);
             playerCardsImages.add(imageView);
         }
+
+    }
+
+    public void assignCardsAnimation(Game game) {
+        playerCardsRow.setOnMouseMoved(event -> {
+            double mouseX = event.getX();
+            for (int i = 0; i < playerCardsImages.size(); i++) {
+                ImageView card = playerCardsImages.get(i);
+                //double cardCenterX = card.getLayoutX() + (card.getBoundsInParent().getWidth() / 2);
+                double cardCenterX = card.localToScene(card.getBoundsInLocal()).getMinX() + card.getBoundsInLocal().getWidth() / 2;
+
+                double distance = Math.abs(mouseX - cardCenterX);
+
+                // Map distance to scale (closer = bigger)
+                double scale = closerBigger(1.0 + (150 - distance) / 300, 1.0, 1.2);
+                double rotate = closerBigger((cardCenterX-mouseX) / 30, -10, 10);
+                double offset = closerBigger((150 - distance) / 5, 0, 20);
+
+
+
+                card.setScaleX(scale);
+                card.setScaleY(scale);
+                card.setTranslateY(-offset);
+                card.setRotate(rotate);
+            }
+        });
+
+        playerCardsRow.setOnMouseExited(event -> {
+            for (ImageView card : playerCardsImages) {
+                card.setScaleX(1.0);
+                card.setScaleY(1.0);
+                card.setRotate(0);
+                card.setTranslateY(0);
+            }
+        });
     }
 
     public void assignPlayers(Game game) throws IOException {
@@ -299,14 +358,63 @@ public abstract class BoardView {
         safeZones.add(CPU2SafeZone);
         safeZones.add(CPU3SafeZone);
     }
-
-    public void updateCounters(Game game) {
+    public void assignPlayersClean(Game game) throws IOException {
+        UserSettings settings = new UserSettings().LoadSettings();
         ArrayList<Player> players = game.getPlayers();
 
-        CPU1RemainingCards.setText(players.get(1).getHand().size() + "");
-        CPU2RemainingCards.setText(players.get(2).getHand().size() + "");
-        CPU3RemainingCards.setText(players.get(3).getHand().size() + "");
+        // ---Names and cards---
+        String[] names = { settings.getName(), "CPU 1", "CPU 2", "CPU 3" };
+        Label[] nameLabels = { playerLabel, CPU1Label, CPU2Label, CPU3Label };
+        Label[] countLabels = { null, CPU1RemainingCards, CPU2RemainingCards, CPU3RemainingCards };
+
+        // ---Name Lables and Colors---
+        for (int i = 0; i < players.size(); i++) {
+            nameLabels[i].setText(names[i]);
+            nameLabels[i].setTextFill(players.get(i).getColourFX());
+
+            if (i > 0) countLabels[i].setTextFill(players.get(i).getColourFX());
+        }
+
+        // ---Marble Lables---
+        Circle[][] marbleCircles = {
+                { PlayerMarbleOne, PlayerMarbleTwo, PlayerMarbleThree, PlayerMarbleFour },
+                { CPU1MarbleOne, CPU1MarbleTwo, CPU1MarbleThree, CPU1MarbleFour },
+                { CPU2MarbleOne, CPU2MarbleTwo, CPU2MarbleThree, CPU2MarbleFour },
+                { CPU3MarbleOne, CPU3MarbleTwo, CPU3MarbleThree, CPU3MarbleFour }
+        };
+
+        ArrayList<MarbleMapping>[] marbleMappings = new ArrayList[] {
+                P1MarbleMappings, CPU1MarbleMappings, CPU2MarbleMappings, CPU3MarbleMappings
+        };
+
+        // ---Marble Colors---
+        for (int i = 0; i < players.size(); i++) {
+            ArrayList<Marble> playerMarbles = players.get(i).getMarbles();
+            for (int j = 0; j < 4; j++) {
+                Circle circle = marbleCircles[i][j];
+                circle.setStroke(Color.BLACK);
+                circle.setEffect(new DropShadow(5, Color.rgb(0,0,0,0.6)));
+
+                Color playerColor = (Color) players.get(i).getColourFX(); // whatever color you assigned to that player
+                circle.setFill(makeMarbleGradient(playerColor));
+
+                MarbleMapping map = new MarbleMapping(playerMarbles.get(j), circle);
+                marbleMappings[i].add(map);
+            }
+        }
+
+        homeZones.addAll(List.of(PlayerHomeZone, CPU1HomeZone, CPU2HomeZone, CPU3HomeZone));
+        safeZones.addAll(List.of(PlayerSafeZone, CPU1SafeZone, CPU2SafeZone, CPU3SafeZone));
+
+        for (int i =0; i < safeZones.size(); i++) {
+            Color color = (Color)players.get(i).getColourFX();
+            GridPane safeZone = safeZones.get(i);
+            safeZone.setStyle("-fx-border-color: #00ccff");
+            safeZone.setStyle("-fx-effect: dropshadow(gaussian, " + toRgbString(color) + ", 10, 0.5, 0, 0);");
+        }
     }
+
+
     public void returnMainMenu() throws IOException {
         UserSettings currentSettings = new UserSettings().LoadSettings();
         currentSettings.SaveSettings(currentSettings);
@@ -324,39 +432,7 @@ public abstract class BoardView {
         stage.show();
     }
 
-    public static void setBoardPane(String fxml, String username) throws IOException, GameException {
-        FXMLLoader loader = new FXMLLoader(BoardView.class.getResource(fxml));
-        Parent boardRoot = loader.load();
-        BoardView controller = loader.getController();
-        Game game = new Game(username);
-        Board board = game.getBoard();
-        controller.setBoard(board);
 
-        // Create the Scene and set it to the Stage
-        Scene gameScene = new Scene(boardRoot);
-        Stage stage = (Stage) Main.getPrimaryStage();
-        stage.setScene(gameScene);
-        stage.setTitle("Jackaroo");
-        stage.setResizable(false);
-        stage.centerOnScreen();
-        boardRoot.requestFocus();
-        controller.testTrack(game);
-        stage.show();
-
-        // Initialize the game and pass the Scene explicitly
-        GameController gameController = new GameController(game, controller, gameScene);
-        controller.setGameController(gameController);
-        controller.assignPlayers(game);
-        controller.assignCards(game);
-        gameController.handleTurn();
-    }
-
-    public void setGameController(GameController gameController) {
-        this.gameController = gameController;
-    }
-    public void setBoard(Board board){
-        this.board = board;
-    }
 
     private void testTrack(Game game){
         GridLoader.loadGrid();
@@ -364,8 +440,8 @@ public abstract class BoardView {
         for (int i = 0; i < grid.size(); i++)
         {
             Circle marble = new Circle();
-            marble.setFill(Color.BLACK);
-            marble.setRadius(10);
+            marble.setRadius(9);
+            marble.getStyleClass().add("track-cell");
 
             int[] point = grid.get(i);
             GridPane.setRowIndex(marble, point[0]);
@@ -466,6 +542,61 @@ public abstract class BoardView {
         }
     }
 
+    public void moveCard(Game game) {
+        if(!game.getFirePit().isEmpty() && game.getFirePit().getLast() != null) {
+            String imageLocation = "/view/textures/cards/" + game.getFirePit().getLast().getFileName();
+            Image texture = null;
+            InputStream stream = getClass().getResourceAsStream(imageLocation);
+            if (stream == null) {
+                System.out.println("Image not found at: " + imageLocation);
+            } else {
+                texture = new Image(stream);
+            }
+
+            ImageView imageView = new ImageView(texture);
+            imageView.setFitHeight(90);
+            imageView.preserveRatioProperty().set(true);
+            imageView.setLayoutX(362.5 - imageView.getFitWidth() / 2);
+            imageView.setLayoutY(390 - imageView.getFitHeight() / 2);
+            rootPane.getChildren().add(imageView);
+        }
+    }
+
+    // -----------Helpers------------------
+    private Node getTileAt(GridPane grid, int col, int row) {
+        for (Node node : grid.getChildren()) {
+            Integer c = GridPane.getColumnIndex(node);
+            Integer r = GridPane.getRowIndex(node);
+            if ((c != null && c == col) && (r != null && r == row)) {
+                return node;
+            }
+        }
+        return null;
+    }
+    public void placeMarbleOnTopOfGrid(Circle marble, GridPane grid, AnchorPane root, int row, int col) {
+        Node tile = getTileAt(grid, col, row); // Note: col, then row
+        if (tile == null) {
+            System.out.println("No tile found at (" + row + ", " + col + ")");
+            return;
+        }
+
+        // Convert tile's bounds to root coordinate space
+        Bounds sceneBounds = tile.localToScene(tile.getBoundsInLocal());
+        Bounds localBounds = root.sceneToLocal(sceneBounds);
+
+        // Remove from any old parent
+        if (marble.getParent() != null && marble.getParent() instanceof Pane parent) {
+            parent.getChildren().remove(marble);
+        }
+
+        // Add to rootPane and manually position
+        root.getChildren().add(marble);
+        double tileWidth = tile.getBoundsInLocal().getWidth();
+        double tileHeight = tile.getBoundsInLocal().getHeight();
+
+        marble.setLayoutX(localBounds.getMinX() + tileWidth / 2);
+        marble.setLayoutY(localBounds.getMinY() + tileHeight / 2);
+    }
     public ArrayList<MarbleMapping> getMapping(Player p, Game game){
         ArrayList<Player> players = game.getPlayers();
         int counter = 0;
@@ -494,62 +625,43 @@ public abstract class BoardView {
             }
         }
     }
-
-    public void moveCard(Game game) {
-        if(!game.getFirePit().isEmpty() && game.getFirePit().getLast() != null) {
-            String imageLocation = "/view/textures/cards/" + game.getFirePit().getLast().getFileName();
-            Image texture = null;
-            InputStream stream = getClass().getResourceAsStream(imageLocation);
-            if (stream == null) {
-                System.out.println("Image not found at: " + imageLocation);
-            } else {
-                texture = new Image(stream);
-            }
-
-            ImageView imageView = new ImageView(texture);
-            imageView.setFitHeight(90);
-            imageView.preserveRatioProperty().set(true);
-            imageView.setLayoutX(362.5 - imageView.getFitWidth() / 2);
-            imageView.setLayoutY(390 - imageView.getFitHeight() / 2);
-            rootPane.getChildren().add(imageView);
-        }
+    public void setGameController(GameController gameController) {
+        this.gameController = gameController;
     }
-    public void placeMarbleOnTopOfGrid(Circle marble, GridPane grid, AnchorPane root, int row, int col) {
-        Node tile = getTileAt(grid, col, row); // Note: col, then row
-        if (tile == null) {
-            System.out.println("No tile found at (" + row + ", " + col + ")");
-            return;
-        }
-
-        // Convert tile's bounds to root coordinate space
-        Bounds sceneBounds = tile.localToScene(tile.getBoundsInLocal());
-        Bounds localBounds = root.sceneToLocal(sceneBounds);
-
-        // Remove from any old parent
-        if (marble.getParent() != null && marble.getParent() instanceof Pane parent) {
-            parent.getChildren().remove(marble);
-        }
-
-        // Add to rootPane and manually position
-        root.getChildren().add(marble);
-        double tileWidth = tile.getBoundsInLocal().getWidth();
-        double tileHeight = tile.getBoundsInLocal().getHeight();
-
-        marble.setLayoutX(localBounds.getMinX() + tileWidth / 2);
-        marble.setLayoutY(localBounds.getMinY() + tileHeight / 2);
+    public void setBoard(Board board){
+        this.board = board;
     }
+    public void updateCounters(Game game) {
+        ArrayList<Player> players = game.getPlayers();
 
-    private Node getTileAt(GridPane grid, int col, int row) {
-        for (Node node : grid.getChildren()) {
-            Integer c = GridPane.getColumnIndex(node);
-            Integer r = GridPane.getRowIndex(node);
-            if ((c != null && c == col) && (r != null && r == row)) {
-                return node;
-            }
-        }
-        return null;
+        CPU1RemainingCards.setText(players.get(1).getHand().size() + "");
+        CPU2RemainingCards.setText(players.get(2).getHand().size() + "");
+        CPU3RemainingCards.setText(players.get(3).getHand().size() + "");
     }
-
+    private double closerBigger(double value, double min, double max) {
+        return Math.max(min, Math.min(max, value));
+    }
+    public static void updateTrapFlag(){
+        trapped = !trapped;
+    }
+    private String toRgbString(Color color) {
+        int r = (int) (color.getRed() * 255);
+        int g = (int) (color.getGreen() * 255);
+        int b = (int) (color.getBlue() * 255);
+        return String.format("rgb(%d, %d, %d)", r, g, b);
+    }
+    public static RadialGradient makeMarbleGradient(Color playerColor) {
+        return new RadialGradient(
+                45,                 // focus angle
+                0.3,                // focus distance
+                0.5, 0.5,           // center X, Y
+                0.5,                // radius
+                true,               // proportional
+                CycleMethod.REFLECT,
+                new Stop(0, Color.WHITE),
+                new Stop(1, playerColor)
+        );
+    }
 
 
 }

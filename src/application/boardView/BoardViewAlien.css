@@ -1,0 +1,24 @@
+.safezone {
+    -fx-background-color: rgba(64, 64, 64, 0.5);   /* soft inner glow */
+    -fx-border-color: #404040;
+    -fx-border-width: 2;
+    -fx-border-insets: 0;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, #00ccff, 10, 0.5, 0, 0);
+}
+
+.marble {
+    -fx-stroke: black;
+    -fx-stroke-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.6), 5, 0.3, 1, 1);
+}
+
+.track-cell {
+    -fx-background-color: linear-gradient(to bottom, #2c2c2c, #444); /* Subtle lighting */
+    -fx-border-color: #666666;
+    -fx-border-width: 1;
+    -fx-background-radius: 5;
+    -fx-effect: dropshadow(gaussian, rgba(0, 255, 255, 0.2), 6, 0.3, 0, 0); /* Cyan glow */
+}
+
