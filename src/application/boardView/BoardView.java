@@ -529,7 +529,7 @@ public abstract class BoardView {
             ImageView imageView = new ImageView(texture);
             imageView.setFitHeight(90);
             imageView.preserveRatioProperty().set(true);
-            imageView.setLayoutX(362.5 - imageView.getFitWidth() / 2);
+            imageView.setLayoutX(367 - imageView.getFitWidth() / 2);
             imageView.setLayoutY(390 - imageView.getFitHeight() / 2);
             rootPane.getChildren().add(imageView);
         }

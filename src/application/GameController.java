@@ -42,7 +42,7 @@ public class GameController {
                         case DIGIT3 -> boardView.selectCard(2, game);
                         case DIGIT4 -> boardView.selectCard(3, game);
                         case ENTER -> {
-                            if(currentPlayer.getSelectedCard().getName().equals("Seven") && currentPlayer.getSelectedMarbles().size() == 2){
+                            if(currentPlayer.getSelectedCard() != null && currentPlayer.getSelectedCard().getName().equals("Seven") && currentPlayer.getSelectedMarbles().size() == 2){
                                 TextInputDialog dialog = new TextInputDialog();
                                 dialog.setTitle("Enter Split Distance");
                                 dialog.setHeaderText(null);

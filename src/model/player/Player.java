@@ -109,7 +109,7 @@ public class Player {
             case RED -> {return Color.RED;}
             case BLUE -> {return Color.BLUE;}
             case GREEN -> {return Color.GREEN;}
-            case YELLOW -> {return Color.DARKGOLDENROD;}
+            case YELLOW -> {return Color.GOLD;}
             default -> {return Color.BLACK;}
         }
 
