@@ -435,17 +435,20 @@ public abstract class BoardView {
         HBox targetBox = homeZones.get(playerIndex);
         if (pt == Board.PlaceType.HOMEZONE)
         {
-            c.getParent(); // for the love of everything near and dear, do NOT remove this line.
+            c.getParent();// for the love of everything near and dear, do NOT remove this line.
             if (c.getParent() != targetBox) {
                 if (trapped){
                     updateTrapFlag();
                     BoardViewAlien.playTeleportEffect(c, gridInshallah);
-                    if(!(gameController.getGame().getPlayers().get(gameController.getGame().getCurrentPlayerIndex()) instanceof CPU)) {
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle("Trap Activated");
-                        alert.setHeaderText(null);
-                        alert.setContentText("You have been teleported to your Home Zone!");
-                        alert.show();
+                    if (!(gameController.getGame().getPlayers().get(gameController.getGame().getCurrentPlayerIndex()) instanceof CPU)) {
+                        javafx.application.Platform.runLater(() -> {
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("Trap Activated");
+                            alert.setHeaderText(null);
+                            alert.setContentText("You have been teleported to your Home Zone!");
+                            alert.show();
+                        });
+                        System.out.println("Trap Activated");
                     }
                 }
 

@@ -59,7 +59,7 @@ public class BoardViewMedieval extends BoardView{
             selectedSkin = null;
         }
         skinPane.setVisible(false);
-        skinButton.getParent().requestFocus();
+        skinPane.getParent().getParent().requestFocus();
     }
     private void setupSkinClickHandler(ImageView imageView) {
         imageView.setOnMouseClicked(event -> {
