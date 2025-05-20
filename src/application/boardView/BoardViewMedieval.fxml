@@ -190,7 +190,7 @@
                         <Circle fx:id="CPU1MarbleFour" fill="DODGERBLUE" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
                         <Circle fx:id="CPU1MarbleTwo" fill="DODGERBLUE" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
                     </children></HBox>
-                <Button layoutX="756.0" layoutY="9.0" mnemonicParsing="false" onAction="#returnMainMenu" styleClass="buttonHome" stylesheets="@../board.css" textFill="#dff6f5" />
+                <Button layoutX="756.0" focusTraversable="false" layoutY="9.0" mnemonicParsing="false" onAction="#returnMainMenu" styleClass="buttonHome" stylesheets="@../board.css" textFill="#dff6f5" />
             <Circle fill="DODGERBLUE" layoutX="40.0" layoutY="476.0" radius="22.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="2.0" style="-fx-fill: transparent;" />
             <ImageView fitHeight="44.0" fitWidth="32.0" layoutX="24.0" layoutY="457.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -198,6 +198,7 @@
                </image>
             </ImageView>
             <Circle fill="DODGERBLUE" layoutX="308.0" layoutY="36.0" radius="22.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="2.0" style="-fx-fill: transparent;" />
+            <ImageView fx:id="firePitLastCard" fitHeight="90.0" fitWidth="74.0" layoutX="367.0" layoutY="344.0" pickOnBounds="true" preserveRatio="true" />
             <ImageView fitHeight="44.0" fitWidth="32.0" layoutX="291.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../view/textures/medieval/Nor9-B.png" />
@@ -212,7 +213,7 @@
             <Button fx:id="skinButton" layoutX="723.0" layoutY="9.0" mnemonicParsing="false" onAction="#chooseSkin" styleClass="buttonSkin" stylesheets="@../board.css" textFill="#dff6f5" />
             <Pane fx:id="skinPane" layoutX="87.0" layoutY="188.0" prefHeight="343.0" prefWidth="618.0" styleClass="mainBackground" stylesheets="@../skinSettings.css" visible="false">
                <children>
-                  <Button layoutX="264.0" layoutY="285.0" mnemonicParsing="false" onAction="#hideSkin" prefHeight="33.0" prefWidth="110.0" styleClass="skinButton" stylesheets="@../skinSettings.css" text="Save and Exit" />
+                  <Button layoutX="264.0" layoutY="285.0" mnemonicParsing="false" focusTraversable="false" onAction="#hideSkin" prefHeight="33.0" prefWidth="110.0" styleClass="skinButton" stylesheets="@../skinSettings.css" text="Save and Exit" />
                   <Label layoutX="236.0" layoutY="32.0" styleClass="mainTitle" stylesheets="@../skinSettings.css" text="Choose Your Skin" textFill="WHITE">
                      <font>
                         <Font size="20.0" />
@@ -287,7 +288,7 @@
         </AnchorPane>
         <AnchorPane prefHeight="188.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="612.0">
             <children>
-                <TextArea fx:id="cardDescription" focusTraversable="false" editable="false" layoutX="508.0" layoutY="81.0" prefHeight="64.0" prefWidth="266.0" promptText="Card Name" text="Select Card" wrapText="true">
+                <TextArea fx:id="cardDescription" editable="false" focusTraversable="false" layoutX="508.0" layoutY="81.0" prefHeight="64.0" prefWidth="266.0" promptText="Card Name" text="Select Card" wrapText="true">
                <styleClass>
                   <String fx:value="text-area" />
                   <String fx:value="text-area" />
@@ -310,7 +311,7 @@
             <Circle fill="DODGERBLUE" layoutX="392.0" layoutY="129.0" radius="22.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="2.0" style="-fx-fill: transparent;" />
             <ImageView fx:id="playerSkin" fitHeight="44.0" fitWidth="32.0" layoutX="376.0" layoutY="111.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../view/textures/medieval/N9-B.png" />
+                  <Image url="@../../view/textures/medieval/skins/nordicHelms/NOR12/Nor12-B.png" />
                </image>
             </ImageView>
             </children>

@@ -225,5 +225,6 @@
             </HBox>
          </children>
       </AnchorPane>
+      <ImageView fx:id="firePitLastCard" fitHeight="90.0" fitWidth="74.0" layoutX="367.0" layoutY="347.0" pickOnBounds="true" preserveRatio="true" />
    </children>
 </AnchorPane>

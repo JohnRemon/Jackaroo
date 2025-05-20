@@ -99,6 +99,7 @@ public abstract class BoardView {
 
     @FXML private Label CurrentPlayerLabel;
     @FXML private Label NextPlayerLabel;
+    @FXML private ImageView firePitLastCard;
 
     private final ArrayList<Marble> globallySelectedMarbles = new ArrayList<>();
 
@@ -529,9 +530,7 @@ public abstract class BoardView {
             ImageView imageView = new ImageView(texture);
             imageView.setFitHeight(90);
             imageView.preserveRatioProperty().set(true);
-            imageView.setLayoutX(367 - imageView.getFitWidth() / 2);
-            imageView.setLayoutY(390 - imageView.getFitHeight() / 2);
-            rootPane.getChildren().add(imageView);
+            firePitLastCard.setImage(imageView.getImage());
         }
     }
     public void placeMarbleOnTopOfGrid(Circle marble, GridPane grid, AnchorPane root, int row, int col) {
