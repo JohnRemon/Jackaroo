@@ -1,11 +1,20 @@
-.button{
+.buttonHome{
     -fx-background-color: transparent;
     -fx-background-image: url("home.png");
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
     -fx-background-size: 100% 100%;
-    -fx-pref-height: 24px;
-    -fx-pref-width: 24px;
+    -fx-pref-height: 28px;
+    -fx-pref-width: 28px;
+}
+.buttonSkin{
+    -fx-background-color: transparent;
+    -fx-background-image: url("skinButton.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: 100% 100%;
+    -fx-pref-height: 28px;
+    -fx-pref-width: 28px;
 }
 
 .text-area{

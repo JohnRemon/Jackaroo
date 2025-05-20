@@ -10,11 +10,12 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.boardView.BoardViewAlien">
+<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.boardView.BoardViewMedieval">
     <children>
         <ImageView fx:id="boardImage" fitHeight="800.0" fitWidth="800.0" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <image>
@@ -91,34 +92,34 @@
                         <Circle fx:id="CPU2MarbleFour" fill="DODGERBLUE" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
                         <Circle fx:id="CPU2MarbleThree" fill="DODGERBLUE" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
                     </children></HBox>
-                <Label fx:id="CPU3Label" alignment="CENTER" layoutX="715.0" layoutY="468.0" prefHeight="18.0" prefWidth="124.0" rotate="-90.0" text="CPU3">
+                <Label fx:id="CPU3Label" alignment="CENTER" layoutX="705.0" layoutY="499.0" prefHeight="18.0" prefWidth="124.0" text="CPU3">
                     <font>
-                        <Font name="System Bold" size="22.0" />
+                        <Font name="System Bold" size="14.0" />
                     </font>
                 </Label>
-                <Label fx:id="CPU1Label" alignment="CENTER" layoutX="-43.0" layoutY="468.0" prefHeight="18.0" prefWidth="124.0" rotate="90.0" text="CPU1">
+                <Label fx:id="CPU1Label" alignment="CENTER" layoutX="7.0" layoutY="504.0" prefHeight="0.0" prefWidth="65.0" text="CPU1">
                     <font>
-                        <Font name="System Bold" size="22.0" />
+                        <Font name="System Bold" size="14.0" />
                     </font>
                 </Label>
-                <Label fx:id="CPU1RemainingCards" alignment="CENTER" layoutX="-12.0" layoutY="468.0" prefHeight="18.0" prefWidth="124.0" rotate="90.0" text="4">
+                <Label fx:id="CPU1RemainingCards" alignment="CENTER" layoutX="-22.0" layoutY="518.0" prefHeight="18.0" prefWidth="124.0" text="4">
                     <font>
-                        <Font name="System Bold" size="22.0" />
+                        <Font name="System Bold" size="14.0" />
                     </font>
                 </Label>
-                <Label fx:id="CPU3RemainingCards" alignment="CENTER" layoutX="690.0" layoutY="468.0" prefHeight="18.0" prefWidth="124.0" rotate="-90.0" text="4">
+                <Label fx:id="CPU3RemainingCards" alignment="CENTER" layoutX="705.0" layoutY="511.0" prefHeight="18.0" prefWidth="124.0" text="4">
                     <font>
-                        <Font name="System Bold" size="22.0" />
+                        <Font name="System Bold" size="14.0" />
                     </font>
                 </Label>
-                <Label fx:id="CPU2Label" alignment="CENTER" layoutX="336.0" layoutY="8.0" prefHeight="18.0" prefWidth="124.0" text="CPU2">
+                <Label fx:id="CPU2Label" alignment="CENTER" layoutX="246.0" layoutY="58.0" prefHeight="18.0" prefWidth="124.0" text="CPU2">
                     <font>
-                        <Font name="System Bold" size="22.0" />
+                        <Font name="System Bold" size="14.0" />
                     </font>
                 </Label>
-                <Label fx:id="CPU2RemainingCards" alignment="CENTER" layoutX="336.0" layoutY="31.0" prefHeight="34.0" prefWidth="124.0" text="4" AnchorPane.bottomAnchor="736.2" AnchorPane.leftAnchor="336.0" AnchorPane.rightAnchor="340.0" AnchorPane.topAnchor="31.0">
+                <Label fx:id="CPU2RemainingCards" alignment="CENTER" layoutX="246.4" layoutY="62.6" prefHeight="34.0" prefWidth="124.0" text="4" AnchorPane.bottomAnchor="704.6" AnchorPane.leftAnchor="246.4" AnchorPane.rightAnchor="430.4" AnchorPane.topAnchor="62.6">
                     <font>
-                        <Font name="System Bold" size="22.0" />
+                        <Font name="System Bold" size="14.0" />
                     </font>
                 </Label>
                 <GridPane fx:id="CPU1SafeZone" layoutX="245.0" layoutY="351.0" prefHeight="100.0" prefWidth="26.0" rotate="270.0">
@@ -189,13 +190,104 @@
                         <Circle fx:id="CPU1MarbleFour" fill="DODGERBLUE" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
                         <Circle fx:id="CPU1MarbleTwo" fill="DODGERBLUE" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
                     </children></HBox>
-                <Button layoutX="767.0" layoutY="10.0" mnemonicParsing="false" onAction="#returnMainMenu" stylesheets="@../board.css" textFill="#dff6f5" />
+                <Button layoutX="756.0" layoutY="9.0" mnemonicParsing="false" onAction="#returnMainMenu" styleClass="buttonHome" stylesheets="@../board.css" textFill="#dff6f5" />
+            <Circle fill="DODGERBLUE" layoutX="40.0" layoutY="476.0" radius="22.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="2.0" style="-fx-fill: transparent;" />
+            <ImageView fitHeight="44.0" fitWidth="32.0" layoutX="24.0" layoutY="457.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../view/textures/medieval/N9-B.png" />
+               </image>
+            </ImageView>
+            <Circle fill="DODGERBLUE" layoutX="308.0" layoutY="36.0" radius="22.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="2.0" style="-fx-fill: transparent;" />
+            <ImageView fitHeight="44.0" fitWidth="32.0" layoutX="291.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../view/textures/medieval/Nor9-B.png" />
+               </image>
+            </ImageView>
+            <Circle fill="DODGERBLUE" layoutX="767.0" layoutY="475.0" radius="22.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="2.0" style="-fx-fill: transparent;" />
+            <ImageView fitHeight="44.0" fitWidth="32.0" layoutX="751.0" layoutY="459.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../view/textures/medieval/G12-B.png" />
+               </image>
+            </ImageView>
+            <Button fx:id="skinButton" layoutX="723.0" layoutY="9.0" mnemonicParsing="false" onAction="#chooseSkin" styleClass="buttonSkin" stylesheets="@../board.css" textFill="#dff6f5" />
+            <Pane fx:id="skinPane" layoutX="87.0" layoutY="188.0" prefHeight="343.0" prefWidth="618.0" styleClass="mainBackground" stylesheets="@../skinSettings.css" visible="false">
+               <children>
+                  <Button layoutX="264.0" layoutY="285.0" mnemonicParsing="false" onAction="#hideSkin" prefHeight="33.0" prefWidth="110.0" styleClass="skinButton" stylesheets="@../skinSettings.css" text="Save and Exit" />
+                  <Label layoutX="236.0" layoutY="32.0" styleClass="mainTitle" stylesheets="@../skinSettings.css" text="Choose Your Skin" textFill="WHITE">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="56.0" layoutY="91.0" styleClass="subTitle" stylesheets="@../skinSettings.css" text="NOMAD" textFill="WHITE" />
+                  <Label layoutX="291.0" layoutY="91.0" styleClass="subTitle" stylesheets="@../skinSettings.css" text="NORDIC" textFill="WHITE" />
+                  <Label layoutX="498.0" layoutY="91.0" styleClass="subTitle" stylesheets="@../skinSettings.css" text="DESERT" textFill="WHITE" />
+                  <ImageView fx:id="N8B" fitHeight="50.0" fitWidth="52.0" layoutX="28.0" layoutY="120.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../view/textures/medieval/skins/nomadHelms/N8/N8-B.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="N9B" fitHeight="50.0" fitWidth="52.0" layoutX="101.0" layoutY="120.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../view/textures/medieval/skins/nomadHelms/N9/N9-B.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="N11B" fitHeight="50.0" fitWidth="52.0" layoutX="28.0" layoutY="184.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../view/textures/medieval/skins/nomadHelms/N11/N11-B.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="N12B" fitHeight="50.0" fitWidth="52.0" layoutX="101.0" layoutY="184.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../view/textures/medieval/skins/nomadHelms/N12/N12-B.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="NOR2B" fitHeight="50.0" fitWidth="52.0" layoutX="255.0" layoutY="120.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../view/textures/medieval/skins/nordicHelms/NOR2/Nor2-B.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="NOR5B" fitHeight="50.0" fitWidth="52.0" layoutX="333.0" layoutY="120.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../view/textures/medieval/skins/nordicHelms/NOR5/Nor5-B.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="NOR6B" fitHeight="50.0" fitWidth="52.0" layoutX="255.0" layoutY="184.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../view/textures/medieval/skins/nordicHelms/NOR6/Nor6-B.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="NOR9B" fitHeight="50.0" fitWidth="52.0" layoutX="333.0" layoutY="184.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../view/textures/medieval/skins/nordicHelms/NOR9/Nor9-B.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="D3B" fitHeight="50.0" fitWidth="52.0" layoutX="468.0" layoutY="120.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../view/textures/medieval/skins/desertHelms/D3/D3-B.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="D2B" fitHeight="50.0" fitWidth="52.0" layoutX="538.0" layoutY="120.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../view/textures/medieval/skins/desertHelms/D2/D2-B.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="D4B" fitHeight="50.0" fitWidth="52.0" layoutX="468.0" layoutY="184.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../view/textures/medieval/skins/desertHelms/D4/D4-B.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="D10B" fitHeight="50.0" fitWidth="52.0" layoutX="538.0" layoutY="184.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../view/textures/medieval/skins/desertHelms/D10/D10-B.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
             </children>
         </AnchorPane>
         <AnchorPane prefHeight="188.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="612.0">
             <children>
-
-                                                <TextArea fx:id="cardDescription" editable="false" layoutX="508.0" layoutY="81.0" prefHeight="64.0" prefWidth="266.0" promptText="Card Name" text="Select Card" wrapText="true">
+                <TextArea fx:id="cardDescription" focusTraversable="false" editable="false" layoutX="508.0" layoutY="81.0" prefHeight="64.0" prefWidth="266.0" promptText="Card Name" text="Select Card" wrapText="true">
                <styleClass>
                   <String fx:value="text-area" />
                   <String fx:value="text-area" />
@@ -210,11 +302,17 @@
                     </children>
                 </HBox>
 
-                      <Label fx:id="playerLabel" alignment="CENTER" layoutX="345.0" layoutY="107.0" prefHeight="44.0" prefWidth="110.0" text="Player" AnchorPane.bottomAnchor="37.0" AnchorPane.leftAnchor="345.0" AnchorPane.rightAnchor="345.40000000000003" AnchorPane.topAnchor="107.0">
+                      <Label fx:id="playerLabel" alignment="CENTER" layoutX="355.0" layoutY="151.2" prefHeight="26.0" prefWidth="74.0" text="Player" AnchorPane.bottomAnchor="11.0" AnchorPane.leftAnchor="355.0" AnchorPane.rightAnchor="371.0" AnchorPane.topAnchor="151.0">
                     <font>
                         <Font name="System Bold" size="22.0" />
                     </font>
                 </Label>
+            <Circle fill="DODGERBLUE" layoutX="392.0" layoutY="129.0" radius="22.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="2.0" style="-fx-fill: transparent;" />
+            <ImageView fx:id="playerSkin" fitHeight="44.0" fitWidth="32.0" layoutX="376.0" layoutY="111.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../view/textures/medieval/N9-B.png" />
+               </image>
+            </ImageView>
             </children>
         </AnchorPane>
     </children>
