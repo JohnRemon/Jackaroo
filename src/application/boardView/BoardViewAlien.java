@@ -11,6 +11,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
+import model.Colour;
 
 import java.io.IOException;
 
@@ -19,10 +20,10 @@ public class BoardViewAlien extends BoardView {
         setBoardPane("BoardViewAlien.fxml", username);
     }
     public static void playTeleportEffect(Circle marble, Pane root) {
+        Paint originalColour = marble.getFill();
 
-        DropShadow glow = new DropShadow(20, Color.LIME);
-        glow.setSpread(0.5);
-        marble.setEffect(glow);
+        marble.setStyle("-fx-effect: dropshadow(gaussian, #00ff00, 10, 0.5, 0, 0);\n");
+        marble.setStyle("-fx-effect: dropshadow(gaussian, #00ff00, 10, 0.7, 0, 0);\n");
 
         FadeTransition flash = new FadeTransition(Duration.millis(600), marble);
         flash.setFromValue(1.0);
@@ -39,7 +40,7 @@ public class BoardViewAlien extends BoardView {
         ParallelTransition teleport = new ParallelTransition(flash, scale);
         teleport.setOnFinished(e -> {
             marble.setEffect(null);
-            marble.setEffect(getDefaultMarbleShadow());
+            marble.setStyle("-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.6), 5, 0.3, 1, 1);\n");
         });
 
         teleport.play();
@@ -98,32 +99,32 @@ public class BoardViewAlien extends BoardView {
     }
 
 
-    public void assignCardsAnimation(Game game) {
-        playerCardsRow.setOnMouseMoved(event -> {
-            double mouseX = event.getX();
-            for (int i = 0; i < playerCardsImages.size(); i++) {
-                ImageView card = playerCardsImages.get(i);
-                double cardCenterX = card.getLayoutX() + (card.getBoundsInParent().getWidth() / 2);
-                double distance = Math.abs(mouseX - cardCenterX);
-
-                // Map distance to scale (closer = bigger)
-                double scale = closerBigger(1.0 + (150 - distance) / 300, 1.0, 1.2);
-                double rotate = closerBigger((mouseX - cardCenterX) / 30, -10, 10);
-
-                card.setScaleX(scale);
-                card.setScaleY(scale);
-                card.setRotate(rotate);
-            }
-        });
-
-        playerCardsRow.setOnMouseExited(event -> {
-            for (ImageView card : playerCardsImages) {
-                card.setScaleX(1.0);
-                card.setScaleY(1.0);
-                card.setRotate(0);
-            }
-        });
-    }
+//    public void assignCardsAnimation(Game game) {
+//        playerCardsRow.setOnMouseMoved(event -> {
+//            double mouseX = event.getX();
+//            for (int i = 0; i < playerCardsImages.size(); i++) {
+//                ImageView card = playerCardsImages.get(i);
+//                double cardCenterX = card.getLayoutX() + (card.getBoundsInParent().getWidth() / 2);
+//                double distance = Math.abs(mouseX - cardCenterX);
+//
+//                // Map distance to scale (closer = bigger)
+//                double scale = closerBigger(1.0 + (150 - distance) / 300, 1.0, 1.2);
+//                double rotate = closerBigger((mouseX - cardCenterX) / 30, -10, 10);
+//
+//                card.setScaleX(scale);
+//                card.setScaleY(scale);
+//                card.setRotate(rotate);
+//            }
+//        });
+//
+//        playerCardsRow.setOnMouseExited(event -> {
+//            for (ImageView card : playerCardsImages) {
+//                card.setScaleX(1.0);
+//                card.setScaleY(1.0);
+//                card.setRotate(0);
+//            }
+//        });
+//    }
 
     public static Effect getDefaultMarbleShadow() {
         DropShadow shadow = new DropShadow();

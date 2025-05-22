@@ -21,15 +21,6 @@
             <Image url="@../../view/textures/alien/oard.png" />
          </image>
       </ImageView>
-      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <children>
-            <ImageView fitHeight="800.0" fitWidth="808.0" preserveRatio="true" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-8.0" AnchorPane.topAnchor="0.0">
-               <image>
-                  <Image url="@../../view/textures/alien/Grid.png" />
-               </image>
-            </ImageView>
-         </children>
-      </AnchorPane>
       <AnchorPane fx:id="rootPane1" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <GridPane fx:id="gridInshallah" layoutX="182.0" layoutY="-5.0" prefHeight="689.0" prefWidth="508.0" AnchorPane.bottomAnchor="116.0" AnchorPane.leftAnchor="182.0" AnchorPane.rightAnchor="110.0" AnchorPane.topAnchor="-5.0">
@@ -203,7 +194,7 @@
                   <ColorAdjust brightness="-0.64" contrast="0.19" hue="-0.32" />
                </effect>
             </TextArea>
-            <HBox fx:id="playerCardsRow" alignment="BOTTOM_CENTER" layoutX="-65.6" layoutY="20.0" prefHeight="103.0" prefWidth="322.0" spacing="10.0" AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="464.0" AnchorPane.topAnchor="-1.0" />
+            <HBox fx:id="playerCardsRow" alignment="BOTTOM_CENTER" layoutX="-65.6" layoutY="20.0" prefHeight="103.0" prefWidth="322.0" AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="464.0" AnchorPane.topAnchor="-1.0" />
             <Button layoutX="362.0" layoutY="147.0" mnemonicParsing="false" onAction="#returnMainMenu" text="Main Menu" />
             <HBox fx:id="PlayerHomeZone" layoutX="695.0" layoutY="146.0" prefHeight="26.0" prefWidth="90.0" AnchorPane.bottomAnchor="15.199999999999996" AnchorPane.leftAnchor="695.0" AnchorPane.rightAnchor="14.399999999999949" AnchorPane.topAnchor="146.0">
                <children>
