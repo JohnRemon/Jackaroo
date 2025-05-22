@@ -101,12 +101,9 @@ public abstract class BoardView {
     @FXML private Label NextPlayerLabel;
     @FXML private ImageView firePitLastCard;
 
-    private final ArrayList<Marble> globallySelectedMarbles = new ArrayList<>();
-
     public static void updateTrapFlag(){
         trapped = !trapped;
     }
-
     public void selectCard(int index, Game game) {
         try {
             Player player = game.getPlayers().get(0);
@@ -132,11 +129,9 @@ public abstract class BoardView {
             }
 
         } catch (InvalidCardException | IndexOutOfBoundsException e) {
-            // TODO: add user feedback here
+            e.printStackTrace();
         }
     }
-
-
     public void selectMarble(MouseEvent event) {
         Circle circle = (Circle) event.getSource();
         ArrayList<Player> players = gameController.getGame().getPlayers();
@@ -173,7 +168,6 @@ public abstract class BoardView {
             showException(e.getMessage());
         }
     }
-
     public void resetAllMarbleSelections() {
         ArrayList<MarbleMapping> allMappings = new ArrayList<>();
         allMappings.addAll(P1MarbleMappings);
@@ -193,9 +187,6 @@ public abstract class BoardView {
         }
 
     }
-
-
-
     public void assignCards(Game game) {
         playerCardsRow.getChildren().clear();
         playerCardsImages.clear();
@@ -226,7 +217,6 @@ public abstract class BoardView {
             playerCardsImages.add(imageView);
         }
     }
-
     public void assignPlayers(Game game) throws IOException {
         UserSettings settings = new UserSettings().LoadSettings();
         ArrayList<Player> players = game.getPlayers();
@@ -323,7 +313,6 @@ public abstract class BoardView {
         safeZones.add(CPU2SafeZone);
         safeZones.add(CPU3SafeZone);
     }
-
     public void updateCounters(Game game) {
         ArrayList<Player> players = game.getPlayers();
 
@@ -348,7 +337,6 @@ public abstract class BoardView {
         stage.centerOnScreen();
         stage.show();
     }
-
     public static void setBoardPane(String fxml, String username) throws IOException, GameException {
         FXMLLoader loader = new FXMLLoader(BoardView.class.getResource(fxml));
         Parent boardRoot = loader.load();
@@ -375,14 +363,12 @@ public abstract class BoardView {
         controller.assignCards(game);
         gameController.handleTurn();
     }
-
     public void setGameController(GameController gameController) {
         this.gameController = gameController;
     }
     public void setBoard(Board board){
         this.board = board;
     }
-
     private void testTrack(Game game){
         GridLoader.loadGrid();
         ArrayList<int[]> grid = GridLoader.getGrid();
@@ -399,7 +385,6 @@ public abstract class BoardView {
             gridInshallah.getChildren().add(marble);
         }
     }
-
     public void showException(String message){
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Invalid Action");
@@ -407,7 +392,6 @@ public abstract class BoardView {
         alert.setContentText(message);
         alert.show(); //showAndWait() throws an IllegalStateException if stepped on trap
     }
-
     public void updateMarbles(Board.MarblePosition newPosition, MarbleMapping mp) {
         ArrayList<int[]> grid = GridLoader.getGrid();
         int position = newPosition.index();
@@ -474,7 +458,6 @@ public abstract class BoardView {
             return;
         }
     }
-
     public void moveMarbles(Game game){
         ArrayList<Player> players = game.getPlayers();
 
@@ -488,7 +471,6 @@ public abstract class BoardView {
             }
         }
     }
-
     public ArrayList<MarbleMapping> getMapping(Player p, Game game){
         ArrayList<Player> players = game.getPlayers();
         int counter = 0;
@@ -517,7 +499,6 @@ public abstract class BoardView {
             }
         }
     }
-
     public void moveCard(Game game) {
         if(!game.getFirePit().isEmpty() && game.getFirePit().getLast() != null) {
             String imageLocation = "/view/textures/cards/" + game.getFirePit().getLast().getFileName();
@@ -559,7 +540,6 @@ public abstract class BoardView {
         marble.setLayoutX(localBounds.getMinX() + tileWidth / 2);
         marble.setLayoutY(localBounds.getMinY() + tileHeight / 2);
     }
-
     private Node getTileAt(GridPane grid, int col, int row) {
         for (Node node : grid.getChildren()) {
             Integer c = GridPane.getColumnIndex(node);
@@ -570,8 +550,6 @@ public abstract class BoardView {
         }
         return null;
     }
-
-
     public void showWinner(String name) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Game Over");
