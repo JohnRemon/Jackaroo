@@ -25,6 +25,7 @@ public class Main extends Application {
         scene.getStylesheets().add(getClass().getResource("title_screen.css").toExternalForm());
         MainMenuController controller = loader.getController();
         controller.loadValues();
+        controller.initialize();
         primaryStage.setScene(scene);
         primaryStage.setTitle("Jackaroo Launcher");
         primaryStage.setResizable(false);

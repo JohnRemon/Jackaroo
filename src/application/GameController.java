@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.input.KeyCode;
 import javafx.util.Duration;
 import model.Colour;
 import model.player.CPU;
@@ -26,6 +27,13 @@ public class GameController {
         this.game = game;
         this.boardView = boardView;
         this.scene = scene;
+
+        game.setShuffleListener(new Game.ShuffleListener() {
+            @Override
+            public void onShuffle() {
+                boardView.onShuffle();
+            }
+        });
     }
 
     public void handleTurn() {
@@ -37,7 +45,7 @@ public class GameController {
             if(game.canPlayTurn()) {
                 scene.setOnKeyPressed(event -> {
                     switch (event.getCode()) {
-                        case DIGIT1 -> boardView.selectCard(0, game);
+                        case DIGIT1-> boardView.selectCard(0, game);
                         case DIGIT2 -> boardView.selectCard(1, game);
                         case DIGIT3 -> boardView.selectCard(2, game);
                         case DIGIT4 -> boardView.selectCard(3, game);
@@ -70,6 +78,9 @@ public class GameController {
                                     boardView.selectCard(cardIndex, game);
                                 }
                                 endTurn();
+                            } else {
+                                boardView.showException("You can't skip this turn.");
+                            }
                         }
                     }
                 });
@@ -110,7 +121,6 @@ public class GameController {
                     break;
                 }
             }
-
         } else {
             handleTurn();
         }
