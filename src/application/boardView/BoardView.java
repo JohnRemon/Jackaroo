@@ -448,7 +448,6 @@ public abstract class BoardView {
                             alert.setContentText("You have been teleported to your Home Zone!");
                             alert.show();
                         });
-                        System.out.println("Trap Activated");
                     }
                 }
 
