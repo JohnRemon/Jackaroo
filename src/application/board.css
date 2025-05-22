@@ -1,0 +1,30 @@
+.buttonHome{
+    -fx-background-color: transparent;
+    -fx-background-image: url("home.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: 100% 100%;
+    -fx-pref-height: 28px;
+    -fx-pref-width: 28px;
+}
+.buttonSkin{
+    -fx-background-color: transparent;
+    -fx-background-image: url("skinButton.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: 100% 100%;
+    -fx-pref-height: 28px;
+    -fx-pref-width: 28px;
+}
+
+.text-area{
+    fx-background-color: transparent;
+    -fx-control-inner-background: transparent;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+    -fx-border-color: transparent;
+    -fx-text-fill: black;
+    -fx-background-image: url("UI_Flat_Banner02a.png");
+    -fx-font-size: 14px;
+    -fx-font-family: "Calibri Light";
+}

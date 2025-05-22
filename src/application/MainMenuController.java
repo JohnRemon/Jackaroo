@@ -2,6 +2,7 @@ package application;
 
 import application.boardView.BoardViewAlien;
 import application.boardView.BoardViewDefault;
+import application.boardView.BoardViewMedieval;
 import exception.GameException;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -59,31 +60,23 @@ public class MainMenuController extends Application {
     @FXML
     public void openSettings(ActionEvent actionEvent) throws IOException {
         themeChosen.getItems().clear();
-        themeChosen.getItems().addAll("Default", "Alien");
+        themeChosen.getItems().addAll("Default", "Alien", "Medieval");
         themeChosen.setValue(userSettings.getTheme());
         settingsPane.setVisible(true);
     }
     @FXML
     private void transitionToBoard(ActionEvent event) throws IOException, GameException {
-//        FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/boardView/boardView.fxml"));
-//        Parent boardRoot = loader.load();
-//
-//        Stage gameStage = new Stage();
-//        Scene gameScene = new Scene(boardRoot);
-//        gameStage.setScene(gameScene);
-//        gameStage.setTitle("Jackaroo");
-
-        //close launcher
         Stage stage = Main.primaryStage;
         switch (userSettings.getTheme())
         {
             case "Alien": BoardViewAlien.setBoardPaneAlien(nameLabel.getText());
             break;
+            case "Medieval": BoardViewMedieval.setBoardPaneMedieval(nameLabel.getText());
+            break;
             default: BoardViewDefault.setBoardPaneDefault(nameLabel.getText());
             break;
         }
-        //show the board
-        //gameStage.show();
+
     }
 
     public void hideSettingsMenu(ActionEvent actionEvent) throws IOException {
@@ -116,7 +109,7 @@ public class MainMenuController extends Application {
         sfxSlider.setValue(temp.getSfx());
         musicSlider.setValue(temp.getMusic());
         themeChosen.getItems().clear();
-        themeChosen.getItems().addAll("Default", "Alien");
+        themeChosen.getItems().addAll("Default", "Alien", "Medieval");
         themeChosen.setValue(temp.getTheme());
     }
 
