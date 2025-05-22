@@ -1,26 +1,30 @@
 package application;
 
-import application.boardView.BoardView;
 import application.boardView.BoardViewAlien;
 import application.boardView.BoardViewDefault;
-import engine.Game;
 import exception.GameException;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+import java.awt.*;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class MainMenuController extends Application {
     @FXML
+    //---Settings---
     public TextField nameLabel;
     public Button playButton;
     public Button settingsButton;
@@ -31,7 +35,18 @@ public class MainMenuController extends Application {
     public Slider sfxSlider;
     public Slider musicSlider;
     public ChoiceBox<String> themeChosen;
+
+    //---Keybinds---
+    @FXML
+    public HBox selectCardHBox;
+    public HBox selectMarbleHBox;
+    public HBox turnHBox;
+    public static ArrayList<Button> selectButtons = new ArrayList<>();
+    public static ArrayList<Button> selectMarbleButtons = new ArrayList<>();
+    public static ArrayList<Button> turnButtons = new ArrayList<>();
+
     public final UserSettings userSettings = new UserSettings().LoadSettings();
+    public final UserSettings.KeyBinds keyBinds = new UserSettings.KeyBinds().loadBinds();
 
     public MainMenuController() throws IOException {
     }
@@ -96,11 +111,42 @@ public class MainMenuController extends Application {
     public void loadValues() throws IOException {
         UserSettings controller = new UserSettings();
         UserSettings temp = controller.LoadSettings();
+        UserSettings.KeyBinds binds = new UserSettings.KeyBinds().loadBinds();
         nameLabel.setText(temp.getName());
         sfxSlider.setValue(temp.getSfx());
         musicSlider.setValue(temp.getMusic());
         themeChosen.getItems().clear();
         themeChosen.getItems().addAll("Default", "Alien");
         themeChosen.setValue(temp.getTheme());
+    }
+
+    public void initialize() {
+        //places bottons
+        for (int i = 0; i < 4; i++){
+            Button button = new Button();
+            button.setPrefSize(83, 14);
+            selectButtons.add(button);
+            button.setOnMouseClicked(event -> {
+                button.setText("Please enter a key...");
+                button.getStyleClass().add(".rebind-button.listening");
+
+                button.requestFocus();
+                button.setOnKeyPressed(keyEvent -> {
+                  button.setText(keyEvent.getCode().toString());
+                }
+            })
+            selectCardHBox.getChildren().add(button);
+
+            Button button1 = new Button();
+            button1.setPrefSize(83, 14);
+            selectMarbleHBox.getChildren().add(button1);
+            selectMarbleButtons.add(button1);
+
+            Button button2 = new Button();
+            button2.setPrefSize(83, 14);
+            turnButtons.add(button2);
+            turnHBox.getChildren().add(button2);
+        }
+
     }
 }
