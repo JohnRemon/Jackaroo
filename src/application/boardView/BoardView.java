@@ -17,10 +17,7 @@ import javafx.geometry.Bounds;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -37,6 +34,7 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import model.card.Card;
+import model.player.CPU;
 import model.player.Marble;
 import model.player.Player;
 
@@ -103,6 +101,10 @@ public abstract class BoardView {
     private Board board;
     public static boolean trapped = false;
 
+    @FXML private Label CurrentPlayerLabel;
+    @FXML private Label NextPlayerLabel;
+    @FXML private ImageView firePitLastCard;
+
     private final ArrayList<Marble> globallySelectedMarbles = new ArrayList<>();
 
     public static void setBoardPane(String fxml, String username) throws IOException, GameException {
@@ -153,7 +155,19 @@ public abstract class BoardView {
 
             for (int i = 0; i < playerCardsImages.size(); i++) {
                 ImageView iv = playerCardsImages.get(i);
-                iv.setFitHeight(i == index ? 100 : 90);
+                iv.setEffect(null);
+                iv.setScaleX(1.0);
+                iv.setScaleY(1.0);
+                if(i == index){
+                    iv.setFitHeight(100);
+                    DropShadow glow = new DropShadow();
+                    glow.setColor(Color.LIMEGREEN);
+                    glow.setRadius(20);
+                    iv.setEffect(glow);
+                }else{
+                    iv.setFitHeight(90);
+                }
+
             }
 
         } catch (InvalidCardException | IndexOutOfBoundsException e) {
@@ -189,21 +203,14 @@ public abstract class BoardView {
                 circle.getProperties().put("selected", false);
                 circle.setRadius(circle.getRadius() - 2);
                 currentPlayer.getSelectedMarbles().remove(marble);
-                System.out.println("Deselected Marble " + marble);
-
-
             } else {
                 currentPlayer.selectMarble(marble);
                 circle.getProperties().put("selected", true);
                 circle.setRadius(circle.getRadius() + 2);
-                System.out.println("Selected Marble " + marble);
-
-
             }
             playSound("click.mp3");
 
 
-            System.out.println("Current Player Selected Marbles: " + currentPlayer.getSelectedMarbles());
         } catch (InvalidMarbleException e) {
             showException(e.getMessage());
         }
@@ -227,12 +234,17 @@ public abstract class BoardView {
             player.getSelectedMarbles().clear();
         }
 
-        System.out.println("All marbles and selections have been reset.");
     }
 
     public void assignCards(Game game) {
         playerCardsRow.getChildren().clear();
         playerCardsImages.clear();
+
+
+        CurrentPlayerLabel.setText("Current Player: " + game.getPlayers().get(game.getCurrentPlayerIndex()).getName());
+        CurrentPlayerLabel.setTextFill(game.getPlayers().get(game.getCurrentPlayerIndex()).getColourFX());
+        NextPlayerLabel.setText("Next Player: " + game.getPlayers().get(game.getNextPlayerIndex()).getName());
+        NextPlayerLabel.setTextFill(game.getPlayers().get(game.getNextPlayerIndex()).getColourFX());
 
         ArrayList<Card> playerCards = game.getPlayers().get(0).getHand();
         for (int i = 0; i < playerCards.size(); i++) {
@@ -344,7 +356,11 @@ public abstract class BoardView {
         }
     }
 
+        CPU1RemainingCards.setText(players.get(1).getHand().size() + "");
+        CPU2RemainingCards.setText(players.get(2).getHand().size() + "");
+        CPU3RemainingCards.setText(players.get(3).getHand().size() + "");
 
+    }
     public void returnMainMenu() throws IOException {
 
         playSound("menuClick.mp3");
@@ -403,11 +419,20 @@ public abstract class BoardView {
         HBox targetBox = homeZones.get(playerIndex);
         if (pt == Board.PlaceType.HOMEZONE)
         {
-            c.getParent(); // for the love of everything near and dear, do NOT remove this line.
+            c.getParent();// for the love of everything near and dear, do NOT remove this line.
             if (c.getParent() != targetBox) {
                 if (trapped){
                     updateTrapFlag();
                     BoardViewAlien.playTeleportEffect(c, gridInshallah);
+                    if (!(gameController.getGame().getPlayers().get(gameController.getGame().getCurrentPlayerIndex()) instanceof CPU)) {
+                        javafx.application.Platform.runLater(() -> {
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("Trap Activated");
+                            alert.setHeaderText(null);
+                            alert.setContentText("You have been teleported to your Home Zone!");
+                            alert.show();
+                        });
+                    }
                 }
 
                 if (c.getParent() instanceof Pane)
@@ -492,9 +517,7 @@ public abstract class BoardView {
             ImageView imageView = new ImageView(texture);
             imageView.setFitHeight(90);
             imageView.preserveRatioProperty().set(true);
-            imageView.setLayoutX(362.5 - imageView.getFitWidth() / 2);
-            imageView.setLayoutY(390 - imageView.getFitHeight() / 2);
-            rootPane.getChildren().add(imageView);
+            firePitLastCard.setImage(imageView.getImage());
         }
     }
 
@@ -698,7 +721,20 @@ public abstract class BoardView {
         safeZones.add(CPU3SafeZone);
     }
 
-
+    public void showWinner(String name) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Game Over");
+        alert.setHeaderText(null);
+        alert.setContentText(name + " has won the game!");
+        alert.setGraphic(null);
+        alert.setOnCloseRequest(event -> {
+            try {
+                returnMainMenu();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+        alert.showAndWait();
     // SOUND EFFECTS
     public static void playSound(String fileName) {
         try {
@@ -712,6 +748,5 @@ public abstract class BoardView {
     }
 
     public void onShuffle() {
-        playSound("cardShuffle.mp3");
-    }
+        playSound("cardShuffle.mp3");    }
 }

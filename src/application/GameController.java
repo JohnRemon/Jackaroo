@@ -4,10 +4,15 @@ import application.boardView.BoardView;
 import engine.Game;
 import exception.GameException;
 import exception.InvalidCardException;
+import exception.SplitOutOfRangeException;
 import javafx.animation.PauseTransition;
+import javafx.fxml.FXML;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.KeyCode;
 import javafx.util.Duration;
+import model.Colour;
 import model.player.CPU;
 import model.player.Player;
 import model.card.Card;
@@ -37,18 +42,6 @@ public class GameController {
     public void handleTurn() {
         Player currentPlayer = game.getPlayers().get(game.getCurrentPlayerIndex());
         Player nextPlayer = game.getPlayers().get(game.getNextPlayerIndex());
-        System.out.println("-----------------------------------");
-        System.out.println("FirePit Size: " + game.getFirePit().size());
-        if(game.getFirePit().size() > 0) {
-            for(Card c : game.getFirePit()) {
-                System.out.println("Card in FirePit: " + c.getName());
-            }
-        }
-        System.out.println(currentPlayer.getName() + " turn");
-        System.out.println("Current Player Hand: " + currentPlayer.getHand().size());
-
-        UserSettings.KeyBinds keyBinds = new UserSettings.KeyBinds().loadBinds();
-
 
         boardView.moveCard(game);
         if (!(currentPlayer instanceof CPU)) {
@@ -92,44 +85,16 @@ public class GameController {
                             }
                         }
                     }
-//                    switch (event.getCode()) {
-//                        case DIGIT1-> boardView.selectCard(0, game);
-//                        case DIGIT2 -> boardView.selectCard(1, game);
-//                        case DIGIT3 -> boardView.selectCard(2, game);
-//                        case DIGIT4 -> boardView.selectCard(3, game);
-//                        case ENTER -> {
-//                            System.out.println("Card: " + currentPlayer.getSelectedCard().getName());
-//                            try {
-//                                game.playPlayerTurn();
-//                                System.out.println("Card Moved");
-//                                endTurn();
-//                            } catch (GameException e) {
-//                                boardView.showException(e.getMessage());
-//                            }
-//                        }
-//                        case BACK_SPACE -> {
-//                            if (game.canPlayTurn()) {
-//                                //game.endPlayerTurn();
-//                                endTurn();
-//                            } else {
-//                                boardView.showException("You can't skip this turn.");
-//                            }
-//                        }
-//                    }
                 });
             }else{
-                System.out.println("You can't play the game after the skip");
                 endTurn();
             }
         } else {
             if (game.canPlayTurn()) {
-                System.out.println("You can play the turn");
-                PauseTransition pause = new PauseTransition(Duration.seconds(2));
+                PauseTransition pause = new PauseTransition(Duration.seconds(0));
                 pause.setOnFinished(event -> {
                     try {
                         game.playPlayerTurn();
-
-                        System.out.println("CPU played a card");
                         endTurn();
                     } catch (GameException e) {
                         boardView.showException(e.getMessage());
@@ -137,9 +102,8 @@ public class GameController {
                 });
                 pause.play();
             } else {
-                System.out.println("You can't play the game after the skip");
                 game.deselectAll();
-                PauseTransition pause = new PauseTransition(Duration.seconds(2));
+                PauseTransition pause = new PauseTransition(Duration.seconds(0));
                 pause.setOnFinished(event -> endTurn());
                 pause.play();
             }
@@ -152,11 +116,13 @@ public class GameController {
         boardView.updateCounters(game);
         boardView.assignCards(game);
         if (game.checkWin() != null) {
-            String winner = game.getPlayers().get(game.checkWin().ordinal()).getName();
-            System.out.println("Winner: " + winner);
-
-            boardView.playSound("win.mp3");
-
+            Colour colour = game.checkWin();
+            for (Player player : game.getPlayers()) {
+                if (player.getColour() == colour) {
+                    boardView.showWinner(player.getName());
+                    break;
+                }
+            }
         } else {
             handleTurn();
         }

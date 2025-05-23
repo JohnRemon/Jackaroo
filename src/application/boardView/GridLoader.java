@@ -10,7 +10,7 @@ public class GridLoader {
 
     public static void loadGrid() {
         try {
-            BufferedReader br = new BufferedReader(new FileReader("tile_clicks.txt"));
+            BufferedReader br = new BufferedReader(new FileReader("tile_clicks_medieval.txt"));
             for (int i = 0; i < 100; i++)
             {
                 int[] point = new int[2];
@@ -20,7 +20,7 @@ public class GridLoader {
                 grid.add(point);
             }
         } catch (IOException e) {
-            System.out.println("Couldnt find file");
+            System.out.println("Couldn't find file");
         }
     }
     public static ArrayList<int[]> getGrid() {
