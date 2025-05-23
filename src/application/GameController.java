@@ -83,7 +83,7 @@ public class GameController {
                             int cardIndex = (int) (Math.random() * currentPlayer.getHand().size());
                             boardView.selectCard(cardIndex, game);
                         }
-                        game.endPlayerTurn();
+                        //game.endPlayerTurn();
                         endTurn();
                     }
                     else if (code == keyBinds.fieldMarble){

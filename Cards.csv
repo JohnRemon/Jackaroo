@@ -1,4 +1,4 @@
-1,20,Ace,Fields a marble from the Home Zone or Moves one of your own marbles 1 step forward.,1,SPADE
+1,2,Ace,Fields a marble from the Home Zone or Moves one of your own marbles 1 step forward.,1,SPADE
 1,2,Ace,Fields a marble from the Home Zone or Moves one of your own marbles 1 step forward.,1,CLUB
 1,1,Ace,Fields a marble from the Home Zone or Moves one of your own marbles 1 step forward.,1,DIAMOND
 1,1,Ace,Fields a marble from the Home Zone or Moves one of your own marbles 1 step forward.,1,HEART
@@ -51,4 +51,4 @@
 13,1,King,Fields a marble from the Home Zone or Moves one of your own marbles 13 steps forward killing all marbles in their path.,13,DIAMOND
 13,3,King,Fields a marble from the Home Zone or Moves one of your own marbles 13 steps forward killing all marbles in their path.,13,HEART
 14,1,MarbleBurner,Selects an opponent marble that is on track to send home.,,
-15,20,MarbleSaver,Selects one of your marbles that is on track / base to send to a random empty safe zone cell.,,
+15,1,MarbleSaver,Selects one of your marbles that is on track / base to send to a random empty safe zone cell.,,
