@@ -112,7 +112,6 @@ public class Game implements GameManager {
             Card selected = players.get(currentPlayerIndex).getSelectedCard();
             players.get(currentPlayerIndex).getHand().remove(selected);
             firePit.add(selected);
-            System.out.println(firePit.size());
 
 
 //            BoardView.playSound("firepit.mp3");

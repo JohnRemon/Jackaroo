@@ -9,8 +9,6 @@ import engine.board.Board;
 import exception.GameException;
 import exception.InvalidCardException;
 import exception.InvalidMarbleException;
-import javafx.animation.PauseTransition;
-import javafx.animation.SequentialTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Bounds;
@@ -30,7 +28,6 @@ import javafx.scene.paint.*;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import model.card.Card;
@@ -41,8 +38,6 @@ import model.player.Player;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-
-import javafx.scene.media.AudioClip;
 
 public abstract class BoardView {
 
