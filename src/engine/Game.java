@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
+import application.boardView.BoardView;
 import engine.board.Board;
 import engine.board.SafeZone;
 import exception.CannotDiscardException;
@@ -26,6 +27,7 @@ public class Game implements GameManager {
 	private int currentPlayerIndex;
     private final ArrayList<Card> firePit;
     private int turn;
+    private BoardView BoardView;
 
     public Game(String playerName) throws IOException {
         turn = 0;
@@ -92,12 +94,27 @@ public class Game implements GameManager {
         players.get(currentPlayerIndex).play();
     }
 
+    //sound effects
+
+    public interface ShuffleListener {
+        void onShuffle();
+    }
+
+    private ShuffleListener shuffleListener;
+
+    public void setShuffleListener(ShuffleListener listener) {
+        this.shuffleListener = listener;
+    }
+
     public void endPlayerTurn() {
 
         if(players.get(currentPlayerIndex).getSelectedCard() != null) {
             Card selected = players.get(currentPlayerIndex).getSelectedCard();
             players.get(currentPlayerIndex).getHand().remove(selected);
-            firePit.add(selected);
+
+
+//            BoardView.playSound("firepit.mp3");
+
             players.get(currentPlayerIndex).deselectAll();
         }
 
@@ -112,6 +129,9 @@ public class Game implements GameManager {
               if(Deck.getPoolSize() < 4) {
 	              Deck.refillPool(firePit);
 	              firePit.clear();
+                  BoardView.playSound("cardShuffle.mp3");
+
+                  if(shuffleListener != null) shuffleListener.onShuffle();
               }
               ArrayList<Card> newHand = Deck.drawCards();
               p.setHand(newHand);
@@ -148,6 +168,8 @@ public class Game implements GameManager {
         
         board.sendToBase(marble);
         players.get(currentPlayerIndex).getMarbles().remove(marble);
+
+        BoardView.playSound("field.mp3");
     }
     
     @Override
