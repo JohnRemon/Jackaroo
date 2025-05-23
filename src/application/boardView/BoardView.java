@@ -38,9 +38,7 @@ import model.player.CPU;
 import model.player.Marble;
 import model.player.Player;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -362,6 +360,7 @@ public abstract class BoardView {
     public void returnMainMenu() throws IOException {
 
         playSound("menuClick.mp3");
+        BoardViewMedieval.stopMusic();
 
         UserSettings currentSettings = new UserSettings().LoadSettings();
         currentSettings.SaveSettings(currentSettings);
@@ -522,9 +521,11 @@ public abstract class BoardView {
 
     public static void playSound(String fileName) {
         try {
+            UserSettings userSettings = new UserSettings().LoadSettings();
             String path = "/view/Sounds/" + fileName;
             Media sound = new Media(BoardView.class.getResource(path).toExternalForm());
             MediaPlayer mediaPlayer = new MediaPlayer(sound);
+            mediaPlayer.setVolume(userSettings.getSfx() / 100.0);
             mediaPlayer.play();
         } catch (Exception e) {
             System.out.println("Failed to play sound: " + fileName + " -> " + e.getMessage());
@@ -636,6 +637,11 @@ public abstract class BoardView {
         );
     }
 
+    public static double getMusicVolume() throws IOException {
+        UserSettings userSettings = new UserSettings().LoadSettings();
+        return userSettings.getMusic() / 100.0;
+
+    }
 
     //---- Old Methods----
 
