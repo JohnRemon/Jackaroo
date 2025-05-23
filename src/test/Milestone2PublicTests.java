@@ -6601,9 +6601,6 @@ public class Milestone2PublicTests {
 	}
 
 
-
-
-
 	@Test(timeout = 1000)
 	public void testValidateStepsIsCalledInMethodMoveByInBoardClass(){
 		try {
