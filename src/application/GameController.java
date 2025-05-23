@@ -46,7 +46,7 @@ public class GameController {
         boardView.moveCard(game);
         if (!(currentPlayer instanceof CPU)) {
             if(game.canPlayTurn()) {
-                System.out.println("You can play the turn");
+                UserSettings.KeyBinds keyBinds = new UserSettings.KeyBinds().loadBinds();
                 scene.setOnKeyPressed(event -> {
                     KeyCode code = event.getCode();
 
@@ -56,6 +56,21 @@ public class GameController {
                     else if (code == keyBinds.card3) boardView.selectCard(2, game);
                     else if (code == keyBinds.card4) boardView.selectCard(3, game);
                     else if (code == keyBinds.playTurn) {
+                        if(currentPlayer.getSelectedCard() != null && currentPlayer.getSelectedCard().getName().equals("Seven") && currentPlayer.getSelectedMarbles().size() == 2){
+                            TextInputDialog dialog = new TextInputDialog();
+                            dialog.setTitle("Enter Split Distance");
+                            dialog.setHeaderText(null);
+                            dialog.setContentText("Split Distance:");
+                            dialog.setGraphic(null);
+                            dialog.showAndWait().ifPresent(input -> {
+                                try {
+                                    int splitDistance = Integer.parseInt(input);
+                                    game.editSplitDistance(splitDistance);
+                                } catch (NumberFormatException | SplitOutOfRangeException e) {
+                                    boardView.showException("Invalid input. Please enter a valid number.");
+                                }
+                            });
+                        }
                         try {
                             game.playPlayerTurn();
                             endTurn();
@@ -70,7 +85,8 @@ public class GameController {
                         }
                         game.endPlayerTurn();
                         endTurn();
-                    } else if (code == keyBinds.fieldMarble){
+                    }
+                    else if (code == keyBinds.fieldMarble){
                         ArrayList<Card> hand = currentPlayer.getHand();
                         for (int i = 0; i < hand.size(); i++) {
                             if (hand.get(i).getName().equals("King") || hand.get(i).getName().equals("Ace")) {
@@ -91,7 +107,7 @@ public class GameController {
             }
         } else {
             if (game.canPlayTurn()) {
-                PauseTransition pause = new PauseTransition(Duration.seconds(0));
+                PauseTransition pause = new PauseTransition(Duration.seconds(2));
                 pause.setOnFinished(event -> {
                     try {
                         game.playPlayerTurn();
@@ -103,7 +119,7 @@ public class GameController {
                 pause.play();
             } else {
                 game.deselectAll();
-                PauseTransition pause = new PauseTransition(Duration.seconds(0));
+                PauseTransition pause = new PauseTransition(Duration.seconds(2));
                 pause.setOnFinished(event -> endTurn());
                 pause.play();
             }

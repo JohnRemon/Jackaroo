@@ -105,7 +105,6 @@ public abstract class BoardView {
     @FXML private Label NextPlayerLabel;
     @FXML private ImageView firePitLastCard;
 
-    private final ArrayList<Marble> globallySelectedMarbles = new ArrayList<>();
 
     public static void setBoardPane(String fxml, String username) throws IOException, GameException {
         FXMLLoader loader = new FXMLLoader(BoardView.class.getResource(fxml));
@@ -354,7 +353,6 @@ public abstract class BoardView {
             safeZone.setStyle("-fx-border-color: #00ccff");
             safeZone.setStyle("-fx-effect: dropshadow(gaussian, " + toRgbString(color) + ", 10, 0.5, 0, 0);");
         }
-    }
 
         CPU1RemainingCards.setText(players.get(1).getHand().size() + "");
         CPU2RemainingCards.setText(players.get(2).getHand().size() + "");
@@ -474,6 +472,7 @@ public abstract class BoardView {
             if (c.getParent() instanceof Pane parent) {
                 parent.getChildren().remove(c);
             }
+
             if (positionChanged)
             {
                 BoardViewAlien.playTeleportEffect(c, gridInshallah);
@@ -481,7 +480,7 @@ public abstract class BoardView {
 
             GridPane.setRowIndex(c, position);
             GridPane.setColumnIndex(c,0);
-            placeMarbleOnTopOfGrid(c, targetPane, rootPane, point[0], point[1]);
+            targetPane.getChildren().add(c);
             return;
         }
     }
@@ -519,6 +518,21 @@ public abstract class BoardView {
             imageView.preserveRatioProperty().set(true);
             firePitLastCard.setImage(imageView.getImage());
         }
+    }
+
+    public static void playSound(String fileName) {
+        try {
+            String path = "/view/Sounds/" + fileName;
+            Media sound = new Media(BoardView.class.getResource(path).toExternalForm());
+            MediaPlayer mediaPlayer = new MediaPlayer(sound);
+            mediaPlayer.play();
+        } catch (Exception e) {
+            System.out.println("Failed to play sound: " + fileName + " -> " + e.getMessage());
+        }
+    }
+
+    public void onShuffle() {
+        playSound("cardShuffle.mp3");
     }
 
     // -----------Helpers------------------
@@ -624,102 +638,6 @@ public abstract class BoardView {
 
 
     //---- Old Methods----
-    public void assignPlayers(Game game) throws IOException {
-        UserSettings settings = new UserSettings().LoadSettings();
-        ArrayList<Player> players = game.getPlayers();
-
-        playerLabel.setText(settings.getName());
-        CPU1Label.setText("CPU 1");
-        CPU2Label.setText("CPU 2");
-        CPU3Label.setText("CPU 3");
-
-        playerLabel.setTextFill(players.get(0).getColourFX());
-        CPU1Label.setTextFill(players.get(1).getColourFX());
-        CPU2Label.setTextFill(players.get(2).getColourFX());
-        CPU3Label.setTextFill(players.get(3).getColourFX());
-
-        CPU1RemainingCards.setTextFill(players.get(1).getColourFX());
-        CPU2RemainingCards.setTextFill(players.get(2).getColourFX());
-        CPU3RemainingCards.setTextFill(players.get(3).getColourFX());
-
-        playerLabel.setTextFill(players.get(0).getColourFX());
-        CPU1Label.setTextFill(players.get(1).getColourFX());
-        CPU2Label.setTextFill(players.get(2).getColourFX());
-        CPU3Label.setTextFill(players.get(3).getColourFX());
-
-        CPU1RemainingCards.setTextFill(players.get(1).getColourFX());
-        CPU2RemainingCards.setTextFill(players.get(2).getColourFX());
-        CPU3RemainingCards.setTextFill(players.get(3).getColourFX());
-
-        // Assign  marbles
-        ArrayList<Marble> p1marbles = game.getPlayers().getFirst().getMarbles();
-        MarbleMapping p1Marble1 = new MarbleMapping(p1marbles.getFirst(), PlayerMarbleOne);
-        MarbleMapping p1Marble2 = new MarbleMapping(p1marbles.get(1), PlayerMarbleTwo);
-        MarbleMapping p1Marble3 = new MarbleMapping(p1marbles.get(2), PlayerMarbleThree);
-        MarbleMapping p1Marble4 = new MarbleMapping(p1marbles.get(3), PlayerMarbleFour);
-
-        // Set marble colors based on player colors
-        p1Marble1.getCircle().setFill(players.get(0).getColourFX());
-        p1Marble2.getCircle().setFill(players.get(0).getColourFX());
-        p1Marble3.getCircle().setFill(players.get(0).getColourFX());
-        p1Marble4.getCircle().setFill(players.get(0).getColourFX());
-        P1MarbleMappings.add(p1Marble1);
-        P1MarbleMappings.add(p1Marble2);
-        P1MarbleMappings.add(p1Marble3);
-        P1MarbleMappings.add(p1Marble4);
-
-        ArrayList<Marble> CPU1marbles = game.getPlayers().get(1).getMarbles();
-        MarbleMapping p2Marble1 = new MarbleMapping(CPU1marbles.get(0), CPU1MarbleOne);
-        MarbleMapping p2Marble2 = new MarbleMapping(CPU1marbles.get(1), CPU1MarbleTwo);
-        MarbleMapping p2Marble3 = new MarbleMapping(CPU1marbles.get(2), CPU1MarbleThree);
-        MarbleMapping p2Marble4 = new MarbleMapping(CPU1marbles.get(3), CPU1MarbleFour);
-        p2Marble1.getCircle().setFill(players.get(1).getColourFX());
-        p2Marble2.getCircle().setFill(players.get(1).getColourFX());
-        p2Marble3.getCircle().setFill(players.get(1).getColourFX());
-        p2Marble4.getCircle().setFill(players.get(1).getColourFX());
-        CPU1MarbleMappings.add(p2Marble1);
-        CPU1MarbleMappings.add(p2Marble2);
-        CPU1MarbleMappings.add(p2Marble3);
-        CPU1MarbleMappings.add(p2Marble4);
-
-        ArrayList<Marble> CPU2marbles = game.getPlayers().get(2).getMarbles();
-        MarbleMapping p3Marble1 = new MarbleMapping(CPU2marbles.get(0), CPU2MarbleOne);
-        MarbleMapping p3Marble2 = new MarbleMapping(CPU2marbles.get(1), CPU2MarbleTwo);
-        MarbleMapping p3Marble3 = new MarbleMapping(CPU2marbles.get(2), CPU2MarbleThree);
-        MarbleMapping p3Marble4 = new MarbleMapping(CPU2marbles.get(3), CPU2MarbleFour);
-        p3Marble1.getCircle().setFill(players.get(2).getColourFX());
-        p3Marble2.getCircle().setFill(players.get(2).getColourFX());
-        p3Marble3.getCircle().setFill(players.get(2).getColourFX());
-        p3Marble4.getCircle().setFill(players.get(2).getColourFX());
-        CPU2MarbleMappings.add(p3Marble1);
-        CPU2MarbleMappings.add(p3Marble2);
-        CPU2MarbleMappings.add(p3Marble3);
-        CPU2MarbleMappings.add(p3Marble4);
-
-
-        ArrayList<Marble> CPU3marbles = game.getPlayers().get(3).getMarbles();
-        MarbleMapping p4Marble1 = new MarbleMapping(CPU3marbles.get(0), CPU3MarbleOne);
-        MarbleMapping p4Marble2 = new MarbleMapping(CPU3marbles.get(1), CPU3MarbleTwo);
-        MarbleMapping p4Marble3 = new MarbleMapping(CPU3marbles.get(2), CPU3MarbleThree);
-        MarbleMapping p4Marble4 = new MarbleMapping(CPU3marbles.get(3), CPU3MarbleFour);
-        p4Marble1.getCircle().setFill(players.get(3).getColourFX());
-        p4Marble2.getCircle().setFill(players.get(3).getColourFX());
-        p4Marble3.getCircle().setFill(players.get(3).getColourFX());
-        p4Marble4.getCircle().setFill(players.get(3).getColourFX());
-        CPU3MarbleMappings.add(p4Marble1);
-        CPU3MarbleMappings.add(p4Marble2);
-        CPU3MarbleMappings.add(p4Marble3);
-        CPU3MarbleMappings.add(p4Marble4);
-
-        homeZones.add(PlayerHomeZone);
-        homeZones.add(CPU1HomeZone);
-        homeZones.add(CPU2HomeZone);
-        homeZones.add(CPU3HomeZone);
-        safeZones.add(PlayerSafeZone);
-        safeZones.add(CPU1SafeZone);
-        safeZones.add(CPU2SafeZone);
-        safeZones.add(CPU3SafeZone);
-    }
 
     public void showWinner(String name) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -735,18 +653,5 @@ public abstract class BoardView {
             }
         });
         alert.showAndWait();
-    // SOUND EFFECTS
-    public static void playSound(String fileName) {
-        try {
-            String path = "/view/Sounds/" + fileName;
-            Media sound = new Media(BoardView.class.getResource(path).toExternalForm());
-            MediaPlayer mediaPlayer = new MediaPlayer(sound);
-            mediaPlayer.play();
-        } catch (Exception e) {
-            System.out.println("Failed to play sound: " + fileName + " -> " + e.getMessage());
-        }
     }
-
-    public void onShuffle() {
-        playSound("cardShuffle.mp3");    }
 }
