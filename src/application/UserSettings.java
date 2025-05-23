@@ -1,6 +1,7 @@
 package application;
 
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 import java.io.*;
 
@@ -84,9 +85,10 @@ public class UserSettings {
 
         public KeyCode skipTurn;
         public KeyCode playTurn;
+        public KeyCode fieldMarble;
         private final String bindPath = "keybinds.txt";
 
-        public KeyBinds(KeyCode card1, KeyCode card2, KeyCode card3, KeyCode card4, KeyCode marble1, KeyCode marble2, KeyCode marble3, KeyCode marble4, KeyCode skipTurn, KeyCode playTurn) {
+        public KeyBinds(KeyCode card1, KeyCode card2, KeyCode card3, KeyCode card4, KeyCode marble1, KeyCode marble2, KeyCode marble3, KeyCode marble4, KeyCode skipTurn, KeyCode playTurn, KeyCode fieldMarble) {
             this.card1 = card1;
             this.card2 = card2;
             this.card3 = card3;
@@ -97,6 +99,7 @@ public class UserSettings {
             this.marble4 = marble4;
             this.skipTurn = skipTurn;
             this.playTurn = playTurn;
+            this.fieldMarble = fieldMarble;
         }
 
         public KeyBinds() {
@@ -110,6 +113,7 @@ public class UserSettings {
             this.marble4 = KeyCode.R;
             this.skipTurn = KeyCode.BACK_SPACE;
             this.playTurn = KeyCode.ENTER;
+            this.fieldMarble = KeyCode.SPACE;
         }
 
         public void saveBinds(KeyBinds binds) {
@@ -124,7 +128,8 @@ public class UserSettings {
                 "\n" + marble3.toString() +
                 "\n" + marble4.toString() +
                 "\n" + skipTurn.toString() +
-                "\n" + playTurn.toString());
+                "\n" + playTurn.toString() +
+                "\n" + fieldMarble.toString());
             } catch (IOException e) {
                 System.out.println("Could not save keybinds.txt");
             }
@@ -141,9 +146,10 @@ public class UserSettings {
                         KeyCode.valueOf(br.readLine()),
                         KeyCode.valueOf(br.readLine()),
                         KeyCode.valueOf(br.readLine()),
+                        KeyCode.valueOf(br.readLine()),
                         KeyCode.valueOf(br.readLine())
                 );
-            } catch (IOException | IllegalArgumentException e) {
+            } catch (Exception e) {
                 System.out.println("Could not load keybinds.txt, using defaults.");
                 return new KeyBinds(); // default constructor
             }
@@ -191,6 +197,44 @@ public class UserSettings {
 
         public void setPlayTurn(KeyCode playTurn) {
             this.playTurn = playTurn;
+        }
+        public void setFieldMarble(KeyCode fieldMarble) {
+            this.fieldMarble = fieldMarble;
+        }
+
+        public void bindKey(KeyEvent keyEvent, int index) {
+            switch (index)
+            {
+                case 0: setCard1(keyEvent.getCode()); break;
+                case 1: setCard2(keyEvent.getCode()); break;
+                case 2: setCard3(keyEvent.getCode()); break;
+                case 3: setCard4(keyEvent.getCode()); break;
+                case 4: setMarble1(keyEvent.getCode()); break;
+                case 5: setMarble2(keyEvent.getCode()); break;
+                case 6: setMarble3(keyEvent.getCode()); break;
+                case 7: setMarble4(keyEvent.getCode()); break;
+                case 8: setSkipTurn(keyEvent.getCode()); break;
+                case 9: setPlayTurn(keyEvent.getCode()); break;
+                case 10: setFieldMarble(keyEvent.getCode()); break;
+            }
+
+        }
+        public String findKey(int index) {
+            switch (index)
+            {
+                case 0: return card1.toString();
+                case 1: return card2.toString();
+                case 2: return card3.toString();
+                case 3: return card4.toString();
+                case 4: return marble1.toString();
+                case 5: return marble2.toString();
+                case 6: return marble3.toString();
+                case 7: return marble4.toString();
+                case 8: return skipTurn.toString();
+                case 9: return playTurn.toString();
+                case 10: return fieldMarble.toString();
+            }
+            return null;
         }
     }
 }

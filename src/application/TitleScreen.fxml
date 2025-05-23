@@ -19,8 +19,9 @@
         <Button fx:id="SubmitName" layoutX="267.0" layoutY="185.0" mnemonicParsing="false" onAction="#saveSettings" prefHeight="47.0" prefWidth="66.0" styleClass="mainButton" stylesheets="@title_screen.css" text="OK" />
       <Button fx:id="playButton" layoutX="231.0" layoutY="266.0" mnemonicParsing="false" onAction="#transitionToBoard" prefHeight="35.0" prefWidth="140.0" styleClass="mainButton" stylesheets="@title_screen.css" text="PLAY" />
       <Button fx:id="settingsButton" layoutX="230.0" layoutY="324.0" mnemonicParsing="false" onAction="#openSettings" prefHeight="47.0" prefWidth="140.0" styleClass="mainButton" stylesheets="@title_screen.css" text="SETTINGS" />
-      <Pane fx:id="settingsPane" layoutX="41.0" layoutY="45.0" prefHeight="309.0" prefWidth="518.0" style="-fx-background-color: white;" styleClass="settingsBackground" stylesheets="@settings.css">
+      <Pane fx:id="settingsPane" layoutX="41.0" layoutY="45.0" prefHeight="309.0" prefWidth="518.0" style="-fx-background-color: white;" styleClass="settingsBackground" stylesheets="@settings.css" visible="false">
          <children>
+            <Button fx:id="openKeyBinds" layoutX="372.0" layoutY="166.0" mnemonicParsing="false" onMouseClicked="#openKeyBinds" styleClass="settingsButton" stylesheets="@settings.css" text="Keybinds" />
             <Button layoutX="58.0" layoutY="45.0" mnemonicParsing="false" styleClass="settingsButton" stylesheets="@settings.css" text="Load CSV" />
             <Button fx:id="saveAndExit" layoutX="218.0" layoutY="260.0" mnemonicParsing="false" onAction="#hideSettingsMenu" styleClass="settingsButton" stylesheets="@settings.css" text="Save &amp; Exit" />
             <Slider fx:id="sfxSlider" layoutX="105.0" layoutY="100.0" prefHeight="31.0" prefWidth="140.0" stylesheets="@settings.css" />
@@ -29,7 +30,7 @@
             <Label layoutX="58.0" layoutY="147.0" prefHeight="17.0" prefWidth="43.0" styleClass="settingsLabel" stylesheets="@settings.css" text="Music:" />
             <ChoiceBox fx:id="themeChosen" layoutX="337.0" layoutY="103.0" prefWidth="150.0" />
             <Label layoutX="278.0" layoutY="106.0" prefHeight="17.0" prefWidth="59.0" styleClass="settingsLabel" stylesheets="@settings.css" text="Theme:" />
-            <Pane layoutX="5.0" prefHeight="309.0" prefWidth="518.0" styleClass="settingsBackground">
+            <Pane fx:id="keyBindsMenu" layoutX="5.0" prefHeight="309.0" prefWidth="518.0" styleClass="settingsBackground" visible="false">
                <children>
                   <VBox layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="100.0" spacing="25.0">
                      <children>
@@ -39,11 +40,7 @@
                         <Label styleClass="settingsLabel" text="Select Card 4:" />
                      </children>
                   </VBox>
-                  <VBox fx:id="selectCardHBox" layoutX="114.0" layoutY="14.0" prefHeight="155.0" prefWidth="100.0" spacing="17.0">
-                     <children>
-                        <Button fx:id="card1" mnemonicParsing="false" onMouseClicked="#setKeyBind" prefHeight="14.0" prefWidth="83.0" text="Button" />
-                     </children>
-                  </VBox>
+                  <VBox fx:id="selectCardHBox" layoutX="114.0" layoutY="14.0" prefHeight="155.0" prefWidth="100.0" spacing="17.0" />
                   <VBox layoutX="245.0" layoutY="14.0" prefHeight="200.0" prefWidth="100.0" spacing="25.0">
                      <children>
                         <Label styleClass="settingsLabel" text="Select Marble 1:" />
@@ -52,23 +49,15 @@
                         <Label styleClass="settingsLabel" text="Select Marble 4:" />
                      </children>
                   </VBox>
-                  <VBox fx:id="selectMarbleHBox" layoutX="359.0" layoutY="14.0" prefHeight="155.0" prefWidth="100.0" spacing="17.0">
-                     <children>
-                        <Button fx:id="marble4" mnemonicParsing="false" onMouseClicked="#setKeyBind" prefHeight="14.0" prefWidth="83.0" text="Button" />
-                     </children>
-                  </VBox>
-                  <VBox layoutX="158.0" layoutY="185.0" prefHeight="81.0" prefWidth="100.0" spacing="25.0">
+                  <VBox fx:id="selectMarbleHBox" layoutX="359.0" layoutY="14.0" prefHeight="155.0" prefWidth="100.0" spacing="17.0" />
+                  <VBox layoutX="14.0" layoutY="185.0" prefHeight="81.0" prefWidth="100.0" spacing="25.0">
                      <children>
                         <Label styleClass="settingsLabel" text="Skip Turn: " />
                         <Label styleClass="settingsLabel" text="Play Turn: " />
+                        <Label styleClass="settingsLabel" text="Field Marble: " />
                      </children>
                   </VBox>
-                  <VBox fx:id="turnHBox" layoutX="233.0" layoutY="185.0" prefHeight="81.0" prefWidth="100.0" spacing="17.0">
-                     <children>
-                        <Button fx:id="skipTurn" mnemonicParsing="false" onMouseClicked="#setKeyBind" prefHeight="14.0" prefWidth="83.0" text="Button" />
-                        <Button fx:id="playTurn" mnemonicParsing="false" onMouseClicked="#setKeyBind" prefHeight="14.0" prefWidth="83.0" text="Button" />
-                     </children>
-                  </VBox>
+                  <VBox fx:id="turnHBox" layoutX="105.0" layoutY="185.0" prefHeight="107.0" prefWidth="100.0" spacing="17.0" />
                   <Button layoutX="359.0" layoutY="266.0" mnemonicParsing="false" onMouseClicked="#saveKeyBinds" prefHeight="25.0" prefWidth="134.0" text="Save Keybinds" />
                   <Button layoutX="216.0" layoutY="266.0" mnemonicParsing="false" onMouseClicked="#hideKeyBindsMenu" prefHeight="25.0" prefWidth="134.0" text="Close without saving" />
                </children>
