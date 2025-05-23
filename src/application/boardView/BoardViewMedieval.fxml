@@ -1,21 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.String?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.shape.Circle?>
-<?import javafx.scene.text.Font?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.boardView.BoardViewMedieval">
+<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.boardView.BoardViewMedieval">
     <children>
         <ImageView fx:id="boardImage" fitHeight="800.0" fitWidth="800.0" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <image>
@@ -24,7 +16,7 @@
         </ImageView>
         <AnchorPane fx:id="rootPane1" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
-                <GridPane fx:id="gridInshallah" layoutX="64.6" layoutY="68.0" prefHeight="622.0" prefWidth="666.0" AnchorPane.bottomAnchor="110.39999999999998" AnchorPane.leftAnchor="64.6" AnchorPane.rightAnchor="69.0" AnchorPane.topAnchor="68.0">
+                <GridPane fx:id="gridInshallah" layoutX="66.6" layoutY="68.0" prefHeight="622.0" prefWidth="666.0" AnchorPane.bottomAnchor="110.39999999999998" AnchorPane.leftAnchor="66.6" AnchorPane.rightAnchor="67.0" AnchorPane.topAnchor="68.0">
                     <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -190,7 +182,7 @@
                         <Circle fx:id="CPU1MarbleFour" fill="DODGERBLUE" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
                         <Circle fx:id="CPU1MarbleTwo" fill="DODGERBLUE" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
                     </children></HBox>
-                <Button layoutX="756.0" focusTraversable="false" layoutY="9.0" mnemonicParsing="false" onAction="#returnMainMenu" styleClass="buttonHome" stylesheets="@../board.css" textFill="#dff6f5" />
+                <Button focusTraversable="false" layoutX="756.0" layoutY="9.0" mnemonicParsing="false" onAction="#returnMainMenu" styleClass="buttonHome" stylesheets="@../board.css" textFill="#dff6f5" />
             <Circle fill="DODGERBLUE" layoutX="40.0" layoutY="476.0" radius="22.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="2.0" style="-fx-fill: transparent;" />
             <ImageView fitHeight="44.0" fitWidth="32.0" layoutX="24.0" layoutY="457.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -213,7 +205,7 @@
             <Button fx:id="skinButton" layoutX="723.0" layoutY="9.0" mnemonicParsing="false" onAction="#chooseSkin" styleClass="buttonSkin" stylesheets="@../board.css" textFill="#dff6f5" />
             <Pane fx:id="skinPane" layoutX="87.0" layoutY="188.0" prefHeight="343.0" prefWidth="618.0" styleClass="mainBackground" stylesheets="@../skinSettings.css" visible="false">
                <children>
-                  <Button layoutX="264.0" layoutY="285.0" mnemonicParsing="false" focusTraversable="false" onAction="#hideSkin" prefHeight="33.0" prefWidth="110.0" styleClass="skinButton" stylesheets="@../skinSettings.css" text="Save and Exit" />
+                  <Button focusTraversable="false" layoutX="264.0" layoutY="285.0" mnemonicParsing="false" onAction="#hideSkin" prefHeight="33.0" prefWidth="110.0" styleClass="skinButton" stylesheets="@../skinSettings.css" text="Save and Exit" />
                   <Label layoutX="236.0" layoutY="32.0" styleClass="mainTitle" stylesheets="@../skinSettings.css" text="Choose Your Skin" textFill="WHITE">
                      <font>
                         <Font size="20.0" />

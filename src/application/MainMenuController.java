@@ -10,17 +10,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
-import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 
 public class MainMenuController extends Application {
@@ -39,9 +34,12 @@ public class MainMenuController extends Application {
 
     //---Keybinds---
     @FXML
-    public HBox selectCardHBox;
-    public HBox selectMarbleHBox;
-    public HBox turnHBox;
+    public VBox selectCardHBox;
+    @FXML
+    public VBox selectMarbleHBox;
+    @FXML
+    public VBox turnHBox;
+    @FXML Pane keyBindsMenu;
     public static ArrayList<Button> selectButtons = new ArrayList<>();
     public static ArrayList<Button> selectMarbleButtons = new ArrayList<>();
     public static ArrayList<Button> turnButtons = new ArrayList<>();
@@ -64,6 +62,12 @@ public class MainMenuController extends Application {
         themeChosen.setValue(userSettings.getTheme());
         settingsPane.setVisible(true);
     }
+    @FXML
+    public void openKeyBinds(MouseEvent mouseEvent) throws IOException {
+        keyBindsMenu.setVisible(true);
+        System.out.println("shdaksjhd");
+    }
+
     @FXML
     private void transitionToBoard(ActionEvent event) throws IOException, GameException {
         Stage stage = Main.primaryStage;
@@ -114,32 +118,83 @@ public class MainMenuController extends Application {
     }
 
     public void initialize() {
-        //places bottons
+        //places card buttons
         for (int i = 0; i < 4; i++){
+            Button card = new Button();
+            card.setPrefSize(83, 14);
+            selectButtons.add(card);
+            int finalI = i;
+            card.setOnMouseClicked(event -> {
+                card.setText("Please enter a key...");
+                card.getStyleClass().add(".rebind-button.listening");
+
+                card.requestFocus();
+                card.setOnKeyPressed(keyEvent -> {
+                  card.setText(keyEvent.getCode().toString());
+                  keyBinds.bindKey(keyEvent, finalI);
+                });
+            });
+            selectCardHBox.getChildren().add(card);
+        }
+        //places marble buttons
+        for (int i = 4; i < 8; i++){
             Button button = new Button();
             button.setPrefSize(83, 14);
-            selectButtons.add(button);
+            selectMarbleButtons.add(button);
+            int finalI = i;
             button.setOnMouseClicked(event -> {
                 button.setText("Please enter a key...");
                 button.getStyleClass().add(".rebind-button.listening");
 
                 button.requestFocus();
                 button.setOnKeyPressed(keyEvent -> {
-                  button.setText(keyEvent.getCode().toString());
-                }
-            })
-            selectCardHBox.getChildren().add(button);
+                    button.setText(keyEvent.getCode().toString());
+                    keyBinds.bindKey(keyEvent, finalI);
+                });
+            });
+            selectMarbleHBox.getChildren().add(button);
+        }
+        //places turn buttons
+        for (int i = 8; i < 11; i++){
+            Button button = new Button();
+            button.setPrefSize(83, 14);
+            turnButtons.add(button);
+            int finalI = i;
+            button.setOnMouseClicked(event -> {
+                button.setText("Please enter a key...");
+                button.getStyleClass().add(".rebind-button.listening");
 
-            Button button1 = new Button();
-            button1.setPrefSize(83, 14);
-            selectMarbleHBox.getChildren().add(button1);
-            selectMarbleButtons.add(button1);
-
-            Button button2 = new Button();
-            button2.setPrefSize(83, 14);
-            turnButtons.add(button2);
-            turnHBox.getChildren().add(button2);
+                button.requestFocus();
+                button.setOnKeyPressed(keyEvent -> {
+                    button.setText(keyEvent.getCode().toString());
+                    keyBinds.bindKey(keyEvent, finalI);
+                });
+            });
+            turnHBox.getChildren().add(button);
         }
 
+        setBindNames();
+    }
+
+    private void setBindNames() {
+        int i = 0;
+        for (Button button : selectButtons){
+            button.setText(keyBinds.findKey(i++));
+        }
+        for (Button button : selectMarbleButtons){
+            button.setText(keyBinds.findKey(i++));
+        }
+        for (Button button : turnButtons){
+            button.setText(keyBinds.findKey(i++));
+        }
+    }
+
+    public void saveKeyBinds(MouseEvent mouseEvent) {
+        keyBinds.saveBinds(keyBinds);
+        hideKeyBindsMenu(mouseEvent);
+    }
+
+    public void hideKeyBindsMenu(MouseEvent mouseEvent) {
+            keyBindsMenu.setVisible(false);
     }
 }
