@@ -440,15 +440,6 @@ public abstract class BoardView {
         {
             Circle marble = new Circle();
             marble.setRadius(9);
-
-            settings = settings.LoadSettings();
-
-            String theme = settings.getTheme();
-
-            if (theme.equals("OnePiece")){
-                marble.getStyleClass().add("track-cell-onePiece");
-            }
-
             marble.getStyleClass().add("track-cell");
 
             int[] point = grid.get(i);
