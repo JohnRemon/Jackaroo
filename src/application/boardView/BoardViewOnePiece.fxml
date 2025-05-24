@@ -13,7 +13,7 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="800.0" stylesheets="@BoardViewOnePiece.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.boardView.BoardViewOnePiece">
+<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="800.0" stylesheets="@Sheets/BoardViewOnePiece.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.boardView.BoardViewOnePiece">
    <children>
       <ImageView fx:id="boardImage" fitHeight="800.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -23,7 +23,7 @@
          <children>
             <HBox fx:id="playerCardsRow" layoutX="19.0" layoutY="673.0" prefHeight="126.0" prefWidth="301.0" />
             <Button layoutX="719.0" mnemonicParsing="false" onAction="#returnMainMenu" prefHeight="41.0" prefWidth="80.0" styleClass="main-menu-button" text="Menu" />
-            <TextArea fx:id="cardDescription" editable="false" layoutX="499.0" layoutY="723.0" prefHeight="73.0" prefWidth="301.0" styleClass="card-description-box " text="Placeholder description of card" wrapText="true" />
+            <TextArea fx:id="cardDescriptionOld" layoutX="499.0" layoutY="723.0" prefHeight="73.0" prefWidth="301.0" styleClass="card-description-box" text="Placeholder description of card" wrapText="true" />
             <HBox fx:id="PlayerHomeZone" layoutX="344.0" layoutY="746.0" prefHeight="26.0" prefWidth="100.0">
                <children>
                   <Circle fx:id="PlayerMarbleOne" fill="#6a0dad" onMouseClicked="#selectMarble" radius="12.0" stroke="BLACK" strokeType="INSIDE" />

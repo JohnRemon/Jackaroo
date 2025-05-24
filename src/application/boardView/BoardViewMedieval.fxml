@@ -19,7 +19,7 @@
     <children>
         <ImageView fx:id="boardImage" fitHeight="800.0" fitWidth="800.0" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <image>
-                <Image url="@../../view/textures/medieval/Board15.png" />
+                <Image url="@../../view/textures/Medieval/Board15.png" />
             </image>
         </ImageView>
         <AnchorPane fx:id="rootPane1" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -190,109 +190,109 @@
                         <Circle fx:id="CPU1MarbleFour" fill="DODGERBLUE" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
                         <Circle fx:id="CPU1MarbleTwo" fill="DODGERBLUE" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
                     </children></HBox>
-                <Button focusTraversable="false" layoutX="756.0" layoutY="9.0" mnemonicParsing="false" onAction="#returnMainMenu" styleClass="buttonHome" stylesheets="@../board.css" textFill="#dff6f5" />
-            <Circle fx:id="CPU1Circle" layoutX="40.0" layoutY="476.0" radius="22.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="2.0"/>
-            <ImageView fitHeight="44.0" fitWidth="32.0" layoutX="24.0" layoutY="457.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../view/textures/medieval/N9-B.png" />
-               </image>
-            </ImageView>
-            <Circle fx:id="CPU2Circle" layoutX="308.0" layoutY="36.0" radius="22.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="2.0"/>
-            <ImageView fx:id="firePitLastCard" fitHeight="90.0" fitWidth="74.0" layoutX="367.0" layoutY="344.0" pickOnBounds="true" preserveRatio="true" />
-            <ImageView fitHeight="44.0" fitWidth="32.0" layoutX="291.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../view/textures/medieval/Nor9-B.png" />
-               </image>
-            </ImageView>
-            <Circle fx:id="CPU3Circle"  layoutX="767.0" layoutY="475.0" radius="22.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="2.0" />
-            <ImageView fitHeight="44.0" fitWidth="32.0" layoutX="751.0" layoutY="459.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../view/textures/medieval/G12-B.png" />
-               </image>
-            </ImageView>
-            <Button fx:id="skinButton" layoutX="723.0" layoutY="9.0" mnemonicParsing="false" onAction="#chooseSkin" styleClass="buttonSkin" stylesheets="@../board.css" textFill="#dff6f5" />
-            <Pane fx:id="skinPane" layoutX="87.0" layoutY="188.0" prefHeight="343.0" prefWidth="618.0" styleClass="mainBackground" stylesheets="@../skinSettings.css" visible="false">
-               <children>
-                  <Button focusTraversable="false" layoutX="264.0" layoutY="285.0" mnemonicParsing="false" onAction="#hideSkin" prefHeight="33.0" prefWidth="110.0" styleClass="skinButton" stylesheets="@../skinSettings.css" text="Save and Exit" />
-                  <Label layoutX="236.0" layoutY="32.0" styleClass="mainTitle" stylesheets="@../skinSettings.css" text="Choose Your Skin" textFill="WHITE">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="56.0" layoutY="91.0" styleClass="subTitle" stylesheets="@../skinSettings.css" text="NOMAD" textFill="WHITE" />
-                  <Label layoutX="291.0" layoutY="91.0" styleClass="subTitle" stylesheets="@../skinSettings.css" text="NORDIC" textFill="WHITE" />
-                  <Label layoutX="498.0" layoutY="91.0" styleClass="subTitle" stylesheets="@../skinSettings.css" text="DESERT" textFill="WHITE" />
-                  <ImageView fx:id="N8B" fitHeight="50.0" fitWidth="52.0" layoutX="28.0" layoutY="120.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../view/textures/medieval/skins/nomadHelms/N8/N8-B.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="N9B" fitHeight="50.0" fitWidth="52.0" layoutX="101.0" layoutY="120.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../view/textures/medieval/skins/nomadHelms/N9/N9-B.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="N11B" fitHeight="50.0" fitWidth="52.0" layoutX="28.0" layoutY="184.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../view/textures/medieval/skins/nomadHelms/N11/N11-B.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="N12B" fitHeight="50.0" fitWidth="52.0" layoutX="101.0" layoutY="184.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../view/textures/medieval/skins/nomadHelms/N12/N12-B.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="NOR2B" fitHeight="50.0" fitWidth="52.0" layoutX="255.0" layoutY="120.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../view/textures/medieval/skins/nordicHelms/NOR2/Nor2-B.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="NOR5B" fitHeight="50.0" fitWidth="52.0" layoutX="333.0" layoutY="120.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../view/textures/medieval/skins/nordicHelms/NOR5/Nor5-B.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="NOR6B" fitHeight="50.0" fitWidth="52.0" layoutX="255.0" layoutY="184.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../view/textures/medieval/skins/nordicHelms/NOR6/Nor6-B.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="NOR9B" fitHeight="50.0" fitWidth="52.0" layoutX="333.0" layoutY="184.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../view/textures/medieval/skins/nordicHelms/NOR9/Nor9-B.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="D3B" fitHeight="50.0" fitWidth="52.0" layoutX="468.0" layoutY="120.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../view/textures/medieval/skins/desertHelms/D3/D3-B.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="D2B" fitHeight="50.0" fitWidth="52.0" layoutX="538.0" layoutY="120.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../view/textures/medieval/skins/desertHelms/D2/D2-B.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="D4B" fitHeight="50.0" fitWidth="52.0" layoutX="468.0" layoutY="184.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../view/textures/medieval/skins/desertHelms/D4/D4-B.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="D10B" fitHeight="50.0" fitWidth="52.0" layoutX="538.0" layoutY="184.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../view/textures/medieval/skins/desertHelms/D10/D10-B.png" />
-                     </image>
-                  </ImageView>
-               </children>
-            </Pane>
+                <Button focusTraversable="false" layoutX="756.0" layoutY="9.0" mnemonicParsing="false" onAction="#returnMainMenu" styleClass="buttonHome" stylesheets="@Sheets/board.css" textFill="#dff6f5" />
+                <Circle fx:id="CPU1Circle" layoutX="40.0" layoutY="476.0" radius="22.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="2.0"/>
+                <ImageView fitHeight="44.0" fitWidth="32.0" layoutX="24.0" layoutY="457.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../view/textures/Medieval/N9-B.png" />
+                    </image>
+                </ImageView>
+                <Circle fx:id="CPU2Circle" layoutX="308.0" layoutY="36.0" radius="22.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="2.0"/>
+                <ImageView fx:id="firePitLastCard" fitHeight="90.0" fitWidth="74.0" layoutX="367.0" layoutY="344.0" pickOnBounds="true" preserveRatio="true" />
+                <ImageView fitHeight="44.0" fitWidth="32.0" layoutX="291.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../view/textures/Medieval/Nor9-B.png" />
+                    </image>
+                </ImageView>
+                <Circle fx:id="CPU3Circle"  layoutX="767.0" layoutY="475.0" radius="22.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="2.0" />
+                <ImageView fitHeight="44.0" fitWidth="32.0" layoutX="751.0" layoutY="459.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../view/textures/Medieval/G12-B.png" />
+                    </image>
+                </ImageView>
+                <Button fx:id="skinButton" layoutX="723.0" layoutY="9.0" mnemonicParsing="false" onAction="#chooseSkin" styleClass="buttonSkin" stylesheets="@Sheets/board.css" textFill="#dff6f5" />
+                <Pane fx:id="skinPane" layoutX="87.0" layoutY="188.0" prefHeight="343.0" prefWidth="618.0" styleClass="mainBackground" stylesheets="@Sheets/skinSettings.css" visible="false">
+                    <children>
+                        <Button focusTraversable="false" layoutX="264.0" layoutY="285.0" mnemonicParsing="false" onAction="#hideSkin" prefHeight="33.0" prefWidth="110.0" styleClass="skinButton" stylesheets="@Sheets/skinSettings.css" text="Save and Exit" />
+                        <Label layoutX="236.0" layoutY="32.0" styleClass="mainTitle" stylesheets="@Sheets/skinSettings.css" text="Choose Your Skin" textFill="WHITE">
+                            <font>
+                                <Font size="20.0" />
+                            </font>
+                        </Label>
+                        <Label layoutX="56.0" layoutY="91.0" styleClass="subTitle" stylesheets="@Sheets/skinSettings.css" text="NOMAD" textFill="WHITE" />
+                        <Label layoutX="291.0" layoutY="91.0" styleClass="subTitle" stylesheets="@Sheets/skinSettings.css" text="NORDIC" textFill="WHITE" />
+                        <Label layoutX="498.0" layoutY="91.0" styleClass="subTitle" stylesheets="@Sheets/skinSettings.css" text="DESERT" textFill="WHITE" />
+                        <ImageView fx:id="N8B" fitHeight="50.0" fitWidth="52.0" layoutX="28.0" layoutY="120.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../../view/textures/Medieval/skins/nomadHelms/N8/N8-B.png" />
+                            </image>
+                        </ImageView>
+                        <ImageView fx:id="N9B" fitHeight="50.0" fitWidth="52.0" layoutX="101.0" layoutY="120.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../../view/textures/Medieval/skins/nomadHelms/N9/N9-B.png" />
+                            </image>
+                        </ImageView>
+                        <ImageView fx:id="N11B" fitHeight="50.0" fitWidth="52.0" layoutX="28.0" layoutY="184.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../../view/textures/Medieval/skins/nomadHelms/N11/N11-B.png" />
+                            </image>
+                        </ImageView>
+                        <ImageView fx:id="N12B" fitHeight="50.0" fitWidth="52.0" layoutX="101.0" layoutY="184.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../../view/textures/Medieval/skins/nomadHelms/N12/N12-B.png" />
+                            </image>
+                        </ImageView>
+                        <ImageView fx:id="NOR2B" fitHeight="50.0" fitWidth="52.0" layoutX="255.0" layoutY="120.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../../view/textures/Medieval/skins/nordicHelms/NOR2/Nor2-B.png" />
+                            </image>
+                        </ImageView>
+                        <ImageView fx:id="NOR5B" fitHeight="50.0" fitWidth="52.0" layoutX="333.0" layoutY="120.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../../view/textures/Medieval/skins/nordicHelms/NOR5/Nor5-B.png" />
+                            </image>
+                        </ImageView>
+                        <ImageView fx:id="NOR6B" fitHeight="50.0" fitWidth="52.0" layoutX="255.0" layoutY="184.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../../view/textures/Medieval/skins/nordicHelms/NOR6/Nor6-B.png" />
+                            </image>
+                        </ImageView>
+                        <ImageView fx:id="NOR9B" fitHeight="50.0" fitWidth="52.0" layoutX="333.0" layoutY="184.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../../view/textures/Medieval/skins/nordicHelms/NOR9/Nor9-B.png" />
+                            </image>
+                        </ImageView>
+                        <ImageView fx:id="D3B" fitHeight="50.0" fitWidth="52.0" layoutX="468.0" layoutY="120.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../../view/textures/Medieval/skins/desertHelms/D3/D3-B.png" />
+                            </image>
+                        </ImageView>
+                        <ImageView fx:id="D2B" fitHeight="50.0" fitWidth="52.0" layoutX="538.0" layoutY="120.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../../view/textures/Medieval/skins/desertHelms/D2/D2-B.png" />
+                            </image>
+                        </ImageView>
+                        <ImageView fx:id="D4B" fitHeight="50.0" fitWidth="52.0" layoutX="468.0" layoutY="184.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../../view/textures/Medieval/skins/desertHelms/D4/D4-B.png" />
+                            </image>
+                        </ImageView>
+                        <ImageView fx:id="D10B" fitHeight="50.0" fitWidth="52.0" layoutX="538.0" layoutY="184.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../../view/textures/Medieval/skins/desertHelms/D10/D10-B.png" />
+                            </image>
+                        </ImageView>
+                    </children>
+                </Pane>
             </children>
         </AnchorPane>
         <AnchorPane prefHeight="188.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="612.0">
             <children>
-                <TextArea fx:id="cardDescription" editable="false" focusTraversable="false" layoutX="508.0" layoutY="81.0" prefHeight="64.0" prefWidth="266.0" promptText="Card Name" text="Select Card" wrapText="true">
-               <styleClass>
-                  <String fx:value="text-area" />
-                  <String fx:value="text-area" />
-               </styleClass></TextArea>
+                <TextArea fx:id="cardDescriptionOld" editable="false" focusTraversable="false" layoutX="508.0" layoutY="81.0" prefHeight="64.0" prefWidth="266.0" promptText="Card Name" text="Select Card" wrapText="true">
+                    <styleClass>
+                        <String fx:value="text-area" />
+                        <String fx:value="text-area" />
+                    </styleClass></TextArea>
                 <HBox fx:id="playerCardsRow" alignment="BOTTOM_CENTER" layoutY="31.0" prefHeight="103.0" prefWidth="322.0" spacing="10.0" AnchorPane.bottomAnchor="33.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="478.4" AnchorPane.topAnchor="31.0" />
                 <HBox fx:id="PlayerHomeZone" layoutX="355.0" layoutY="81.0" prefHeight="26.0" prefWidth="90.0" AnchorPane.bottomAnchor="80.6" AnchorPane.leftAnchor="355.0" AnchorPane.rightAnchor="355.4" AnchorPane.topAnchor="81.0">
                     <children>
@@ -303,17 +303,17 @@
                     </children>
                 </HBox>
 
-                      <Label fx:id="playerLabel" alignment="CENTER" layoutX="355.0" layoutY="151.2" prefHeight="26.0" prefWidth="74.0" text="Player" AnchorPane.bottomAnchor="11.0" AnchorPane.leftAnchor="355.0" AnchorPane.rightAnchor="371.0" AnchorPane.topAnchor="151.0">
+                <Label fx:id="playerLabel" alignment="CENTER" layoutX="355.0" layoutY="151.2" prefHeight="26.0" prefWidth="74.0" text="Player" AnchorPane.bottomAnchor="11.0" AnchorPane.leftAnchor="355.0" AnchorPane.rightAnchor="371.0" AnchorPane.topAnchor="151.0">
                     <font>
                         <Font name="System Bold" size="22.0" />
                     </font>
                 </Label>
-            <Circle fx:id="playerCircle" layoutX="392.0" layoutY="129.0" radius="22.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="2.0"  />
-            <ImageView fx:id="playerSkin" fitHeight="44.0" fitWidth="32.0" layoutX="376.0" layoutY="111.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../view/textures/medieval/skins/nordicHelms/NOR12/Nor12-B.png" />
-               </image>
-            </ImageView>
+                <Circle fx:id="playerCircle" layoutX="392.0" layoutY="129.0" radius="22.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="2.0"  />
+                <ImageView fx:id="playerSkin" fitHeight="44.0" fitWidth="32.0" layoutX="376.0" layoutY="111.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../view/textures/Medieval/skins/nordicHelms/NOR12/Nor12-B.png" />
+                    </image>
+                </ImageView>
             </children>
         </AnchorPane>
     </children>

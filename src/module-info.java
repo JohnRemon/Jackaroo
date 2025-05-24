@@ -7,5 +7,4 @@ module Jackaroo {
 
     opens application;
     opens application.boardView;
-    opens application.external;
 }

@@ -1,23 +1,14 @@
 package application.boardView;
 
-import engine.Game;
 import exception.GameException;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.List;
-import java.util.ResourceBundle;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
+
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DialogPane;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class BoardViewOnePiece extends BoardView {
@@ -34,7 +25,7 @@ public class BoardViewOnePiece extends BoardView {
 //        alert.setContentText(message);
 //        // Load One Piece-themed CSS for the alert
 //        alert.getDialogPane().getStylesheets().add(
-//                getClass().getResource("/application/OnePieceAlert.css").toExternalForm()
+//                getClass().getResource("/application/BoardViewOnePiece.css").toExternalForm()
 //        );
 //        alert.getDialogPane().getStyleClass().add("one-piece-alert");
 //        alert.show(); // Use show() as in base method to avoid IllegalStateException
@@ -49,7 +40,7 @@ public class BoardViewOnePiece extends BoardView {
         alert.setGraphic(null);
         alert.setContentText(message);
 
-        alert.getDialogPane().getStylesheets().add(getClass().getResource("/application/boardView/OnePieceAlert.css").toExternalForm());
+        alert.getDialogPane().getStylesheets().add(getClass().getResource("/application/boardView/Sheets/BoardViewOnePiece.css").toExternalForm());
         alert.getDialogPane().getStyleClass().add("one-piece-alert");
 
         alert.getButtonTypes().set(0, new ButtonType("Aye Aye!", ButtonBar.ButtonData.LEFT));
@@ -78,10 +69,10 @@ public class BoardViewOnePiece extends BoardView {
         pane.setMinWidth(500);
 
         // Apply One Piece CSS
-        pane.getStylesheets().add(getClass().getResource("/application/boardView/OnePieceAlert.css").toExternalForm());
+        pane.getStylesheets().add(getClass().getResource("/application/boardView/Sheets/BoardViewOnePiece.css").toExternalForm());
         pane.getStyleClass().add("one-piece-alert");
 
-        ImageView winnerImage = new ImageView(getClass().getResource("/application/boardView/win.jpg").toExternalForm());
+        ImageView winnerImage = new ImageView(getClass().getResource("/view/textures/win.jpg").toExternalForm());
 
         // Customize the button
         alert.getButtonTypes().set(0, new ButtonType("Celebrate!", ButtonBar.ButtonData.LEFT));

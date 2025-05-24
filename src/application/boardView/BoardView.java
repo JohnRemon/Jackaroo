@@ -56,7 +56,8 @@ public abstract class BoardView {
     @FXML public Label CPU3RemainingCards;
     ArrayList<Label> CPUCounter = new ArrayList<>();
     @FXML public HBox playerCardsRow;
-    @FXML public TextArea cardDescription;
+    @FXML public Label cardDescription;
+    @FXML public TextArea cardDescriptionOld;
     @FXML public Button returnMainMenu;
     private GameController gameController;
     @FXML public Label playerTurnNow;
@@ -126,7 +127,7 @@ public abstract class BoardView {
         boardRoot.requestFocus();
         controller.testTrack(game);
         stage.show();
-        gameScene.getStylesheets().add(BoardViewAlien.class.getResource("BoardViewAlien.css").toExternalForm());
+
 
 
 
@@ -148,7 +149,10 @@ public abstract class BoardView {
             if (playerCardsImages.get(index).getFitHeight() == 100)
             {
                 playerCardsImages.get(index).setFitHeight(90);
+                if (settings.getTheme().equals("Alien"))
                 cardDescription.setText(null);
+                else
+                    cardDescriptionOld.setText(null);
 
                 playerCardsImages.get(index).setEffect(null);
                 if (game.getCurrentPlayerIndex() != 0)
@@ -156,9 +160,14 @@ public abstract class BoardView {
                 return;
             }
             player.selectCard(select);
-            cardDescription.setText(select.getDescription());
-
-
+            if (settings.getTheme().equals("Alien"))
+            {
+                cardDescription.setText(select.getDescription());
+                cardDescription.getStyleClass().remove("error");
+                cardDescription.getStyleClass().add("info");
+            }
+            else
+                cardDescriptionOld.setText(select.getDescription());
 
             for (int i = 0; i < playerCardsImages.size(); i++) {
                 ImageView iv = playerCardsImages.get(i);
@@ -186,7 +195,7 @@ public abstract class BoardView {
                 greyOutCards(playerCardsImages, false);
             }
         } catch (InvalidCardException | IndexOutOfBoundsException e) {
-            // TODO: add user feedback here
+            playSound("error.mp3");
         }
 
         playSound("click.mp3");
@@ -288,6 +297,8 @@ public abstract class BoardView {
         for (int i = 0; i < playerCards.size(); i++) {
             Card card = playerCards.get(i);
             String imageLocation = "/view/textures/cards/" + card.getFileName();
+            if (card.getFileName().equals("saver.png") || card.getFileName().equals("burner.png"))
+                imageLocation = "/view/textures/" + settings.getTheme() + "/" + card.getFileName();
             InputStream stream = getClass().getResourceAsStream(imageLocation);
             Image texture = (stream != null) ? new Image(stream) : null;
 
@@ -313,12 +324,10 @@ public abstract class BoardView {
             double mouseX = event.getX();
             for (int i = 0; i < playerCardsImages.size(); i++) {
                 ImageView card = playerCardsImages.get(i);
-                //double cardCenterX = card.getLayoutX() + (card.getBoundsInParent().getWidth() / 2);
                 double cardCenterX = card.localToScene(card.getBoundsInLocal()).getMinX() + card.getBoundsInLocal().getWidth() / 2;
 
                 double distance = Math.abs(mouseX - cardCenterX);
 
-                // Map distance to scale (closer = bigger)
                 double scale = closerBigger(1.0 + (150 - distance) / 300, 1.0, 1.2);
                 double rotate = closerBigger((cardCenterX-mouseX) / 30, -10, 2);
                 double offset = closerBigger((150 - distance) / 5, 0, 20);
@@ -451,11 +460,19 @@ public abstract class BoardView {
 
     public void showException(String message){
         playSound("error.mp3");
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Invalid Action");
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.show(); //showAndWait() throws an IllegalStateException if stepped on trap
+        if (settings.getTheme().equals("Alien"))
+        {
+            System.out.println(message);
+            cardDescription.getStyleClass().setAll("error");
+          //  cardDescription.getStyleClass().add("error");
+            cardDescription.setText("Invalid Action!" + "\n" + message);
+        }else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Invalid Action");
+            alert.setHeaderText(null);
+            alert.setContentText(message);
+            alert.show(); //showAndWait() throws an IllegalStateException if stepped on trap
+        }
     }
 
     public void updateMarbles(Board.MarblePosition newPosition, MarbleMapping mp) {
@@ -706,6 +723,10 @@ public abstract class BoardView {
             colorAdjust.setBrightness(-0.7);
             for (ImageView card : cards) {
                 card.setEffect(colorAdjust);
+            }
+            if (settings.getTheme().equals("Alien")){
+                cardDescription.setText(null);
+                cardDescription.getStyleClass().setAll("card-description");
             }
         }
     }

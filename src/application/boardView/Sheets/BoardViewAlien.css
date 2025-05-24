@@ -41,3 +41,37 @@
     -fx-font-weight: bold;
     -fx-effect: dropshadow(gaussian, rgba(255,255,255,0.25), 8, 0.3, 0, 0); /* subtle white glow */
 }
+/* Base style for the message box */
+#cardDescription {
+    -fx-min-height: 40px;
+    -fx-padding: 5 10;
+    -fx-background-color: rgba(30, 30, 30, 0.85);
+    -fx-border-color: #555;
+    -fx-border-width: 1;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-family: "Segoe UI", "Orbitron", sans-serif;
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+    -fx-wrap-text: true;
+}
+
+.success {
+    -fx-text-fill: #00ff88;
+    -fx-border-color: #00ff88;
+    -fx-effect: dropshadow(gaussian, #00ff88, 10, 0.5, 0, 0);
+}
+
+.error {
+    -fx-text-fill: #ff4040;
+    -fx-border-color: #ff4040;
+    -fx-effect: dropshadow(gaussian, #ff4040, 10, 0.5, 0, 0);
+}
+
+.info {
+    -fx-text-fill: #00ccff;
+    -fx-border-color: #00ccff;
+    -fx-effect: dropshadow(gaussian, #00ccff, 10, 0.5, 0, 0);
+}

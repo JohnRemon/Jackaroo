@@ -1,5 +1,5 @@
 .mainBackground {
-    -fx-background-image: url("green.jpg");
+    -fx-background-image: url("../view/textures/green.jpg");
     -fx-background-size: cover;
     -fx-background-position: center;
     -fx-background-repeat: no-repeat;

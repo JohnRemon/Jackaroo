@@ -1,6 +1,6 @@
 .buttonHome{
     -fx-background-color: transparent;
-    -fx-background-image: url("home.png");
+    -fx-background-image: url("../../../view/textures/home.png");
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
     -fx-background-size: 100% 100%;
@@ -9,7 +9,7 @@
 }
 .buttonSkin{
     -fx-background-color: transparent;
-    -fx-background-image: url("skinButton.png");
+    -fx-background-image: url("../../../view/textures/skinButton.png");
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
     -fx-background-size: 100% 100%;
@@ -24,7 +24,16 @@
     -fx-background-radius: 0;
     -fx-border-color: transparent;
     -fx-text-fill: black;
-    -fx-background-image: url("UI_Flat_Banner02a.png");
+    -fx-background-image: url("../../../view/textures/UI_Flat_Banner02a.png");
     -fx-font-size: 14px;
     -fx-font-family: "Calibri Light";
+}
+
+.track-cell {
+    -fx-background-color: linear-gradient(#c1b29c, #9e8b6c); /* light stone to earthy tone */
+    -fx-border-color: #6a5a3a;
+    -fx-border-width: 1px;
+    -fx-border-radius: 3px;
+    -fx-background-radius: 3px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 2, 0.5, 0, 1);
 }

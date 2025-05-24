@@ -1,7 +1,6 @@
 package application;
 
 import application.boardView.BoardViewAlien;
-import application.boardView.BoardViewDefault;
 import application.boardView.BoardViewMedieval;
 import application.boardView.BoardViewOnePiece;
 import exception.GameException;
@@ -42,7 +41,9 @@ public class MainMenuController extends Application {
     public VBox selectMarbleHBox;
     @FXML
     public VBox turnHBox;
+    public Button closeCreditsButton;
     @FXML Pane keyBindsMenu;
+    @FXML Pane creditPane;
     public static ArrayList<Button> selectButtons = new ArrayList<>();
     public static ArrayList<Button> selectMarbleButtons = new ArrayList<>();
     public static ArrayList<Button> turnButtons = new ArrayList<>();
@@ -62,7 +63,7 @@ public class MainMenuController extends Application {
     public void openSettings(ActionEvent actionEvent) throws IOException {
         playSound("menuClick.mp3");
         themeChosen.getItems().clear();
-        themeChosen.getItems().addAll("Default", "Alien", "Medieval", "OnePiece");
+        themeChosen.getItems().addAll( "Alien", "Medieval", "OnePiece");
         themeChosen.setValue(userSettings.getTheme());
         settingsPane.setVisible(true);
     }
@@ -82,8 +83,6 @@ public class MainMenuController extends Application {
             case "Medieval": BoardViewMedieval.setBoardPaneMedieval(nameLabel.getText());
             break;
             case "OnePiece": BoardViewOnePiece.setBoardPaneOnePiece(nameLabel.getText());
-            break;
-            default: BoardViewDefault.setBoardPaneDefault(nameLabel.getText());
             break;
         }
 
@@ -119,7 +118,7 @@ public class MainMenuController extends Application {
         sfxSlider.setValue(temp.getSfx());
         musicSlider.setValue(temp.getMusic());
         themeChosen.getItems().clear();
-        themeChosen.getItems().addAll("Default", "Alien", "Medieval", "OnePiece");
+        themeChosen.getItems().addAll("Alien", "Medieval", "OnePiece");
         themeChosen.setValue(temp.getTheme());
         setBindNames();
     }
@@ -211,4 +210,13 @@ public class MainMenuController extends Application {
     public void hideKeyBindsMenu(MouseEvent mouseEvent) {
             keyBindsMenu.setVisible(false);
     }
+
+    public void openCredits(ActionEvent actionEvent) {
+        creditPane.setVisible(true);
+    }
+
+    public void closeCredits(ActionEvent actionEvent) {
+        creditPane.setVisible(false);
+    }
+
 }
