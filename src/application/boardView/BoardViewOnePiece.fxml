@@ -1,72 +1,188 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="800.0" stylesheets="@BoardViewOnePiece.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.boardView.BoardViewOnePiece">
    <children>
-      <ImageView fitHeight="800.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="boardImage" fitHeight="800.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../view/textures/OnePiece/GrandLine2.png" />
          </image></ImageView>
-      <AnchorPane prefHeight="800.0" prefWidth="800.0">
+      <AnchorPane fx:id="rootPane1" prefHeight="800.0" prefWidth="800.0">
          <children>
-            <HBox fx:id="PlayerCards" layoutX="219.0" layoutY="674.0" prefHeight="126.0" prefWidth="289.0">
+            <HBox fx:id="playerCardsRow" layoutX="19.0" layoutY="673.0" prefHeight="126.0" prefWidth="301.0" />
+            <Button layoutX="719.0" mnemonicParsing="false" onAction="#returnMainMenu" prefHeight="41.0" prefWidth="80.0" styleClass="main-menu-button" text="Menu" />
+            <TextArea fx:id="cardDescription" editable="false" layoutX="499.0" layoutY="723.0" prefHeight="73.0" prefWidth="301.0" styleClass="card-description-box " text="Placeholder description of card" wrapText="true" />
+            <HBox fx:id="PlayerHomeZone" layoutX="344.0" layoutY="746.0" prefHeight="26.0" prefWidth="100.0">
                <children>
-                  <ImageView fitHeight="123.0" fitWidth="91.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fitHeight="123.0" fitWidth="91.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fitHeight="123.0" fitWidth="91.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fitHeight="123.0" fitWidth="91.0" pickOnBounds="true" preserveRatio="true" />
+                  <Circle fx:id="PlayerMarbleOne" fill="#6a0dad" onMouseClicked="#selectMarble" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
+                  <Circle fx:id="PlayerMarbleTwo" fill="#6a0dad" onMouseClicked="#selectMarble" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
+                  <Circle fx:id="PlayerMarbleThree" fill="#6a0dad" onMouseClicked="#selectMarble" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
+                  <Circle fx:id="PlayerMarbleFour" fill="#6a0dad" onMouseClicked="#selectMarble" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
                </children>
             </HBox>
-            <VBox fx:id="KaidoCards" layoutX="668.0" layoutY="214.0" prefHeight="200.0" prefWidth="132.0">
+            <HBox fx:id="CPU2HomeZone" layoutX="344.0" layoutY="31.0" prefHeight="24.0" prefWidth="102.0">
                <children>
-                  <ImageView fitHeight="93.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fitHeight="93.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fitHeight="93.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fitHeight="93.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true" />
-               </children>
-            </VBox>
-            <HBox fx:id="LawCards" layoutX="219.0" prefHeight="126.0" prefWidth="289.0">
-               <children>
-                  <ImageView fitHeight="123.0" fitWidth="91.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fitHeight="123.0" fitWidth="91.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fitHeight="123.0" fitWidth="91.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fitHeight="123.0" fitWidth="91.0" pickOnBounds="true" preserveRatio="true" />
+                  <Circle fx:id="CPU2MarbleOne" fill="#ff4d4d" onMouseClicked="#selectMarble" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
+                  <Circle fx:id="CPU2MarbleTwo" fill="#ff4d4d" onMouseClicked="#selectMarble" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
+                  <Circle fx:id="CPU2MarbleThree" fill="#ff4d4d" onMouseClicked="#selectMarble" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
+                  <Circle fx:id="CPU2MarbleFour" fill="#ff4d4d" onMouseClicked="#selectMarble" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
                </children>
             </HBox>
-            <VBox fx:id="KidCards" layoutY="214.0" prefHeight="200.0" prefWidth="132.0">
+            <HBox fx:id="CPU1HomeZone" layoutX="-8.0" layoutY="419.0" prefHeight="31.0" prefWidth="102.0" rotate="90">
                <children>
-                  <ImageView fitHeight="93.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fitHeight="93.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fitHeight="93.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fitHeight="93.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true" />
+                  <Circle fx:id="CPU1MarbleOne" fill="#7d7d7d" onMouseClicked="#selectMarble" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
+                  <Circle fx:id="CPU1MarbleTwo" fill="#7d7d7d" onMouseClicked="#selectMarble" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
+                  <Circle fx:id="CPU1MarbleThree" fill="#7d7d7d" onMouseClicked="#selectMarble" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
+                  <Circle fx:id="CPU1MarbleFour" fill="#7d7d7d" onMouseClicked="#selectMarble" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
                </children>
-            </VBox>
-            <Button layoutX="738.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="61.0" text="Menu" />
-            <TextArea layoutX="596.0" layoutY="727.0" prefHeight="72.0" prefWidth="203.0" text="Card Description" />
-            <Circle fill="#ff4d4d" layoutX="103.0" layoutY="144.0" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
-            <Circle fill="#ff4d4d" layoutX="132.0" layoutY="144.0" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
-            <Circle fill="#ff4d4d" layoutX="132.0" layoutY="168.0" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
-            <Circle fill="#ff4d4d" layoutX="103.0" layoutY="168.0" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
-            <Circle fill="DODGERBLUE" layoutX="631.0" layoutY="156.0" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
-            <Circle fill="DODGERBLUE" layoutX="660.0" layoutY="156.0" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
-            <Circle fill="DODGERBLUE" layoutX="660.0" layoutY="180.0" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
-            <Circle fill="DODGERBLUE" layoutX="631.0" layoutY="180.0" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
-            <Circle fill="#6a0dad" layoutX="628.0" layoutY="626.0" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
-            <Circle fill="#6a0dad" layoutX="657.0" layoutY="626.0" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
-            <Circle fill="#6a0dad" layoutX="657.0" layoutY="650.0" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
-            <Circle fill="#6a0dad" layoutX="628.0" layoutY="650.0" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
-            <Circle fill="#7d7d7d" layoutX="89.0" layoutY="626.0" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
-            <Circle fill="#7d7d7d" layoutX="118.0" layoutY="626.0" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
-            <Circle fill="#7d7d7d" layoutX="118.0" layoutY="650.0" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
-            <Circle fill="#7d7d7d" layoutX="89.0" layoutY="650.0" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
+            </HBox>
+            <HBox fx:id="CPU3HomeZone" layoutX="695.0" layoutY="420.0" prefHeight="31.0" prefWidth="102.0" rotate="90">
+               <children>
+                  <Circle fx:id="CPU3MarbleOne" fill="DODGERBLUE" onMouseClicked="#selectMarble" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
+                  <Circle fx:id="CPU3MarbleTwo" fill="DODGERBLUE" onMouseClicked="#selectMarble" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
+                  <Circle fx:id="CPU3MarbleThree" fill="DODGERBLUE" onMouseClicked="#selectMarble" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
+                  <Circle fx:id="CPU3MarbleFour" fill="DODGERBLUE" onMouseClicked="#selectMarble" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
+               </children>
+            </HBox>
+            <Label fx:id="CPU2Label" layoutX="375.0" layoutY="-1.0" styleClass="label-body" text="Kid" />
+            <Label fx:id="CPU1Label" layoutX="-5.0" layoutY="424.0" rotate="-90" styleClass="label-body" text="Law" />
+            <Label fx:id="playerLabel" layoutX="371.0" layoutY="775.0" styleClass="label-body" text="player" />
+            <Label fx:id="CPU3Label" layoutX="754.0" layoutY="423.0" rotate="90" styleClass="label-body" text="Kaido" />
+
+            <GridPane fx:id="gridInshallah" layoutX="91.0" layoutY="135.0" prefHeight="574.0" prefWidth="639.0">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+            </GridPane>
+
+            <GridPane fx:id="PlayerSafeZone" layoutX="374.0" layoutY="513.0" prefHeight="116.0" prefWidth="26.0" styleClass="safe-zone-onePiece">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+            </GridPane>
+            <GridPane fx:id="CPU3SafeZone" layoutX="517.0" layoutY="379.0" prefHeight="116.0" prefWidth="30.0" rotate="270.0" styleClass="safe-zone-onePiece">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+            </GridPane>
+            <GridPane fx:id="CPU1SafeZone" layoutX="217.0" layoutY="382.0" prefHeight="116.0" prefWidth="30.0" rotate="270.0" styleClass="safe-zone-onePiece">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+            </GridPane>
+            <GridPane fx:id="CPU2SafeZone" layoutX="376.0" layoutY="237.0" prefHeight="116.0" prefWidth="26.0" styleClass="safe-zone-onePiece">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+            </GridPane>
+            <ImageView fx:id="firePitLastCard" fitHeight="116.0" fitWidth="100.0" layoutX="338.0" layoutY="372.0" pickOnBounds="true" preserveRatio="true" />
+            <Label fx:id="CPU1RemainingCards" layoutX="72.0" layoutY="421.0" rotate="90" styleClass="label-count" text="4" />
+            <Label fx:id="CPU3RemainingCards" layoutX="716.0" layoutY="423.0" rotate=" -90" styleClass="label-count" text="4" />
+            <Label fx:id="CPU2RemainingCards" layoutX="389.0" layoutY="55.0" styleClass="label-count" text="4" />
+
+            <Label fx:id="CurrentPlayerLabel" styleClass="current-player-label" text="Current Player: ">
+               <font>
+                  <Font name="Impact" size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="NextPlayerLabel" layoutX="6.0" layoutY="32.0" styleClass="next-player-label" text="Next Player: ">
+               <font>
+                  <Font name="Impact" size="18.0" />
+               </font>
+            </Label>
          </children></AnchorPane>
-   </children>
+       </children>
 </AnchorPane>

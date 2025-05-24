@@ -9,8 +9,6 @@ import engine.board.Board;
 import exception.GameException;
 import exception.InvalidCardException;
 import exception.InvalidMarbleException;
-import javafx.animation.PauseTransition;
-import javafx.animation.SequentialTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Bounds;
@@ -18,7 +16,9 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Effect;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -30,7 +30,6 @@ import javafx.scene.paint.*;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import model.card.Card;
@@ -38,13 +37,9 @@ import model.player.CPU;
 import model.player.Marble;
 import model.player.Player;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-
-import javafx.scene.media.AudioClip;
 
 public abstract class BoardView {
 
@@ -55,13 +50,16 @@ public abstract class BoardView {
     @FXML public Label CPU1Label;
     @FXML public Label CPU2Label;
     @FXML public Label CPU3Label;
+    ArrayList<Label> playerLabels = new ArrayList<>();
     @FXML public Label CPU1RemainingCards;
     @FXML public Label CPU2RemainingCards;
     @FXML public Label CPU3RemainingCards;
+    ArrayList<Label> CPUCounter = new ArrayList<>();
     @FXML public HBox playerCardsRow;
     @FXML public TextArea cardDescription;
     @FXML public Button returnMainMenu;
     private GameController gameController;
+    @FXML public Label playerTurnNow;
 
     private ArrayList<MarbleMapping> P1MarbleMappings = new ArrayList<>();
     @FXML private Circle PlayerMarbleOne;
@@ -100,9 +98,12 @@ public abstract class BoardView {
     private ArrayList<GridPane> safeZones = new ArrayList<>();
     private Board board;
     public static boolean trapped = false;
+    public static UserSettings settings = new UserSettings();
 
-    @FXML private Label CurrentPlayerLabel;
-    @FXML private Label NextPlayerLabel;
+    @FXML
+    Label CurrentPlayerLabel;
+    @FXML
+    Label NextPlayerLabel;
     @FXML private ImageView firePitLastCard;
 
 
@@ -113,6 +114,7 @@ public abstract class BoardView {
         Game game = new Game(username);
         Board board = game.getBoard();
         controller.setBoard(board);
+        settings = settings.LoadSettings();
 
         // Create the Scene and set it to the Stage
         Scene gameScene = new Scene(boardRoot);
@@ -141,10 +143,16 @@ public abstract class BoardView {
         try {
             Player player = game.getPlayers().get(0);
             Card select = player.getHand().get(index);
+
+            //deselect card part
             if (playerCardsImages.get(index).getFitHeight() == 100)
             {
                 playerCardsImages.get(index).setFitHeight(90);
                 cardDescription.setText(null);
+
+                playerCardsImages.get(index).setEffect(null);
+                if (game.getCurrentPlayerIndex() != 0)
+                    greyOutCards(playerCardsImages, false);
                 return;
             }
             player.selectCard(select);
@@ -154,6 +162,7 @@ public abstract class BoardView {
 
             for (int i = 0; i < playerCardsImages.size(); i++) {
                 ImageView iv = playerCardsImages.get(i);
+                Effect originaleffect = iv.getEffect();
                 iv.setEffect(null);
                 iv.setScaleX(1.0);
                 iv.setScaleY(1.0);
@@ -162,13 +171,20 @@ public abstract class BoardView {
                     DropShadow glow = new DropShadow();
                     glow.setColor(Color.LIMEGREEN);
                     glow.setRadius(20);
+
+                    if (originaleffect instanceof ColorAdjust) //stacks the effects of greying out card (if not turn) & the glow
+                        glow.setInput(originaleffect);
+
                     iv.setEffect(glow);
                 }else{
+                    iv.setEffect(null);
                     iv.setFitHeight(90);
                 }
-
             }
-
+            if (game.getCurrentPlayerIndex() != 0)
+            {
+                greyOutCards(playerCardsImages, false);
+            }
         } catch (InvalidCardException | IndexOutOfBoundsException e) {
             // TODO: add user feedback here
         }
@@ -245,6 +261,29 @@ public abstract class BoardView {
         NextPlayerLabel.setText("Next Player: " + game.getPlayers().get(game.getNextPlayerIndex()).getName());
         NextPlayerLabel.setTextFill(game.getPlayers().get(game.getNextPlayerIndex()).getColourFX());
 
+        String theme = settings.getTheme();
+        if (theme.equals("Alien"))
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                playerLabels.get(i).getStyleClass().setAll("player-name");
+                playerLabels.get(i).setText(game.getPlayers().get(i).getName());
+
+
+                if (i != 0 )
+                    CPUCounter.get(i-1).getStyleClass().setAll("player-name");
+            }
+
+            playerLabels.get(game.getCurrentPlayerIndex()).getStyleClass().add("current-turn");
+            playerLabels.get(game.getCurrentPlayerIndex()).setText("► " + game.getPlayers().get(game.getCurrentPlayerIndex()).getName() + " ◄");
+            if (game.getCurrentPlayerIndex() != 0) {
+                CPUCounter.get(game.getCurrentPlayerIndex() - 1).getStyleClass().setAll("current-turn");
+                playerTurnNow.setVisible(false);
+            } else {
+                playerTurnNow.setVisible(true);
+            }
+        }
+
         ArrayList<Card> playerCards = game.getPlayers().get(0).getHand();
         for (int i = 0; i < playerCards.size(); i++) {
             Card card = playerCards.get(i);
@@ -255,6 +294,7 @@ public abstract class BoardView {
             ImageView imageView = new ImageView(texture);
             imageView.setFitHeight(90);
             imageView.setPreserveRatio(true);
+            imageView.setEffect(null);
 
             int index = i; //for the love of everything near and dear bardo, dont remove
             imageView.setOnMouseClicked(event -> selectCard(index, game));
@@ -262,6 +302,9 @@ public abstract class BoardView {
             playerCardsRow.getChildren().add(imageView);
             playerCardsImages.add(imageView);
         }
+        if (game.getCurrentPlayerIndex() == 0) {
+            greyOutCards(playerCardsImages, true);
+        } else greyOutCards(playerCardsImages, false);
 
     }
 
@@ -314,6 +357,8 @@ public abstract class BoardView {
             nameLabels[i].setTextFill(players.get(i).getColourFX());
 
             if (i > 0) countLabels[i].setTextFill(players.get(i).getColourFX());
+
+            playerLabels.add(nameLabels[i]);
         }
 
         // ---Marble Lables---
@@ -357,14 +402,21 @@ public abstract class BoardView {
         CPU1RemainingCards.setText(players.get(1).getHand().size() + "");
         CPU2RemainingCards.setText(players.get(2).getHand().size() + "");
         CPU3RemainingCards.setText(players.get(3).getHand().size() + "");
+        CPUCounter.add(CPU1RemainingCards);
+        CPUCounter.add(CPU2RemainingCards);
+        CPUCounter.add(CPU3RemainingCards);
 
     }
     public void returnMainMenu() throws IOException {
 
         playSound("menuClick.mp3");
+//        BoardViewMedieval.stopMusic();
 
         UserSettings currentSettings = new UserSettings().LoadSettings();
         currentSettings.SaveSettings(currentSettings);
+        UserSettings.KeyBinds keyBinds = new UserSettings.KeyBinds().loadBinds();
+        keyBinds.saveBinds(keyBinds);
+
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/TitleScreen.fxml"));
         Parent root = loader.load();
@@ -381,13 +433,22 @@ public abstract class BoardView {
 
 
 
-    private void testTrack(Game game){
+    private void testTrack(Game game) throws IOException {
         GridLoader.loadGrid();
         ArrayList<int[]> grid = GridLoader.getGrid();
         for (int i = 0; i < grid.size(); i++)
         {
             Circle marble = new Circle();
             marble.setRadius(9);
+
+            settings = settings.LoadSettings();
+
+            String theme = settings.getTheme();
+
+            if (theme.equals("OnePiece")){
+                marble.getStyleClass().add("track-cell-onePiece");
+            }
+
             marble.getStyleClass().add("track-cell");
 
             int[] point = grid.get(i);
@@ -473,6 +534,7 @@ public abstract class BoardView {
                 parent.getChildren().remove(c);
             }
 
+            positionChanged = position != GridPane.getRowIndex(c);
             if (positionChanged)
             {
                 BoardViewAlien.playTeleportEffect(c, gridInshallah);
@@ -522,9 +584,11 @@ public abstract class BoardView {
 
     public static void playSound(String fileName) {
         try {
+            UserSettings userSettings = new UserSettings().LoadSettings();
             String path = "/view/Sounds/" + fileName;
             Media sound = new Media(BoardView.class.getResource(path).toExternalForm());
             MediaPlayer mediaPlayer = new MediaPlayer(sound);
+            mediaPlayer.setVolume(userSettings.getSfx() / 100.0);
             mediaPlayer.play();
         } catch (Exception e) {
             System.out.println("Failed to play sound: " + fileName + " -> " + e.getMessage());
@@ -635,7 +699,35 @@ public abstract class BoardView {
                 new Stop(1, playerColor)
         );
     }
+    void greyOutCards(List<ImageView> cards, boolean isActive) {
+        if (isActive) {
+            for (ImageView card : cards) {
+                card.setEffect(null); // Full color, no grey
+            }
+        } else {
+            DropShadow shadow = new DropShadow();
+            shadow.setRadius(10);
+            shadow.setOffsetX(0);
+            shadow.setOffsetY(0);
+            shadow.setColor(Color.rgb(0, 0, 0, 0.5)); // semi-transparent black
 
+            ColorAdjust colorAdjust = new ColorAdjust();
+            colorAdjust.setSaturation(-0.7);
+            colorAdjust.setBrightness(-0.7);
+            for (ImageView card : cards) {
+                // card.setEffect(shadow);
+                card.setEffect(colorAdjust);
+            }
+        }
+    }
+
+
+
+    public static double getMusicVolume() throws IOException {
+        UserSettings userSettings = new UserSettings().LoadSettings();
+        return userSettings.getMusic() / 100.0;
+
+    }
 
     //---- Old Methods----
 
