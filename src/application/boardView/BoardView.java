@@ -220,6 +220,11 @@ public abstract class BoardView {
             }
         }
 
+
+        growMarbles(circle, currentPlayer, marble);
+    }
+
+    private void growMarbles(Circle circle, Player currentPlayer, Marble marble) {
         boolean isSelected = (Boolean) circle.getProperties().getOrDefault("selected", false);
 
         try {
@@ -238,6 +243,14 @@ public abstract class BoardView {
         } catch (InvalidMarbleException e) {
             showException(e.getMessage());
         }
+    }
+
+    public void selectMarble(int index){
+        Player currentPlayer = gameController.getGame().getPlayers().get(0);
+        Circle c = P1MarbleMappings.get(index).getCircle();
+        Marble m = P1MarbleMappings.get(index).getMarble();
+
+        growMarbles(c, currentPlayer, m);
     }
 
     public void resetAllMarbleSelections() {
@@ -420,18 +433,23 @@ public abstract class BoardView {
 
         playSound("menuClick.mp3");
         BoardViewMedieval.stopMusic();
+        rootPane.getChildren().clear();
+
+
         UserSettings currentSettings = new UserSettings().LoadSettings();
         currentSettings.SaveSettings(currentSettings);
         UserSettings.KeyBinds keyBinds = new UserSettings.KeyBinds().loadBinds();
         keyBinds.saveBinds(keyBinds);
 
-
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/TitleScreen.fxml"));
         Parent root = loader.load();
         MainMenuController controller = loader.getController();
         controller.loadValues();
+
+
         Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("/application/title_screen.css").toExternalForm());
+
 
         Stage stage = (Stage) rootPane.getScene().getWindow();
         stage.setScene(scene);
@@ -491,13 +509,7 @@ public abstract class BoardView {
                     updateTrapFlag();
                     BoardViewAlien.playTeleportEffect(c, gridInshallah);
                     if (!(gameController.getGame().getPlayers().get(gameController.getGame().getCurrentPlayerIndex()) instanceof CPU)) {
-                        javafx.application.Platform.runLater(() -> {
-                            Alert alert = new Alert(Alert.AlertType.ERROR);
-                            alert.setTitle("Trap Activated");
-                            alert.setHeaderText(null);
-                            alert.setContentText("You have been teleported to your Home Zone!");
-                            alert.show();
-                        });
+                        showException("You have fallen for a trap! \nMarble teleported to homezone");
                     }
                 }
 
@@ -574,6 +586,9 @@ public abstract class BoardView {
     public void moveCard(Game game) {
         if(!game.getFirePit().isEmpty() && game.getFirePit().getLast() != null) {
             String imageLocation = "/view/textures/cards/" + game.getFirePit().getLast().getFileName();
+            if (game.getFirePit().getLast().getFileName().equals("burner.png") || game.getFirePit().getLast().getFileName().equals("saver.png")){
+                imageLocation = "/view/textures/" + settings.getTheme() + "/" + game.getFirePit().getLast().getFileName();
+            }
             Image texture = null;
             InputStream stream = getClass().getResourceAsStream(imageLocation);
             if (stream == null) {

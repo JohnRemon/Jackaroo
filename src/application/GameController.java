@@ -101,6 +101,18 @@ public class GameController {
                             }
                         }
                     }
+                    else if (code == keyBinds.marble1) {
+                        boardView.selectMarble(0);
+                    }
+                    else if (code == keyBinds.marble2) {
+                        boardView.selectMarble(1);
+                    }
+                    else if (code == keyBinds.marble4) {
+                        boardView.selectMarble(2);
+                    }
+                    else if (code == keyBinds.marble3) {
+                        boardView.selectMarble(3);
+                    }
                 });
             }else{
                 endTurn();
