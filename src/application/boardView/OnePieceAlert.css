@@ -1,0 +1,58 @@
+.one-piece-alert{
+    -fx-background-image: url("/application/boardView/backgroundAlert.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover;        /* Ensures it fills the area */
+    -fx-background-position: center center;
+
+    -fx-padding: 20;
+}
+
+.one-piece-alert .content {
+    -fx-alignment: center;
+    -fx-padding: 0;
+}
+
+.one-piece-alert .button-bar {
+    -fx-background-color: transparent;
+    -fx-padding: 20 25 10 0;
+    -fx-spacing: 20;
+    -fx-alignment: center;
+}
+
+.one-piece-alert .button-bar .button {
+    -fx-background-color: #d8a550; /* Golden tan — treasure map vibe */
+    -fx-text-fill: #3e250b; /* Deep brown text for contrast */
+    -fx-font-family: "Treasure Map Deadhand", "Impact", "Georgia", serif;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-border-color: #6e4b1f;
+    -fx-border-width: 2px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-padding: 10 24;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 3, 0.3, 1, 1);
+    -fx-letter-spacing: 0.5px;
+}
+
+.one-piece-alert .button-bar .button:hover {
+    -fx-background-color: #f2c200; /* Brighter gold on hover */
+    -fx-border-color: #3a1d00;
+    -fx-text-fill: #1a0a00;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.7), 5, 0.4, 1, 2);
+}
+
+
+.one-piece-alert .content.label {
+    -fx-text-fill: #3a1f0b; /* Dark brown for an old parchment feel */
+    -fx-font-size: 21px; /* Slightly bigger for emphasis */
+    -fx-font-family: "Impact", "Arial Black", Gadget, sans-serif; /* Impact + fallback */
+    -fx-font-weight: 800; /* Extra bold for that comic-style punch */
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+    -fx-padding: 50 50 12 25;
+}
+
+

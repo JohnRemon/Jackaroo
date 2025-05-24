@@ -411,7 +411,6 @@ public abstract class BoardView {
 
         playSound("menuClick.mp3");
         BoardViewMedieval.stopMusic();
-
         UserSettings currentSettings = new UserSettings().LoadSettings();
         currentSettings.SaveSettings(currentSettings);
         UserSettings.KeyBinds keyBinds = new UserSettings.KeyBinds().loadBinds();
@@ -433,7 +432,7 @@ public abstract class BoardView {
 
 
 
-    private void testTrack(Game game){
+    private void testTrack(Game game) throws IOException {
         GridLoader.loadGrid();
         ArrayList<int[]> grid = GridLoader.getGrid();
         for (int i = 0; i < grid.size(); i++)
@@ -706,7 +705,6 @@ public abstract class BoardView {
             colorAdjust.setSaturation(-0.7);
             colorAdjust.setBrightness(-0.7);
             for (ImageView card : cards) {
-               // card.setEffect(shadow);
                 card.setEffect(colorAdjust);
             }
         }

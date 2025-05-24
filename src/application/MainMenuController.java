@@ -3,6 +3,7 @@ package application;
 import application.boardView.BoardViewAlien;
 import application.boardView.BoardViewDefault;
 import application.boardView.BoardViewMedieval;
+import application.boardView.BoardViewOnePiece;
 import exception.GameException;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -61,7 +62,7 @@ public class MainMenuController extends Application {
     public void openSettings(ActionEvent actionEvent) throws IOException {
         playSound("menuClick.mp3");
         themeChosen.getItems().clear();
-        themeChosen.getItems().addAll("Default", "Alien", "Medieval");
+        themeChosen.getItems().addAll("Default", "Alien", "Medieval", "OnePiece");
         themeChosen.setValue(userSettings.getTheme());
         settingsPane.setVisible(true);
     }
@@ -79,6 +80,8 @@ public class MainMenuController extends Application {
             case "Alien": BoardViewAlien.setBoardPaneAlien(nameLabel.getText());
             break;
             case "Medieval": BoardViewMedieval.setBoardPaneMedieval(nameLabel.getText());
+            break;
+            case "OnePiece": BoardViewOnePiece.setBoardPaneOnePiece(nameLabel.getText());
             break;
             default: BoardViewDefault.setBoardPaneDefault(nameLabel.getText());
             break;
@@ -116,7 +119,7 @@ public class MainMenuController extends Application {
         sfxSlider.setValue(temp.getSfx());
         musicSlider.setValue(temp.getMusic());
         themeChosen.getItems().clear();
-        themeChosen.getItems().addAll("Default", "Alien", "Medieval");
+        themeChosen.getItems().addAll("Default", "Alien", "Medieval", "OnePiece");
         themeChosen.setValue(temp.getTheme());
         setBindNames();
     }
