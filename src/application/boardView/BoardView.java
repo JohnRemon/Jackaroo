@@ -410,8 +410,7 @@ public abstract class BoardView {
     public void returnMainMenu() throws IOException {
 
         playSound("menuClick.mp3");
-//        BoardViewMedieval.stopMusic();
-
+        BoardViewMedieval.stopMusic();
         UserSettings currentSettings = new UserSettings().LoadSettings();
         currentSettings.SaveSettings(currentSettings);
         UserSettings.KeyBinds keyBinds = new UserSettings.KeyBinds().loadBinds();
@@ -706,7 +705,6 @@ public abstract class BoardView {
             colorAdjust.setSaturation(-0.7);
             colorAdjust.setBrightness(-0.7);
             for (ImageView card : cards) {
-                // card.setEffect(shadow);
                 card.setEffect(colorAdjust);
             }
         }

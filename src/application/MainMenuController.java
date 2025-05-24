@@ -18,6 +18,8 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import static application.boardView.BoardView.playSound;
+
 
 public class MainMenuController extends Application {
     @FXML
@@ -58,6 +60,7 @@ public class MainMenuController extends Application {
 
     @FXML
     public void openSettings(ActionEvent actionEvent) throws IOException {
+        playSound("menuClick.mp3");
         themeChosen.getItems().clear();
         themeChosen.getItems().addAll("Default", "Alien", "Medieval", "OnePiece");
         themeChosen.setValue(userSettings.getTheme());
@@ -66,7 +69,7 @@ public class MainMenuController extends Application {
     @FXML
     public void openKeyBinds(MouseEvent mouseEvent) throws IOException {
         keyBindsMenu.setVisible(true);
-        System.out.println("shdaksjhd");
+
     }
 
     @FXML
@@ -89,7 +92,7 @@ public class MainMenuController extends Application {
     public void hideSettingsMenu(ActionEvent actionEvent) throws IOException {
         settingsPane.setVisible(false);
         saveSettings();
-
+        playSound("menuClick.mp3");
         UserSettings updatedSettings = new UserSettings().LoadSettings();
         userSettings.setName(updatedSettings.getName());
         userSettings.setSfx((float) updatedSettings.getSfx());
@@ -118,9 +121,18 @@ public class MainMenuController extends Application {
         themeChosen.getItems().clear();
         themeChosen.getItems().addAll("Default", "Alien", "Medieval", "OnePiece");
         themeChosen.setValue(temp.getTheme());
+        setBindNames();
     }
 
     public void initialize() {
+        //clear old stuff
+        selectCardHBox.getChildren().clear();
+        selectMarbleHBox.getChildren().clear();
+        turnHBox.getChildren().clear();
+        selectButtons.clear();
+        selectMarbleButtons.clear();
+        turnButtons.clear();
+
         //places card buttons
         for (int i = 0; i < 4; i++){
             Button card = new Button();
@@ -133,8 +145,8 @@ public class MainMenuController extends Application {
 
                 card.requestFocus();
                 card.setOnKeyPressed(keyEvent -> {
-                  card.setText(keyEvent.getCode().toString());
-                  keyBinds.bindKey(keyEvent, finalI);
+                    card.setText(keyEvent.getCode().toString());
+                    keyBinds.bindKey(keyEvent, finalI);
                 });
             });
             selectCardHBox.getChildren().add(card);
@@ -176,7 +188,6 @@ public class MainMenuController extends Application {
             turnHBox.getChildren().add(button);
         }
 
-        setBindNames();
     }
 
     private void setBindNames() {
