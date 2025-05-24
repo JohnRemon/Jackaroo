@@ -17,6 +17,8 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import static application.boardView.BoardView.playSound;
+
 
 public class MainMenuController extends Application {
     @FXML
@@ -57,6 +59,7 @@ public class MainMenuController extends Application {
 
     @FXML
     public void openSettings(ActionEvent actionEvent) throws IOException {
+        playSound("menuClick.mp3");
         themeChosen.getItems().clear();
         themeChosen.getItems().addAll("Default", "Alien", "Medieval");
         themeChosen.setValue(userSettings.getTheme());
@@ -86,7 +89,7 @@ public class MainMenuController extends Application {
     public void hideSettingsMenu(ActionEvent actionEvent) throws IOException {
         settingsPane.setVisible(false);
         saveSettings();
-
+        playSound("menuClick.mp3");
         UserSettings updatedSettings = new UserSettings().LoadSettings();
         userSettings.setName(updatedSettings.getName());
         userSettings.setSfx((float) updatedSettings.getSfx());
