@@ -107,7 +107,7 @@ public class BoardViewMedieval extends BoardView{
         alert.setHeaderText(null);
         alert.setGraphic(null);
         alert.setContentText(message);
-        alert.getDialogPane().getStylesheets().add(getClass().getResource("/application/MedievalAlert.css").toExternalForm());
+        alert.getDialogPane().getStylesheets().add(getClass().getResource("/application/boardView/Sheets/medievalAlert.css").toExternalForm());
         alert.getDialogPane().getStyleClass().add("custom-alert");
         alert.getButtonTypes().set(0, new ButtonType("OK", ButtonBar.ButtonData.LEFT));
         alert.show(); //showAndWait() throws an IllegalStateException if stepped on trap
@@ -126,7 +126,7 @@ public class BoardViewMedieval extends BoardView{
                 e.printStackTrace();
             }
         });
-        alert.getDialogPane().getStylesheets().add(getClass().getResource("/application/MedievalAlert.css").toExternalForm());
+        alert.getDialogPane().getStylesheets().add(getClass().getResource("/application/boardView/Sheets/medievalAlert.css").toExternalForm());
         alert.getDialogPane().getStyleClass().add("custom-alert");
         alert.getButtonTypes().set(0, new ButtonType("OK", ButtonBar.ButtonData.LEFT));
         alert.showAndWait();
