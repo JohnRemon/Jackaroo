@@ -22,3 +22,22 @@
     -fx-effect: dropshadow(gaussian, rgba(0, 255, 255, 0.2), 6, 0.3, 0, 0); /* Cyan glow */
 }
 
+.HUD {
+    -fx-font-family : "Bauhaus 93";
+}
+
+.player-name {
+    -fx-font-family : "Bauhaus 93";
+    -fx-font-size: 20px;
+    -fx-font-weight: normal;
+    -fx-opacity: 0.5; /* dim non-active players */
+    -fx-effect: none;
+}
+
+.current-turn {
+    -fx-font-family : "Bauhaus 93";
+    -fx-opacity: 1.0; /* full visibility */
+    -fx-font-size: 30px; /* slightly larger */
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(255,255,255,0.25), 8, 0.3, 0, 0); /* subtle white glow */
+}

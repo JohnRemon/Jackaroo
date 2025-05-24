@@ -111,32 +111,32 @@
                   <Font name="System Bold" size="23.0" />
                </font>
             </Label>
-            <Label fx:id="CPU3Label" alignment="CENTER" layoutX="705.0" layoutY="383.0" prefHeight="18.0" prefWidth="124.0" rotate="-90.0" text="CPU3" textFill="#5fb961">
+            <Label fx:id="CPU3Label" alignment="CENTER" layoutX="707.0" layoutY="383.0" prefHeight="18.0" prefWidth="124.0" rotate="-90.0" styleClass="player-name" text="CPU3" textFill="#5fb961">
                <font>
                   <Font name="System Bold" size="23.0" />
                </font>
             </Label>
-            <Label fx:id="CPU1Label" alignment="CENTER" layoutX="-48.0" layoutY="383.0" prefHeight="18.0" prefWidth="124.0" rotate="90.0" text="CPU1" textFill="#5fb961">
+            <Label fx:id="CPU1Label" alignment="CENTER" layoutX="-48.0" layoutY="383.0" prefHeight="18.0" prefWidth="124.0" rotate="90.0" styleClass="player-name" text="CPU1" textFill="#5fb961">
                <font>
                   <Font name="System Bold" size="23.0" />
                </font>
             </Label>
-            <Label fx:id="CPU1RemainingCards" alignment="CENTER" layoutX="-26.0" layoutY="384.0" prefHeight="18.0" prefWidth="124.0" rotate="90.0" text="4" textFill="#5fb961">
+            <Label fx:id="CPU1RemainingCards" alignment="CENTER" layoutX="-22.0" layoutY="384.0" prefHeight="18.0" prefWidth="124.0" rotate="90.0" styleClass="player-name" text="4" textFill="#5fb961">
                <font>
                   <Font name="System Bold" size="23.0" />
                </font>
             </Label>
-            <Label fx:id="CPU3RemainingCards" alignment="CENTER" layoutX="681.0" layoutY="384.0" prefHeight="18.0" prefWidth="124.0" rotate="-90.0" text="4" textFill="#5fb961">
+            <Label fx:id="CPU3RemainingCards" alignment="CENTER" layoutX="681.0" layoutY="384.0" prefHeight="18.0" prefWidth="124.0" rotate="-90.0" styleClass="player-name" text="4" textFill="#5fb961">
                <font>
                   <Font name="System Bold" size="23.0" />
                </font>
             </Label>
-            <Label fx:id="CPU2Label" alignment="CENTER" layoutX="337.0" layoutY="-6.0" prefHeight="18.0" prefWidth="124.0" text="CPU2" textFill="#5fb961">
+            <Label fx:id="CPU2Label" alignment="CENTER" layoutX="338.0" layoutY="8.0" prefHeight="18.0" prefWidth="124.0" styleClass="player-name" text="CPU2" textFill="#5fb961">
                <font>
                   <Font name="System Bold" size="23.0" />
                </font>
             </Label>
-            <Label fx:id="CPU2RemainingCards" alignment="CENTER" layoutX="334.6" layoutY="12.8" prefHeight="34.0" prefWidth="124.0" text="4" textFill="#5fb961" AnchorPane.bottomAnchor="754.4" AnchorPane.leftAnchor="334.6" AnchorPane.rightAnchor="341.4" AnchorPane.topAnchor="12.8">
+            <Label fx:id="CPU2RemainingCards" alignment="CENTER" layoutX="339.0" layoutY="28.0" prefHeight="34.0" prefWidth="124.0" styleClass="player-name" text="4" textFill="#5fb961" AnchorPane.bottomAnchor="739.0" AnchorPane.leftAnchor="339.0" AnchorPane.rightAnchor="337.0" AnchorPane.topAnchor="28.0">
                <font>
                   <Font name="System Bold" size="23.0" />
                </font>
@@ -187,10 +187,10 @@
             </GridPane>
             <Label fx:id="CurrentPlayerLabel" layoutX="22.0" layoutY="20.0" text="Current Player: " textFill="WHITE">
                <font>
-                  <Font name="Calibri Bold" size="18.0" />
+                  <Font name="Bauhaus 93" size="18.0" />
                </font>
             </Label>
-            <Label fx:id="NextPlayerLabel" layoutX="22.0" layoutY="57.0" text="Next Player: " textFill="WHITE">
+            <Label fx:id="NextPlayerLabel" layoutX="22.0" layoutY="57.0" styleClass="HUD" stylesheets="@BoardViewAlien.css" text="Next Player: " textFill="WHITE">
                <font>
                   <Font name="Calibri Bold" size="18.0" />
                </font>
@@ -275,6 +275,11 @@
                   <Circle fx:id="PlayerMarbleThree" fill="DODGERBLUE" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" styleClass="marble" />
                </children>
             </HBox>
+            <Label fx:id="playerTurnNow" alignment="CENTER" layoutX="304.0" layoutY="70.0" prefHeight="48.0" prefWidth="177.0" text="[Your Turn]" textFill="RED">
+               <font>
+                  <Font name="System Bold" size="30.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
       <ImageView fx:id="firePitLastCard" fitHeight="90.0" fitWidth="74.0" layoutX="367.0" layoutY="347.0" pickOnBounds="true" preserveRatio="true" />

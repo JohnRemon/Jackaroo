@@ -12,6 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Effect;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -19,8 +20,11 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 import model.Colour;
+import model.card.Card;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
 
 public class BoardViewAlien extends BoardView {
     public static void setBoardPaneAlien(String username) throws IOException, GameException {
@@ -103,44 +107,6 @@ public class BoardViewAlien extends BoardView {
         });
 
         teleport.play();
-    }
-
-
-//    public void assignCardsAnimation(Game game) {
-//        playerCardsRow.setOnMouseMoved(event -> {
-//            double mouseX = event.getX();
-//            for (int i = 0; i < playerCardsImages.size(); i++) {
-//                ImageView card = playerCardsImages.get(i);
-//                double cardCenterX = card.getLayoutX() + (card.getBoundsInParent().getWidth() / 2);
-//                double distance = Math.abs(mouseX - cardCenterX);
-//
-//                // Map distance to scale (closer = bigger)
-//                double scale = closerBigger(1.0 + (150 - distance) / 300, 1.0, 1.2);
-//                double rotate = closerBigger((mouseX - cardCenterX) / 30, -10, 10);
-//
-//                card.setScaleX(scale);
-//                card.setScaleY(scale);
-//                card.setRotate(rotate);
-//            }
-//        });
-//
-//        playerCardsRow.setOnMouseExited(event -> {
-//            for (ImageView card : playerCardsImages) {
-//                card.setScaleX(1.0);
-//                card.setScaleY(1.0);
-//                card.setRotate(0);
-//            }
-//        });
-//    }
-
-    public static Effect getDefaultMarbleShadow() {
-        DropShadow shadow = new DropShadow();
-        shadow.setRadius(5);
-        shadow.setColor(Color.rgb(0, 0, 0, 0.6));
-        shadow.setOffsetX(1);
-        shadow.setOffsetY(1);
-        shadow.setSpread(0.3);
-        return shadow;
     }
 
     private double closerBigger(double value, double min, double max) {
