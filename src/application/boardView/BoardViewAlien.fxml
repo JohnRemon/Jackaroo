@@ -104,7 +104,7 @@
                   <Circle fx:id="CPU2MarbleThree" fill="DODGERBLUE" onMouseClicked="#selectMarble" radius="10.0" stroke="BLACK" strokeType="INSIDE" styleClass="marble" />
                </children></HBox>
 
-            <Label fx:id="playerLabel" alignment="CENTER" layoutY="565.0" prefHeight="18.0" prefWidth="124.0" text="PLAYER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="676.0" AnchorPane.topAnchor="765.6">
+            <Label fx:id="playerLabel" alignment="BOTTOM_LEFT" layoutY="766.0" prefHeight="34.0" prefWidth="322.0" text="PLAYER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="478.0" AnchorPane.topAnchor="766.0">
                <font>
                   <Font name="System Bold" size="23.0" />
                </font>

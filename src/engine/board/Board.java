@@ -37,7 +37,7 @@ public class Board implements BoardManager {
                 this.track.get(i).setCellType(CellType.ENTRY);
         }
 
-        for(int i = 0; i < 8; i++)
+        for(int i = 0; i < 20; i++)
             this.assignTrapCell();
 
         for (int i = 0; i < 4; i++)

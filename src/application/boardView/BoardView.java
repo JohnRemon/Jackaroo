@@ -478,12 +478,11 @@ public abstract class BoardView {
 
     public void showException(String message){
         playSound("error.mp3");
-        if (settings.getTheme().equals("Alien"))
+        if (settings.getTheme().equals("Alien") && !trapped)
         {
-            System.out.println(message);
             cardDescription.getStyleClass().setAll("error");
           //  cardDescription.getStyleClass().add("error");
-            cardDescription.setText("Invalid Action!" + "\n" + message);
+            cardDescription.setText(message);
         }else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Invalid Action");
@@ -506,11 +505,11 @@ public abstract class BoardView {
             c.getParent();// for the love of everything near and dear, do NOT remove this line.
             if (c.getParent() != targetBox) {
                 if (trapped){
-                    updateTrapFlag();
                     BoardViewAlien.playTeleportEffect(c, gridInshallah);
                     if (!(gameController.getGame().getPlayers().get(gameController.getGame().getCurrentPlayerIndex()) instanceof CPU)) {
                         showException("You have fallen for a trap! \nMarble teleported to homezone");
                     }
+                    updateTrapFlag();
                 }
 
                 if (c.getParent() instanceof Pane)
