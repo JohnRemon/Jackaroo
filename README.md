@@ -24,7 +24,7 @@
   - 👸 **Queen**: Skip a random opponent’s turn by discarding one of their cards OR move 12 steps forward
   - 🔟 **Ten**: Discard a random card from the next player and skip their turn OR move 10 steps forward
   - 7️⃣ **Seven**: Move one marble 7 steps OR split 7 steps across two of your own marbles
-  - 🅰️ **Ace**: Field a marble from home OR move one of your marbles 1 step forward
+  - 1️⃣ **Ace**: Field a marble from home OR move one of your marbles 1 step forward
   - 5️⃣ **Five**: Move **any** marble 5 steps forward
 - Goal: move all 4 marbles into your own safe zone.
 - Traps and strategic placement are key to winning.
@@ -56,4 +56,5 @@ git clone https://github.com/JohnRemon/Jackaroo.git
   ```bash
   -module-path "/path/to/javafx-sdk/lib" --add-modules javafx.controls,javafx.fxml
   ```
-- Run Main.java
+- Run Main.java and Enjoy
+- Make sure to check out all available themes
